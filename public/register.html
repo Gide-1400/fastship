@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم - الشحنة السريعة</title>
-    <meta name="description" content="إدارة شحناتك، حسابك، ومتابعة نشاطك على منصة الشحنة السريعة">
+    <title>إنشاء حساب - الشحنة السريعة</title>
+    <meta name="description" content="أنشئ حسابك الجديد في منصة الشحنة السريعة">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,13 +12,13 @@
     <!-- Custom Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        
-        // Your web app's Firebase configuration
+    <!-- Firebase SDK المعدل -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
             authDomain: "fastship-2026.firebaseapp.com",
@@ -29,20 +29,8 @@
         };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        
-        // جعل auth متاحاً globally
-        window.firebaseAuth = auth;
-        window.firebaseOnAuthStateChanged = onAuthStateChanged;
-        window.firebaseSignOut = signOut;
+        firebase.initializeApp(firebaseConfig);
     </script>
-    
-    <!-- Animation Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    
-    <!-- ECharts -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     
     <style>
         body {
@@ -67,24 +55,6 @@
             box-shadow: 0 12px 24px rgba(0,0,0,0.15);
         }
         
-        .dashboard-tab {
-            transition: all 0.3s ease;
-        }
-        
-        .dashboard-tab.active {
-            background-color: #3b82f6;
-            color: white;
-        }
-        
-        .tab-content {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
         .rtl {
             direction: rtl;
         }
@@ -93,31 +63,13 @@
             direction: ltr;
         }
         
-        .status-badge {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            font-weight: 500;
+        .step-indicator {
+            transition: all 0.3s ease;
         }
         
-        .status-pending {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-        
-        .status-in-transit {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-        
-        .status-delivered {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        
-        .status-cancelled {
-            background-color: #fee2e2;
-            color: #991b1b;
+        .step-indicator.active {
+            background-color: #3b82f6;
+            color: white;
         }
     </style>
 </head>
@@ -128,7 +80,7 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <h1 class="text-2xl font-bold gradient-text">الشحنة السريعة</h1>
+                        <a href="index.html" class="text-2xl font-bold gradient-text">الشحنة السريعة</a>
                     </div>
                 </div>
                 
@@ -136,461 +88,232 @@
                     <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
                         <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
                         <a href="travelers.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">المسافرون</a>
-                        <a href="dashboard.html" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-blue-600">لوحة التحكم</a>
-                        <a href="support.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الدعم</a>
+                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لوحة التحكم</a>
+                        <a href="support.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الدعم الفني</a>
                     </div>
                 </div>
                 
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <a href="login.html" id="login-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    <a href="login.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
                         تسجيل الدخول
                     </a>
-                    <a href="register.html" id="register-btn" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                        إنشاء حساب
-                    </a>
-                    <div id="user-menu" class="hidden flex items-center space-x-4 space-x-reverse">
-                        <div class="flex items-center">
-                            <img id="user-avatar" src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="الملف الشخصي" class="w-8 h-8 rounded-full object-cover ml-2">
-                            <div class="text-right">
-                                <div id="user-name" class="text-sm font-medium text-gray-700"></div>
-                                <div id="user-type" class="text-xs text-gray-500"></div>
-                            </div>
-                        </div>
-                        <button onclick="logout()" class="text-gray-700 hover:text-blue-600 text-sm">
-                            تسجيل الخروج
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <section class="pt-24 pb-8 bg-gradient-to-br from-blue-600 to-purple-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-white">
-                <h1 class="text-3xl lg:text-4xl font-bold mb-2" id="welcome-message">مرحباً!</h1>
-                <p class="text-blue-100">إدارة شحناتك ومتابعة نشاطك على المنصة</p>
-            </div>
-        </div>
-    </section>
+    <!-- Registration Section -->
+    <section class="min-h-screen flex items-center justify-center pt-16 pb-12">
+        <div class="max-w-2xl w-full mx-4">
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl card-hover">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold gradient-text mb-2">إنشاء حساب جديد</h1>
+                    <p class="text-gray-600">انضم إلى منصة الشحنة السريعة وابدأ رحلتك</p>
+                </div>
 
-    <!-- Main Dashboard -->
-    <section class="py-8 bg-gray-50 min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                <!-- Sidebar -->
-                <div class="lg:col-span-1">
-                    <div class="bg-white rounded-2xl p-6 shadow-lg sticky top-24">
-                        <!-- User Profile -->
-                        <div class="text-center mb-8">
-                            <img id="profile-image" src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="الملف الشخصي" class="w-20 h-20 rounded-full object-cover mx-auto mb-4">
-                            <h3 id="sidebar-user-name" class="text-lg font-bold text-gray-800">زائر</h3>
-                            <p id="member-since" class="text-sm text-gray-600">يرجى تسجيل الدخول</p>
-                            <div class="flex items-center justify-center mt-2">
-                                <span class="text-yellow-500 ml-1">★</span>
-                                <span id="user-rating" class="text-sm text-gray-600">-</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Quick Stats -->
-                        <div class="grid grid-cols-2 gap-4 mb-8">
-                            <div class="text-center">
-                                <div id="completed-shipments" class="text-2xl font-bold text-blue-600">0</div>
-                                <div class="text-xs text-gray-600">شحنة مكتملة</div>
-                            </div>
-                            <div class="text-center">
-                                <div id="total-paid" class="text-2xl font-bold text-green-600">0</div>
-                                <div class="text-xs text-gray-600">ريال مدفوع</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Navigation Tabs -->
-                        <nav class="space-y-2">
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-blue-500 text-white font-medium transition-colors" data-tab="shipments">
-                                📦 شحناتي
-                            </button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="messages">
-                                💬 الرسائل
-                            </button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="profile">
-                                👤 الملف الشخصي
-                            </button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="settings">
-                                ⚙️ الإعدادات
-                            </button>
-                        </nav>
+                <!-- Step Indicator -->
+                <div class="flex justify-between mb-8">
+                    <div class="step-indicator flex-1 text-center py-2 rounded-lg bg-blue-500 text-white font-medium">
+                        1. المعلومات الأساسية
+                    </div>
+                    <div class="step-indicator flex-1 text-center py-2 rounded-lg bg-gray-200 text-gray-700 font-medium mx-2">
+                        2. نوع الحساب
+                    </div>
+                    <div class="step-indicator flex-1 text-center py-2 rounded-lg bg-gray-200 text-gray-700 font-medium">
+                        3. التأكيد
                     </div>
                 </div>
-                
-                <!-- Main Content -->
-                <div class="lg:col-span-3">
-                    <!-- Login Required Message -->
-                    <div id="login-required" class="bg-white rounded-2xl p-8 shadow-lg text-center">
-                        <div class="text-6xl mb-4">🔒</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-4">يجب تسجيل الدخول</h3>
-                        <p class="text-gray-600 mb-6">يجب عليك تسجيل الدخول للوصول إلى لوحة التحكم</p>
-                        <div class="flex justify-center gap-4">
-                            <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                تسجيل الدخول
-                            </a>
-                            <a href="register.html" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                إنشاء حساب
-                            </a>
+
+                <form id="registerForm" class="space-y-6">
+                    <!-- Step 1: Basic Information -->
+                    <div id="step-1" class="step-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">الاسم الأول</label>
+                                <input type="text" id="firstName" name="firstName" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                       placeholder="الاسم الأول">
+                                <div id="firstName-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+                            
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">اسم العائلة</label>
+                                <input type="text" id="lastName" name="lastName" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                       placeholder="اسم العائلة">
+                                <div id="lastName-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                            <input type="email" id="email" name="email" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                   placeholder="أدخل بريدك الإلكتروني">
+                            <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">رقم الجوال</label>
+                            <input type="tel" id="phone" name="phone" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                   placeholder="05XXXXXXXX">
+                            <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div>
+                            <label for="city" class="block text-sm font-medium text-gray-700 mb-2">المدينة</label>
+                            <select id="city" name="city" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
+                                <option value="">اختر المدينة</option>
+                                <option value="الرياض">الرياض</option>
+                                <option value="جدة">جدة</option>
+                                <option value="مكة">مكة</option>
+                                <option value="المدينة">المدينة المنورة</option>
+                                <option value="الدمام">الدمام</option>
+                                <option value="أبها">أبها</option>
+                                <option value="الطائف">الطائف</option>
+                                <option value="تبوك">تبوك</option>
+                            </select>
+                            <div id="city-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="button" onclick="nextStep(2)" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                التالي
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Shipments Tab -->
-                    <div id="shipments-content" class="tab-content hidden">
-                        <!-- Quick Actions -->
-                        <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
-                            <h3 class="text-lg font-bold text-gray-800 mb-4">إجراءات سريعة</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <button onclick="window.location.href='index.html'" class="bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                    + شحنة جديدة
-                                </button>
-                                <button onclick="window.location.href='travelers.html'" class="bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                    🔍 البحث عن مسافر
-                                </button>
-                                <button class="bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                    📊 تقرير شهري
-                                </button>
-                            </div>
+                    <!-- Step 2: Account Type -->
+                    <div id="step-2" class="step-content hidden">
+                        <div class="text-center mb-6">
+                            <h3 class="text-xl font-semibold text-gray-800">اختر نوع حسابك</h3>
+                            <p class="text-gray-600">اختر الدور المناسب لك على المنصة</p>
                         </div>
-                        
-                        <!-- Statistics Chart -->
-                        <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
-                            <h3 class="text-lg font-bold text-gray-800 mb-4">إحصائيات الشحنات</h3>
-                            <div id="shipments-chart" style="height: 300px;"></div>
-                        </div>
-                        
-                        <!-- Recent Shipments -->
-                        <div class="bg-white rounded-2xl p-6 shadow-lg">
-                            <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-lg font-bold text-gray-800">الشحنات الأخيرة</h3>
-                                <button class="text-blue-600 hover:text-blue-800 font-medium">عرض الكل</button>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="account-type border-2 border-gray-200 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500 transition-colors" data-type="client">
+                                <div class="text-4xl mb-4">📦</div>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-2">عميل</h4>
+                                <p class="text-sm text-gray-600 mb-4">أريد إرسال شحنات</p>
+                                <ul class="text-xs text-gray-500 text-right space-y-1">
+                                    <li>• إرسال شحنات بسهولة</li>
+                                    <li>• متابعة الشحنات لحظياً</li>
+                                    <li>• التواصل مع المسافرين</li>
+                                    <li>• دفع آمن عبر المنصة</li>
+                                </ul>
                             </div>
                             
-                            <div class="overflow-x-auto">
-                                <table class="w-full">
-                                    <thead>
-                                        <tr class="border-b border-gray-200">
-                                            <th class="text-right py-3 px-4 font-semibold text-gray-700">رقم الشحنة</th>
-                                            <th class="text-right py-3 px-4 font-semibold text-gray-700">النوع</th>
-                                            <th class="text-right py-3 px-4 font-semibold text-gray-700">المسار</th>
-                                            <th class="text-right py-3 px-4 font-semibold text-gray-700">الحالة</th>
-                                            <th class="text-right py-3 px-4 font-semibold text-gray-700">السعر</th>
-                                            <th class="text-right py-3 px-4 font-semibold text-gray-700">الإجراءات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                            <td class="py-3 px-4 text-sm">#SH-2024-001</td>
-                                            <td class="py-3 px-4 text-sm">📱 إلكترونيات</td>
-                                            <td class="py-3 px-4 text-sm">الرياض → جدة</td>
-                                            <td class="py-3 px-4 text-sm">
-                                                <span class="status-badge status-delivered">تم التوصيل</span>
-                                            </td>
-                                            <td class="py-3 px-4 text-sm font-semibold text-green-600">280 ريال</td>
-                                            <td class="py-3 px-4 text-sm">
-                                                <button class="text-blue-600 hover:text-blue-800 ml-2">تفاصيل</button>
-                                                <button class="text-orange-600 hover:text-orange-800">تقييم</button>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                            <td class="py-3 px-4 text-sm">#SH-2024-002</td>
-                                            <td class="py-3 px-4 text-sm">📄 مستندات</td>
-                                            <td class="py-3 px-4 text-sm">مكة → الدمام</td>
-                                            <td class="py-3 px-4 text-sm">
-                                                <span class="status-badge status-in-transit">في الطريق</span>
-                                            </td>
-                                            <td class="py-3 px-4 text-sm font-semibold text-blue-600">150 ريال</td>
-                                            <td class="py-3 px-4 text-sm">
-                                                <button class="text-blue-600 hover:text-blue-800 ml-2">تفاصيل</button>
-                                                <button class="text-green-600 hover:text-green-800">تتبع</button>
-                                            </td>
-                                        </tr>
-                                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                            <td class="py-3 px-4 text-sm">#SH-2024-003</td>
-                                            <td class="py-3 px-4 text-sm">👕 ملابس</td>
-                                            <td class="py-3 px-4 text-sm">جدة → المدينة</td>
-                                            <td class="py-3 px-4 text-sm">
-                                                <span class="status-badge status-pending">قيد الانتظار</span>
-                                            </td>
-                                            <td class="py-3 px-4 text-sm font-semibold text-orange-600">95 ريال</td>
-                                            <td class="py-3 px-4 text-sm">
-                                                <button class="text-blue-600 hover:text-blue-800 ml-2">تفاصيل</button>
-                                                <button class="text-red-600 hover:text-red-800">إلغاء</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="account-type border-2 border-gray-200 rounded-lg p-6 text-center cursor-pointer hover:border-orange-500 transition-colors" data-type="traveler">
+                                <div class="text-4xl mb-4">🚗</div>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-2">مسافر</h4>
+                                <p class="text-sm text-gray-600 mb-4">أريد نقل شحنات</p>
+                                <ul class="text-xs text-gray-500 text-right space-y-1">
+                                    <li>• كسب دخل إضافي</li>
+                                    <li>• استغلال الرحلات الفارغة</li>
+                                    <li>• مرونة في العمل</li>
+                                    <li>• تأمين على الشحنات</li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Messages Tab -->
-                    <div id="messages-content" class="tab-content hidden">
-                        <div class="bg-white rounded-2xl p-6 shadow-lg">
-                            <h3 class="text-lg font-bold text-gray-800 mb-6">الرسائل</h3>
-                            
-                            <div class="space-y-4">
-                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                    <img src="https://kimi-web-img.moonshot.cn/img/www.logos3pl.com/5d00aff09838f481e5de19381115e8d8e0e18878.jpg" alt="خالد السيد" class="w-12 h-12 rounded-full object-cover ml-4">
-                                    <div class="flex-1">
-                                        <div class="flex justify-between items-start mb-1">
-                                            <h4 class="font-semibold text-gray-800">خالد السيد</h4>
-                                            <span class="text-xs text-gray-500">منذ 2 ساعة</span>
-                                        </div>
-                                        <p class="text-sm text-gray-600 mb-1">مرحباً، أرغب في نقل شحنتك من الرياض إلى جدة...</p>
-                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">شحنة #SH-2024-003</span>
-                                    </div>
-                                    <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                                </div>
-                                
-                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                    <img src="https://kimi-web-img.moonshot.cn/img/citydelivery.com.vn/91e8f1c59ea323b3451428d49d42e5175d177b1b.jpg" alt="فاطمة الزهراني" class="w-12 h-12 rounded-full object-cover ml-4">
-                                    <div class="flex-1">
-                                        <div class="flex justify-between items-start mb-1">
-                                            <h4 class="font-semibold text-gray-800">فاطمة الزهراني</h4>
-                                            <span class="text-xs text-gray-500">منذ 5 ساعات</span>
-                                        </div>
-                                        <p class="text-sm text-gray-600 mb-1">تم استلام الشحنة بنجاح، سيتم التوصيل غداً...</p>
-                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">شحنة #SH-2024-002</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                    <img src="https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/04dc512f136ba384803bf3a0bc2e3634f672862b.jpg" alt="عبدالله الراشد" class="w-12 h-12 rounded-full object-cover ml-4">
-                                    <div class="flex-1">
-                                        <div class="flex justify-between items-start mb-1">
-                                            <h4 class="font-semibold text-gray-800">عبدالله الراشد</h4>
-                                            <span class="text-xs text-gray-500">أمس</span>
-                                        </div>
-                                        <p class="text-sm text-gray-600 mb-1">شكراً لاختيارك لنقل شحنتك، تم توصيلها بنجاح...</p>
-                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">شحنة #SH-2024-001</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Profile Tab -->
-                    <div id="profile-content" class="tab-content hidden">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <!-- Personal Information -->
-                            <div class="bg-white rounded-2xl p-6 shadow-lg">
-                                <h3 class="text-lg font-bold text-gray-800 mb-6">المعلومات الشخصية</h3>
-                                
-                                <form id="profile-form" class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الأول</label>
-                                        <input type="text" id="first-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">اسم العائلة</label>
-                                        <input type="text" id="last-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
-                                        <input type="email" id="profile-email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">رقم الجوال</label>
-                                        <input type="tel" id="profile-phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">المدينة</label>
-                                        <select id="profile-city" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                            <option value="">اختر المدينة</option>
-                                            <option value="الرياض">الرياض</option>
-                                            <option value="جدة">جدة</option>
-                                            <option value="مكة">مكة</option>
-                                            <option value="المدينة">المدينة المنورة</option>
-                                            <option value="الدمام">الدمام</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
-                                        تحديث المعلومات
-                                    </button>
-                                </form>
-                            </div>
-                            
-                            <!-- Account Statistics -->
-                            <div class="bg-white rounded-2xl p-6 shadow-lg">
-                                <h3 class="text-lg font-bold text-gray-800 mb-6">إحصائيات الحساب</h3>
-                                
-                                <div class="space-y-6">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-600">إجمالي الشحنات</span>
-                                        <span id="stats-total" class="font-bold text-blue-600">0 شحنة</span>
-                                    </div>
-                                    
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-600">الشحنات المكتملة</span>
-                                        <span id="stats-completed" class="font-bold text-green-600">0 شحنة</span>
-                                    </div>
-                                    
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-600">الشحنات قيد الانتظار</span>
-                                        <span id="stats-pending" class="font-bold text-orange-600">0 شحنة</span>
-                                    </div>
-                                    
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-600">متوسط التقييم</span>
-                                        <div class="flex items-center">
-                                            <span class="text-yellow-500 ml-1">★</span>
-                                            <span id="stats-rating" class="font-bold text-gray-800">-</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-600">إجمالي المدفوعات</span>
-                                        <span id="stats-payments" class="font-bold text-green-600">0 ريال</span>
-                                    </div>
-                                    
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-gray-600">تاريخ الانضمام</span>
-                                        <span id="stats-join-date" class="text-gray-800">-</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Settings Tab -->
-                    <div id="settings-content" class="tab-content hidden">
-                        <div class="bg-white rounded-2xl p-6 shadow-lg">
-                            <h3 class="text-lg font-bold text-gray-800 mb-6">الإعدادات</h3>
-                            
-                            <div class="space-y-8">
-                                <!-- Notifications Settings -->
+
+                        <!-- Traveler Additional Info -->
+                        <div id="traveler-info" class="hidden space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <h4 class="text-md font-semibold text-gray-700 mb-4">إعدادات الإشعارات</h4>
-                                    <div class="space-y-3">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-700">إشعارات الشحنات</span>
-                                            <label class="relative inline-flex items-center cursor-pointer">
-                                                <input type="checkbox" checked class="sr-only peer">
-                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                            </label>
-                                        </div>
-                                        
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-700">إشعارات الرسائل</span>
-                                            <label class="relative inline-flex items-center cursor-pointer">
-                                                <input type="checkbox" checked class="sr-only peer">
-                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                            </label>
-                                        </div>
-                                        
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-700">إشعارات العروض</span>
-                                            <label class="relative inline-flex items-center cursor-pointer">
-                                                <input type="checkbox" class="sr-only peer">
-                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                            </label>
-                                        </div>
-                                    </div>
+                                    <label for="vehicleType" class="block text-sm font-medium text-gray-700 mb-2">نوع المركبة</label>
+                                    <select id="vehicleType" name="vehicleType" 
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
+                                        <option value="">اختر نوع المركبة</option>
+                                        <option value="سيارة">سيارة</option>
+                                        <option value="شاحنة صغيرة">شاحنة صغيرة</option>
+                                        <option value="فان">فان</option>
+                                        <option value="باص">باص</option>
+                                    </select>
                                 </div>
                                 
-                                <!-- Privacy Settings -->
                                 <div>
-                                    <h4 class="text-md font-semibold text-gray-700 mb-4">الخصوصية</h4>
-                                    <div class="space-y-3">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-700">إظهار رقم الجوال</span>
-                                            <label class="relative inline-flex items-center cursor-pointer">
-                                                <input type="checkbox" class="sr-only peer">
-                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                            </label>
-                                        </div>
-                                        
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-700">إظهار الموقع</span>
-                                            <label class="relative inline-flex items-center cursor-pointer">
-                                                <input type="checkbox" checked class="sr-only peer">
-                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Account Settings -->
-                                <div>
-                                    <h4 class="text-md font-semibold text-gray-700 mb-4">إعدادات الحساب</h4>
-                                    <div class="space-y-4">
-                                        <button class="w-full text-right px-4 py-3 bg-orange-50 text-orange-700 rounded-lg hover:bg-orange-100 transition-colors">
-                                            تغيير كلمة المرور
-                                        </button>
-                                        <button class="w-full text-right px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors">
-                                            تحديث بيانات التواصل
-                                        </button>
-                                        <button class="w-full text-right px-4 py-3 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors">
-                                            حذف الحساب
-                                        </button>
-                                    </div>
+                                    <label for="vehicleModel" class="block text-sm font-medium text-gray-700 mb-2">موديل المركبة</label>
+                                    <input type="text" id="vehicleModel" name="vehicleModel" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                           placeholder="موديل المركبة">
                                 </div>
                             </div>
+                            
+                            <div>
+                                <label for="licenseNumber" class="block text-sm font-medium text-gray-700 mb-2">رقم رخصة القيادة</label>
+                                <input type="text" id="licenseNumber" name="licenseNumber" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                       placeholder="رقم رخصة القيادة">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <button type="button" onclick="prevStep(1)" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                السابق
+                            </button>
+                            <button type="button" onclick="nextStep(3)" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                التالي
+                            </button>
                         </div>
                     </div>
+
+                    <!-- Step 3: Password & Confirmation -->
+                    <div id="step-3" class="step-content hidden">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
+                                <input type="password" id="password" name="password" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                       placeholder="كلمة المرور (8 أحرف على الأقل)">
+                                <div id="password-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <div>
+                                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">تأكيد كلمة المرور</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                       placeholder="أعد إدخال كلمة المرور">
+                                <div id="confirmPassword-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input type="checkbox" id="terms" name="terms" required class="ml-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <label for="terms" class="text-sm text-gray-600">
+                                    أوافق على 
+                                    <a href="terms.html" class="text-blue-600 hover:text-blue-800">الشروط والأحكام</a>
+                                    و
+                                    <a href="privacy.html" class="text-blue-600 hover:text-blue-800">سياسة الخصوصية</a>
+                                </label>
+                            </div>
+                            <div id="terms-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div class="flex justify-between mt-6">
+                            <button type="button" onclick="prevStep(2)" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                السابق
+                            </button>
+                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center">
+                                <span id="register-text">إنشاء الحساب</span>
+                                <div id="register-spinner" class="hidden animate-spin ml-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="text-center mt-6">
+                    <span class="text-sm text-gray-600">لديك حساب بالفعل؟</span>
+                    <a href="login.html" class="text-sm text-blue-600 hover:text-blue-800 font-semibold mr-2">سجل الدخول هنا</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
+    <footer class="bg-gray-900 text-white py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold gradient-text mb-4">الشحنة السريعة</h3>
-                    <p class="text-gray-400 leading-relaxed">
-                        منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات داخل المملكة وخارجها.
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">روابط سريعة</h4>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">الرئيسية</a></li>
-                        <li><a href="travelers.html" class="text-gray-400 hover:text-white transition-colors">المسافرون</a></li>
-                        <li><a href="dashboard.html" class="text-gray-400 hover:text-white transition-colors">لوحة التحكم</a></li>
-                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الدعم الفني</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">المساعدة</h4>
-                    <ul class="space-y-2">
-                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الأسئلة الشائعة</a></li>
-                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">الشروط والأحكام</a></li>
-                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</a></li>
-                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">اتصل بنا</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">معلومات التواصل</h4>
-                    <div class="space-y-2 text-gray-400">
-                        <p>📧 gide1979@gmail.com</p>
-                        <p>📞 +966551519723</p>
-                        <p>📍 المملكة العربية السعودية</p>
-                    </div>
-                    <div class="mt-4">
-                        <p class="text-sm text-gray-400">
-                            صاحب الفكرة: قايد صالح المصعبي
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+            <div class="text-center">
                 <p class="text-gray-400">
                     © 2024 الشحنة السريعة. جميع الحقوق محفوظة | قايد صالح المصعبي
                 </p>
@@ -600,232 +323,247 @@
 
     <!-- JavaScript -->
     <script>
-        // تحديث واجهة المستخدم بناءً على حالة تسجيل الدخول
-        function updateAuthUI(user) {
-            const loginBtn = document.getElementById('login-btn');
-            const registerBtn = document.getElementById('register-btn');
-            const userMenu = document.getElementById('user-menu');
-            const userName = document.getElementById('user-name');
-            const userType = document.getElementById('user-type');
-            const userAvatar = document.getElementById('user-avatar');
+        let currentStep = 1;
+        let selectedAccountType = '';
 
-            if (user) {
-                // إخفاء أزرار تسجيل الدخول والتسجيل
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (registerBtn) registerBtn.style.display = 'none';
+        function nextStep(step) {
+            if (validateStep(currentStep)) {
+                document.getElementById(`step-${currentStep}`).classList.add('hidden');
+                document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('bg-blue-500', 'text-white');
+                document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('bg-gray-200', 'text-gray-700');
                 
-                // إظهار قائمة المستخدم
-                if (userMenu) userMenu.classList.remove('hidden');
-                if (userName) userName.textContent = user.displayName || user.email;
-                if (userType) userType.textContent = 'مستخدم';
-                if (userAvatar) userAvatar.src = user.photoURL || 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg';
-            } else {
-                // إظهار أزرار تسجيل الدخول والتسجيل
-                if (loginBtn) loginBtn.style.display = 'block';
-                if (registerBtn) registerBtn.style.display = 'block';
+                currentStep = step;
                 
-                // إخفاء قائمة المستخدم
-                if (userMenu) userMenu.classList.add('hidden');
+                document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+                document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('bg-gray-200', 'text-gray-700');
+                document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('bg-blue-500', 'text-white');
             }
         }
 
-        // تسجيل الخروج
-        async function logout() {
-            try {
-                await window.firebaseSignOut(window.firebaseAuth);
-                localStorage.removeItem('currentUser');
-                window.location.href = 'index.html';
-            } catch (error) {
-                console.error('خطأ في تسجيل الخروج:', error);
-            }
+        function prevStep(step) {
+            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+            document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('bg-blue-500', 'text-white');
+            document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('bg-gray-200', 'text-gray-700');
+            
+            currentStep = step;
+            
+            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+            document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('bg-gray-200', 'text-gray-700');
+            document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('bg-blue-500', 'text-white');
         }
 
-        // Dashboard functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // التحقق من حالة المصادقة
-            window.firebaseOnAuthStateChanged(window.firebaseAuth, (user) => {
-                if (user) {
-                    // حفظ بيانات المستخدم
-                    const userData = {
-                        uid: user.uid,
-                        email: user.email,
-                        emailVerified: user.emailVerified,
-                        displayName: user.displayName,
-                        photoURL: user.photoURL
-                    };
-                    localStorage.setItem('currentUser', JSON.stringify(userData));
-                    updateAuthUI(userData);
-                    
-                    // User is logged in
-                    document.getElementById('login-required').style.display = 'none';
-                    document.getElementById('shipments-content').classList.remove('hidden');
-                    
-                    // Update user info
-                    updateUserInfo(userData);
-                    setupTabs();
-                    initializeChart();
-                    setupProfileForm();
-                } else {
-                    localStorage.removeItem('currentUser');
-                    updateAuthUI(null);
-                    
-                    // User is not logged in
-                    document.getElementById('login-required').style.display = 'block';
-                    document.querySelectorAll('.tab-content').forEach(tab => {
-                        tab.classList.add('hidden');
-                    });
-                }
+        function validateStep(step) {
+            let isValid = true;
+            
+            // Clear previous errors
+            document.querySelectorAll('[id$="-error"]').forEach(error => {
+                error.classList.add('hidden');
             });
 
-            // تحميل بيانات المستخدم من localStorage إذا كانت موجودة
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                const userData = JSON.parse(savedUser);
-                updateAuthUI(userData);
+            if (step === 1) {
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const city = document.getElementById('city').value;
+
+                if (!firstName) {
+                    document.getElementById('firstName-error').textContent = 'الاسم الأول مطلوب';
+                    document.getElementById('firstName-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!lastName) {
+                    document.getElementById('lastName-error').textContent = 'اسم العائلة مطلوب';
+                    document.getElementById('lastName-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!email || !/\S+@\S+\.\S+/.test(email)) {
+                    document.getElementById('email-error').textContent = 'البريد الإلكتروني غير صحيح';
+                    document.getElementById('email-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!phone || !/^05\d{8}$/.test(phone)) {
+                    document.getElementById('phone-error').textContent = 'رقم الجوال غير صحيح';
+                    document.getElementById('phone-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!city) {
+                    document.getElementById('city-error').textContent = 'المدينة مطلوبة';
+                    document.getElementById('city-error').classList.remove('hidden');
+                    isValid = false;
+                }
             }
 
-            function updateUserInfo(user) {
-                // Update header
-                document.getElementById('welcome-message').textContent = `مرحباً ${user.displayName || user.email}!`;
-                
-                // Update sidebar
-                document.getElementById('sidebar-user-name').textContent = user.displayName || user.email;
-                document.getElementById('profile-image').src = user.photoURL || 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg';
-                document.getElementById('member-since').textContent = `عضو منذ ${new Date().getFullYear()}`;
-                document.getElementById('user-rating').textContent = '5.0';
-                
-                // Update stats
-                document.getElementById('completed-shipments').textContent = '12';
-                document.getElementById('total-paid').textContent = '2,450';
-                
-                // Update profile form
-                document.getElementById('first-name').value = user.displayName ? user.displayName.split(' ')[0] : '';
-                document.getElementById('last-name').value = user.displayName ? user.displayName.split(' ')[1] || '' : '';
-                document.getElementById('profile-email').value = user.email;
-                
-                // Update stats in profile tab
-                document.getElementById('stats-total').textContent = '12 شحنة';
-                document.getElementById('stats-completed').textContent = '10 شحنات';
-                document.getElementById('stats-pending').textContent = '2 شحنة';
-                document.getElementById('stats-rating').textContent = '5.0';
-                document.getElementById('stats-payments').textContent = '2,450 ريال';
-                document.getElementById('stats-join-date').textContent = new Date().getFullYear();
-            }
+            return isValid;
+        }
 
-            function setupTabs() {
-                const tabs = document.querySelectorAll('.dashboard-tab');
-                
-                tabs.forEach(tab => {
-                    tab.addEventListener('click', function() {
-                        // Remove active class from all tabs
-                        tabs.forEach(t => {
-                            t.classList.remove('bg-blue-500', 'text-white');
-                            t.classList.add('bg-gray-200', 'text-gray-700');
-                        });
-                        
-                        // Add active class to clicked tab
-                        this.classList.remove('bg-gray-200', 'text-gray-700');
-                        this.classList.add('bg-blue-500', 'text-white');
-                        
-                        // Show corresponding content
-                        const tabName = this.dataset.tab;
-                        document.querySelectorAll('.tab-content').forEach(content => {
-                            content.classList.add('hidden');
-                        });
-                        document.querySelector(`#${tabName}-content`).classList.remove('hidden');
-                    });
+        // Account type selection
+        document.querySelectorAll('.account-type').forEach(type => {
+            type.addEventListener('click', function() {
+                document.querySelectorAll('.account-type').forEach(t => {
+                    t.classList.remove('border-blue-500', 'border-orange-500', 'bg-blue-50', 'bg-orange-50');
                 });
-            }
-
-            function initializeChart() {
-                const chartDom = document.getElementById('shipments-chart');
-                if (chartDom) {
-                    const myChart = echarts.init(chartDom);
-                    
-                    const option = {
-                        title: {
-                            text: 'نشاط الشحنات الشهري',
-                            textStyle: {
-                                color: '#374151',
-                                fontSize: 16,
-                                fontWeight: 'bold'
-                            }
-                        },
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        legend: {
-                            data: ['الشحنات المكتملة', 'الشحنات الجديدة']
-                        },
-                        xAxis: {
-                            type: 'category',
-                            data: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر']
-                        },
-                        yAxis: {
-                            type: 'value'
-                        },
-                        series: [
-                            {
-                                name: 'الشحنات المكتملة',
-                                type: 'bar',
-                                data: [2, 1, 3, 2, 1, 2, 1, 0, 0, 0],
-                                itemStyle: { color: '#10b981' }
-                            },
-                            {
-                                name: 'الشحنات الجديدة',
-                                type: 'bar',
-                                data: [1, 2, 2, 1, 1, 1, 2, 1, 0, 0],
-                                itemStyle: { color: '#3b82f6' }
-                            }
-                        ]
-                    };
-
-                    myChart.setOption(option);
-                }
-            }
-
-            function setupProfileForm() {
-                const profileForm = document.getElementById('profile-form');
-                if (profileForm) {
-                    profileForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        
-                        const updatedData = {
-                            firstName: document.getElementById('first-name').value,
-                            lastName: document.getElementById('last-name').value,
-                            email: document.getElementById('profile-email').value,
-                            phone: document.getElementById('profile-phone').value,
-                            city: document.getElementById('profile-city').value
-                        };
-                        
-                        // في الإصدار الحقيقي، هنا سنقوم بتحديث البيانات في Firebase
-                        showNotification('تم تحديث الملف الشخصي بنجاح!', 'success');
-                        
-                        // تحديث واجهة المستخدم
-                        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-                        currentUser.displayName = `${updatedData.firstName} ${updatedData.lastName}`;
-                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        updateUserInfo(currentUser);
-                    });
-                }
-            }
-
-            function showNotification(message, type = 'info') {
-                const notification = document.createElement('div');
-                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white ${
-                    type === 'success' ? 'bg-green-500' : 
-                    type === 'error' ? 'bg-red-500' : 
-                    'bg-blue-500'
-                }`;
-                notification.textContent = message;
                 
-                document.body.appendChild(notification);
+                selectedAccountType = this.dataset.type;
+                if (selectedAccountType === 'client') {
+                    this.classList.add('border-blue-500', 'bg-blue-50');
+                    document.getElementById('traveler-info').classList.add('hidden');
+                } else {
+                    this.classList.add('border-orange-500', 'bg-orange-50');
+                    document.getElementById('traveler-info').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // التحقق من أن Firebase محمل
+            if (typeof firebase === 'undefined' || !firebase.apps.length) {
+                alert('خطأ في تحميل النظام. يرجى تحديث الصفحة.');
+                return;
+            }
+            
+            if (!selectedAccountType) {
+                alert('يرجى اختيار نوع الحساب');
+                return;
+            }
+
+            if (!validateStep(3)) {
+                return;
+            }
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            if (password.length < 8) {
+                document.getElementById('password-error').textContent = 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
+                document.getElementById('password-error').classList.remove('hidden');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPassword-error').textContent = 'كلمات المرور غير متطابقة';
+                document.getElementById('confirmPassword-error').classList.remove('hidden');
+                return;
+            }
+
+            if (!terms) {
+                document.getElementById('terms-error').textContent = 'يجب الموافقة على الشروط والأحكام';
+                document.getElementById('terms-error').classList.remove('hidden');
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('register-text').classList.add('hidden');
+            document.getElementById('register-spinner').classList.remove('hidden');
+
+            // Collect form data
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                city: document.getElementById('city').value,
+                accountType: selectedAccountType,
+                password: password,
+                vehicleType: document.getElementById('vehicleType').value,
+                vehicleModel: document.getElementById('vehicleModel').value,
+                licenseNumber: document.getElementById('licenseNumber').value,
+                createdAt: new Date().toISOString(),
+                profileImage: 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg'
+            };
+
+            try {
+                // إنشاء المستخدم في Firebase Authentication
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password);
+                const user = userCredential.user;
+
+                // تحديث ملف المستخدم
+                await user.updateProfile({
+                    displayName: `${formData.firstName} ${formData.lastName}`,
+                    photoURL: formData.profileImage
+                });
+
+                // حفظ البيانات الإضافية في Firestore
+                const userData = {
+                    uid: user.uid,
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    city: formData.city,
+                    accountType: formData.accountType,
+                    vehicleType: formData.vehicleType,
+                    vehicleModel: formData.vehicleModel,
+                    licenseNumber: formData.licenseNumber,
+                    createdAt: formData.createdAt,
+                    profileImage: formData.profileImage,
+                    isActive: true,
+                    rating: formData.accountType === 'traveler' ? 5.0 : null,
+                    completedTrips: formData.accountType === 'traveler' ? 0 : null
+                };
+
+                // حفظ البيانات في Firestore - التصحيح هنا
+                await firebase.firestore().collection("users").doc(user.uid).set(userData);
+
+                // حفظ بيانات المستخدم في localStorage
+                localStorage.setItem('currentUser', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    emailVerified: user.emailVerified,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                }));
+
+                // عرض رسالة نجاح
+                alert('تم إنشاء الحساب بنجاح! سيتم تحويلك إلى لوحة التحكم.');
                 
-                setTimeout(() => {
-                    if (notification.parentElement) {
-                        notification.remove();
-                    }
-                }, 5000);
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+
+            } catch (error) {
+                console.error('خطأ في إنشاء الحساب:', error);
+                
+                // عرض رسالة الخطأ المناسبة
+                let errorMessage = 'حدث خطأ أثناء إنشاء الحساب';
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'البريد الإلكتروني مسجل مسبقاً';
+                    document.getElementById('email-error').textContent = errorMessage;
+                    document.getElementById('email-error').classList.remove('hidden');
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'البريد الإلكتروني غير صحيح';
+                    document.getElementById('email-error').textContent = errorMessage;
+                    document.getElementById('email-error').classList.remove('hidden');
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'كلمة المرور ضعيفة، يجب أن تكون 8 أحرف على الأقل';
+                    document.getElementById('password-error').textContent = errorMessage;
+                    document.getElementById('password-error').classList.remove('hidden');
+                } else {
+                    document.getElementById('email-error').textContent = errorMessage;
+                    document.getElementById('email-error').classList.remove('hidden');
+                }
+                
+                // Reset loading state
+                document.getElementById('register-text').classList.remove('hidden');
+                document.getElementById('register-spinner').classList.add('hidden');
+            }
+        });
+
+        // التأكد من تحميل Firebase بشكل صحيح
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof firebase === 'undefined') {
+                console.error('Firebase لم يتم تحميله بشكل صحيح');
+                alert('حدث خطأ في تحميل النظام. يرجى تحديث الصفحة.');
+            } else {
+                console.log('Firebase محمل بنجاح:', firebase);
             }
         });
     </script>
