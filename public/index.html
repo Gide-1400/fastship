@@ -1,594 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الشحنة السريعة - منصة الشحن الذكية</title>
-    <meta name="description" content="منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات داخل المملكة وخارجها">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Custom Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Animation Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
-    
-    <!-- ECharts -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    
-    <!-- Leaflet for Maps -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <style>
-        body {
-            font-family: 'Tajawal', 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        
-        .hero-bg {
-            background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url('resources/hero-logistics.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(45deg, #ed8936, #1a365d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .package-type {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .package-type:hover {
-            transform: scale(1.05);
-        }
-        
-        .package-type.selected {
-            border-color: #ed8936;
-            background-color: #fff7ed;
-        }
-        
-        .progress-bar {
-            transition: width 0.3s ease;
-        }
-        
-        .floating-element {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .rtl {
-            direction: rtl;
-        }
-        
-        .ltr {
-            direction: ltr;
-        }
-    </style>
-</head>
-<body class="rtl">
-    <!-- Navigation -->
-    <nav class="bg-white/95 backdrop-blur-sm shadow-lg fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <h1 class="text-2xl font-bold gradient-text">الشحنة السريعة</h1>
-                    </div>
-                </div>
-                
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
-                        <a href="index.html" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-blue-600">الرئيسية</a>
-                        <a href="travelers.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">المسافرون</a>
-                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لوحة التحكم</a>
-                        <a href="support.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الدعم</a>
-                    </div>
-                </div>
-                
-                <div class="flex items-center space-x-4 space-x-reverse">
-                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
-                        تسجيل الدخول
-                    </button>
-                    <button class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                        إنشاء حساب
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-bg min-h-screen flex items-center pt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Hero Content -->
-                <div class="text-white">
-                    <h1 class="hero-title text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                        أرسل شحنتك مع
-                        <span class="typed-text gradient-text"></span>
-                    </h1>
-                    <p class="text-xl mb-8 text-gray-200 leading-relaxed">
-                        منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات داخل المملكة العربية السعودية وخارجها بطريقة آمنة وفعالة.
-                    </p>
-                    
-                    <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                        <button class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105">
-                            أرسل شحنتك الآن
-                        </button>
-                        <button class="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold transition-all">
-                            تعرف على المزيد
-                        </button>
-                    </div>
-                    
-                    <!-- Trust Indicators -->
-                    <div class="grid grid-cols-3 gap-8 text-center">
-                        <div>
-                            <div class="text-3xl font-bold counter" data-target="15000">0</div>
-                            <div class="text-sm text-gray-300">شحنة تم توصيلها</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold counter" data-target="2500">0</div>
-                            <div class="text-sm text-gray-300">مسافر نشط</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold counter" data-target="98">0</div>
-                            <div class="text-sm text-gray-300">نسبة الرضا</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shipment Form -->
-                <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">أرسل شحنتك الآن</h2>
-                    
-                    <!-- Progress Bar -->
-                    <div class="mb-8">
-                        <div class="flex justify-between text-sm text-gray-600 mb-2">
-                            <span>نوع الشحنة</span>
-                            <span>الوزن والأبعاد</span>
-                            <span>المواقع</span>
-                            <span>المراجعة</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="progress-bar bg-orange-500 h-2 rounded-full" style="width: 25%"></div>
-                        </div>
-                    </div>
-
-                    <!-- Step 1: Package Type -->
-                    <div id="step-1" class="step-content">
-                        <h3 class="text-lg font-semibold mb-4">اختر نوع الشحنة</h3>
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="package-type border-2 border-gray-200 rounded-lg p-4 text-center hover:border-orange-500" data-type="documents">
-                                <div class="text-4xl mb-2">📄</div>
-                                <div class="text-sm font-medium">مستندات</div>
-                            </div>
-                            <div class="package-type border-2 border-gray-200 rounded-lg p-4 text-center hover:border-orange-500" data-type="electronics">
-                                <div class="text-4xl mb-2">📱</div>
-                                <div class="text-sm font-medium">إلكترونيات</div>
-                            </div>
-                            <div class="package-type border-2 border-gray-200 rounded-lg p-4 text-center hover:border-orange-500" data-type="clothes">
-                                <div class="text-4xl mb-2">👕</div>
-                                <div class="text-sm font-medium">ملابس</div>
-                            </div>
-                            <div class="package-type border-2 border-gray-200 rounded-lg p-4 text-center hover:border-orange-500" data-type="food">
-                                <div class="text-4xl mb-2">🍕</div>
-                                <div class="text-sm font-medium">أطعمة</div>
-                            </div>
-                            <div class="package-type border-2 border-gray-200 rounded-lg p-4 text-center hover:border-orange-500" data-type="books">
-                                <div class="text-4xl mb-2">📚</div>
-                                <div class="text-sm font-medium">كتب</div>
-                            </div>
-                            <div class="package-type border-2 border-gray-200 rounded-lg p-4 text-center hover:border-orange-500" data-type="other">
-                                <div class="text-4xl mb-2">📦</div>
-                                <div class="text-sm font-medium">أخرى</div>
-                            </div>
-                        </div>
-                        <button class="next-step w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                            التالي
-                        </button>
-                    </div>
-
-                    <!-- Step 2: Weight and Dimensions -->
-                    <div id="step-2" class="step-content hidden">
-                        <h3 class="text-lg font-semibold mb-4">الوزن والأبعاد</h3>
-                        <div class="space-y-4 mb-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">الوزن (كجم)</label>
-                                <input type="number" id="weight" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="أدخل الوزن">
-                            </div>
-                            <div class="grid grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">الطول (سم)</label>
-                                    <input type="number" id="length" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="الطول">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">العرض (سم)</label>
-                                    <input type="number" id="width" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="العرض">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">الارتفاع (سم)</label>
-                                    <input type="number" id="height" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="الارتفاع">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4">
-                            <button class="prev-step flex-1 bg-gray-500 hover:bg-gray-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                السابق
-                            </button>
-                            <button class="next-step flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                التالي
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Locations -->
-                    <div id="step-3" class="step-content hidden">
-                        <h3 class="text-lg font-semibold mb-4">مواقع التوصيل</h3>
-                        <div class="space-y-4 mb-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">مدينة الإرسال</label>
-                                <select id="from-city" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option value="">اختر المدينة</option>
-                                    <option value="الرياض">الرياض</option>
-                                    <option value="جدة">جدة</option>
-                                    <option value="مكة">مكة</option>
-                                    <option value="المدينة">المدينة المنورة</option>
-                                    <option value="الدمام">الدمام</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">مدينة الوصول</label>
-                                <select id="to-city" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option value="">اختر المدينة</option>
-                                    <option value="الرياض">الرياض</option>
-                                    <option value="جدة">جدة</option>
-                                    <option value="مكة">مكة</option>
-                                    <option value="المدينة">المدينة المنورة</option>
-                                    <option value="الدمام">الدمام</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">وصف الشحنة</label>
-                                <textarea id="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="وصف محتوى الشحنة"></textarea>
-                            </div>
-                        </div>
-                        <div class="flex gap-4">
-                            <button class="prev-step flex-1 bg-gray-500 hover:bg-gray-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                السابق
-                            </button>
-                            <button class="next-step flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                التالي
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Review -->
-                    <div id="step-4" class="step-content hidden">
-                        <h3 class="text-lg font-semibold mb-4">مراجعة الطلب</h3>
-                        <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                            <div class="grid grid-cols-2 gap-4 text-sm">
-                                <div><strong>نوع الشحنة:</strong> <span id="review-type">-</span></div>
-                                <div><strong>الوزن:</strong> <span id="review-weight">-</span> كجم</div>
-                                <div><strong>من:</strong> <span id="review-from">-</span></div>
-                                <div><strong>إلى:</strong> <span id="review-to">-</span></div>
-                                <div><strong>السعر التقديري:</strong> <span id="review-price" class="text-green-600 font-bold">-</span> ريال</div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4">
-                            <button class="prev-step flex-1 bg-gray-500 hover:bg-gray-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                السابق
-                            </button>
-                            <button class="submit-shipment flex-1 bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                                إرسال الشحنة
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">كيف تعمل المنصة؟</h2>
-                <p class="text-xl text-gray-600">ثلاث خطوات بسيطة لإرسال شحنتك بأمان وسرعة</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">📝</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">1. أنشئ طلب الشحنة</h3>
-                    <p class="text-gray-600 leading-relaxed">حدد نوع الشحنة، الوزن، والمواقع وسنجد لك المسافر المناسب خلال دقائق</p>
-                </div>
-                
-                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
-                    <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">🚗</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">2. اختر المسافر</h3>
-                    <p class="text-gray-600 leading-relaxed">تصفح المسافرين المتاحين، شاهد تقييماتهم واختر الأنسب لشحنتك</p>
-                </div>
-                
-                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">📦</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">3. تتبع الشحنة</h3>
-                    <p class="text-gray-600 leading-relaxed">تابع شحنتك لحظة بلحظة حتى تصل بأمان إلى وجهتها</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Shipment Types Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">أنواع الشحنات التي ننقلها</h2>
-                <p class="text-xl text-gray-600">نقوم بنقل جميع أنواع الشحنات بأمان وكفاءة</p>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">📄</div>
-                    <h3 class="font-semibold text-gray-800">مستندات</h3>
-                    <p class="text-sm text-gray-600 mt-2">أوراق رسمية، عقود، مستندات مهمة</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">📱</div>
-                    <h3 class="font-semibold text-gray-800">إلكترونيات</h3>
-                    <p class="text-sm text-gray-600 mt-2">هواتف، لابتوب، أجهزة إلكترونية</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">👕</div>
-                    <h3 class="font-semibold text-gray-800">ملابس</h3>
-                    <p class="text-sm text-gray-600 mt-2">ملابس، أقمشة، إكسسوارات</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">🍕</div>
-                    <h3 class="font-semibold text-gray-800">أطعمة</h3>
-                    <p class="text-sm text-gray-600 mt-2">منتجات غذائية، حلويات، توابل</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">📚</div>
-                    <h3 class="font-semibold text-gray-800">كتب</h3>
-                    <p class="text-sm text-gray-600 mt-2">كتب، مجلات، مواد تعليمية</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">💊</div>
-                    <h3 class="font-semibold text-gray-800">أدوية</h3>
-                    <p class="text-sm text-gray-600 mt-2">أدوية، مستلزمات طبية</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Statistics Section -->
-    <section class="py-20 bg-blue-600 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                    <div class="text-5xl font-bold mb-2 counter" data-target="15000">0</div>
-                    <div class="text-blue-200">شحنة تم توصيلها</div>
-                </div>
-                <div>
-                    <div class="text-5xl font-bold mb-2 counter" data-target="2500">0</div>
-                    <div class="text-blue-200">مسافر نشط</div>
-                </div>
-                <div>
-                    <div class="text-5xl font-bold mb-2 counter" data-target="98">0</div>
-                    <div class="text-blue-200">نسبة الرضا</div>
-                </div>
-                <div>
-                    <div class="text-5xl font-bold mb-2 counter" data-target="500">0</div>
-                    <div class="text-blue-200">مدينة مغطاة</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">ماذا يقول عملاؤنا</h2>
-                <p class="text-xl text-gray-600">قصص نجاح من مستخدمي منصتنا</p>
-            </div>
-            
-            <div class="splide" role="group">
-                <div class="splide__track">
-                    <ul class="splide__list">
-                        <li class="splide__slide">
-                            <div class="bg-gray-50 rounded-2xl p-8 mx-4">
-                                <div class="flex items-center mb-6">
-                                    <img src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="عميل" class="w-16 h-16 rounded-full object-cover ml-4">
-                                    <div>
-                                        <h4 class="font-bold text-gray-800">أحمد محمد</h4>
-                                        <div class="flex text-yellow-500">
-                                            <span>★★★★★</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-gray-600 leading-relaxed">
-                                    "منصة رائعة! تمكنت من إرسال مستندات مهمة إلى جدة في نفس اليوم وبسعر مناسب جداً. أنصح الجميع بتجربتها."
-                                </p>
-                            </div>
-                        </li>
-                        
-                        <li class="splide__slide">
-                            <div class="bg-gray-50 rounded-2xl p-8 mx-4">
-                                <div class="flex items-center mb-6">
-                                    <img src="https://kimi-web-img.moonshot.cn/img/citydelivery.com.vn/91e8f1c59ea323b3451428d49d42e5175d177b1b.jpg" alt="عميل" class="w-16 h-16 rounded-full object-cover ml-4">
-                                    <div>
-                                        <h4 class="font-bold text-gray-800">فاطمة الزهراني</h4>
-                                        <div class="flex text-yellow-500">
-                                            <span>★★★★★</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-gray-600 leading-relaxed">
-                                    "خدمة ممتازة وموثوقة. أرسلت طرداً إلى الدمام ووصل في الوقت المحدد. واجهة سهلة الاستخدام ودعم فني رائع."
-                                </p>
-                            </div>
-                        </li>
-                        
-                        <li class="splide__slide">
-                            <div class="bg-gray-50 rounded-2xl p-8 mx-4">
-                                <div class="flex items-center mb-6">
-                                    <img src="https://kimi-web-img.moonshot.cn/img/www.logos3pl.com/5d00aff09838f481e5de19381115e8d8e0e18878.jpg" alt="عميل" class="w-16 h-16 rounded-full object-cover ml-4">
-                                    <div>
-                                        <h4 class="font-bold text-gray-800">خالد السيد</h4>
-                                        <div class="flex text-yellow-500">
-                                            <span>★★★★★</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-gray-600 leading-relaxed">
-                                    "كمسافر، أحب هذه المنصة لأنها تساعدني على تغطية تكاليف السفر وفي نفس الوقت أساعد الآخرين. دخل إضافي ممتاز!"
-                                </p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Safety Features Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">مميزات الأمان والحماية</h2>
-                <p class="text-xl text-gray-600">نضمن لك تجربة آمنة وموثوقة في كل خطوة</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">✅</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">توثيق الهوية</h3>
-                    <p class="text-gray-600">جميع المستخدمين موثقون بشكل كامل لضمان الأمان</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">🛡️</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">تأمين الشحنات</h3>
-                    <p class="text-gray-600">تأمين شامل على جميع الشحنات ضد الفقدان والتلف</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">⭐</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">نظام التقييم</h3>
-                    <p class="text-gray-600">تقييمات متبادلة لضمان جودة الخدمة</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">📞</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">دعم فني 24/7</h3>
-                    <p class="text-gray-600">فريق دعم متاح على مدار الساعة للمساعدة</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold gradient-text mb-4">الشحنة السريعة</h3>
-                    <p class="text-gray-400 leading-relaxed">
-                        منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات داخل المملكة وخارجها.
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">روابط سريعة</h4>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">الرئيسية</a></li>
-                        <li><a href="travelers.html" class="text-gray-400 hover:text-white transition-colors">المسافرون</a></li>
-                        <li><a href="dashboard.html" class="text-gray-400 hover:text-white transition-colors">لوحة التحكم</a></li>
-                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الدعم الفني</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">المساعدة</h4>
-                    <ul class="space-y-2">
-                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الأسئلة الشائعة</a></li>
-                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">الشروط والأحكام</a></li>
-                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</a></li>
-                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">اتصل بنا</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">معلومات التواصل</h4>
-                    <div class="space-y-2 text-gray-400">
-                        <p>📧 gide1979@gmail.com</p>
-                        <p>📞 +966551519723</p>
-                        <p>📍 المملكة العربية السعودية</p>
-                    </div>
-                    <div class="mt-4">
-                        <p class="text-sm text-gray-400">
-                            صاحب الفكرة: قايد صالح المصعبي
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                <p class="text-gray-400">
-                    © 2024 الشحنة السريعة. جميع الحقوق محفوظة | قايد صالح المصعبي
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-<script src="auth.js"></script>
-<script src="main.js"></script>
-</body>
-</html>
