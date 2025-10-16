@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<head>
+    <!-- الأكواد الأخرى -->
+    
+    <!-- CSS إضافي لتصميم العملاء -->
+    <style>
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 2rem;
+        }
+        
+        .testimonial-card {
+            background: #f9fafb;
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الشحنة السريعة - منصة الشحن الذكية</title>
-    <meta name="description" content="منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال المساحة الفارغة وتسهيل نقل الشحنات حول العالم">
+    <meta name="description" content="منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال المساحة الفارغة وتسهيل نقل الشحنات حول العالم ">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,9 +40,11 @@
     
     <!-- Firebase -->
     <script type="module">
+        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         
+        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
             authDomain: "fastship-2026.firebaseapp.com",
@@ -26,9 +54,11 @@
             appId: "1:646769615933:web:5fd3c82c31969192f9f654"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         
+        // جعل auth متاحاً globally
         window.firebaseAuth = auth;
         window.firebaseOnAuthStateChanged = onAuthStateChanged;
         window.firebaseSignOut = signOut;
@@ -37,6 +67,15 @@
     <!-- Animation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <!-- Leaflet for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <style>
         body {
@@ -68,6 +107,24 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         
+        .package-type {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .package-type:hover {
+            transform: scale(1.05);
+        }
+        
+        .package-type.selected {
+            border-color: #ed8936;
+            background-color: #fff7ed;
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
         .floating-element {
             animation: float 6s ease-in-out infinite;
         }
@@ -81,24 +138,8 @@
             direction: rtl;
         }
         
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-            margin-top: 2rem;
-        }
-        
-        .testimonial-card {
-            background: #f9fafb;
-            border-radius: 1rem;
-            padding: 2rem;
-            border: 1px solid #e5e7eb;
-            transition: all 0.3s ease;
-        }
-        
-        .testimonial-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        .ltr {
+            direction: ltr;
         }
     </style>
 </head>
@@ -146,7 +187,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+        <!-- Hero Section -->
     <section class="hero-bg min-h-screen flex items-center pt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="grid grid-cols-1 gap-12 items-center">
@@ -243,6 +284,7 @@
                 </div>
             </div>
         </div>
+ </div>
     </section>
                 
     <!-- How It Works Section -->
@@ -353,7 +395,7 @@
         </div>
     </section>
 
-    <!-- Testimonials Section - Grid Version -->
+        <!-- Testimonials Section - Grid Version -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -620,15 +662,21 @@
             const userAvatar = document.getElementById('user-avatar');
 
             if (user) {
+                // إخفاء أزرار تسجيل الدخول والتسجيل
                 if (loginBtn) loginBtn.style.display = 'none';
                 if (registerBtn) registerBtn.style.display = 'none';
+                
+                // إظهار قائمة المستخدم
                 if (userMenu) userMenu.classList.remove('hidden');
                 if (userName) userName.textContent = user.displayName || user.email;
                 if (userType) userType.textContent = 'مستخدم';
                 if (userAvatar) userAvatar.src = user.photoURL || 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg';
             } else {
+                // إظهار أزرار تسجيل الدخول والتسجيل
                 if (loginBtn) loginBtn.style.display = 'block';
                 if (registerBtn) registerBtn.style.display = 'block';
+                
+                // إخفاء قائمة المستخدم
                 if (userMenu) userMenu.classList.add('hidden');
             }
         }
@@ -644,30 +692,11 @@
             }
         }
 
-        // دالة معالجة زر "أرسل شحنتك"
-        function handleSendShipment() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            if (currentUser && currentUser.uid) {
-                window.location.href = 'dashboard.html#create-shipment';
-            } else {
-                window.location.href = 'register.html?type=client';
-            }
-        }
-
-        // دالة معالجة زر "توصيل شحنات"
-        function handleDeliverShipments() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            if (currentUser && currentUser.uid) {
-                window.location.href = 'dashboard.html#deliveries';
-            } else {
-                window.location.href = 'register.html?type=traveler';
-            }
-        }
-
         // التحقق من حالة المصادقة عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
             window.firebaseOnAuthStateChanged(window.firebaseAuth, (user) => {
                 if (user) {
+                    // حفظ بيانات المستخدم
                     const userData = {
                         uid: user.uid,
                         email: user.email,
@@ -687,6 +716,235 @@
             const savedUser = localStorage.getItem('currentUser');
             if (savedUser) {
                 updateAuthUI(JSON.parse(savedUser));
+            }
+        });
+    </script>
+    <script src="main.js"></script>
+    <!-- JavaScript الإضافي للأزرار -->
+    <script>
+        // جعل أزرار الهيرو تعمل
+        document.addEventListener('DOMContentLoaded', function() {
+            // زر "أرسل شحنة"
+            const sendShipmentBtn = document.querySelector('.bg-orange-500.hover\\:bg-orange-600:first-of-type');
+            if (sendShipmentBtn) {
+                sendShipmentBtn.addEventListener('click', function() {
+                    // إذا كان المستخدم مسجل دخول، انتقل مباشرة إلى إنشاء شحنة
+                    // إذا لم يكن مسجل، انتقل إلى صفحة التسجيل
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    if (currentUser && currentUser.uid) {
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        window.location.href = 'register.html?type=client';
+                    }
+                });
+            }
+
+            // زر "توصيل شحنات"
+            const deliverShipmentsBtn = document.querySelector('.bg-orange-500.hover\\:bg-orange-600:last-of-type');
+            if (deliverShipmentsBtn) {
+                deliverShipmentsBtn.addEventListener('click', function() {
+                    // إذا كان المستخدم مسجل دخول، انتقل إلى لوحة التحكم
+                    // إذا لم يكن مسجل، انتقل إلى صفحة التسجيل كمسافر
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    if (currentUser && currentUser.uid) {
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        window.location.href = 'register.html?type=traveler';
+                    }
+                });
+            }
+
+            // جعل أزرار أنواع الشحنات تعمل
+            const packageTypes = document.querySelectorAll('.package-type');
+            packageTypes.forEach(type => {
+                type.addEventListener('click', function() {
+                    // إزالة التحديد من جميع الأنواع
+                    packageTypes.forEach(t => t.classList.remove('selected', 'border-orange-500', 'bg-orange-50'));
+                    // إضافة التحديد للنوع المختار
+                    this.classList.add('selected', 'border-orange-500', 'bg-orange-50');
+                });
+            });
+
+            // جعل أزرار الخطوات تعمل
+            const nextButtons = document.querySelectorAll('.next-step');
+            const prevButtons = document.querySelectorAll('.prev-step');
+            const submitButton = document.querySelector('.submit-shipment');
+
+            let currentFormStep = 1;
+
+            // أزرار التالي
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (validateFormStep(currentFormStep)) {
+                        document.getElementById(`step-${currentFormStep}`).classList.add('hidden');
+                        currentFormStep++;
+                        document.getElementById(`step-${currentFormStep}`).classList.remove('hidden');
+                        updateProgressBar(currentFormStep);
+                    }
+                });
+            });
+
+            // أزرار السابق
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    document.getElementById(`step-${currentFormStep}`).classList.add('hidden');
+                    currentFormStep--;
+                    document.getElementById(`step-${currentFormStep}`).classList.remove('hidden');
+                    updateProgressBar(currentFormStep);
+                });
+            });
+
+            // زر إرسال الشحنة
+            if (submitButton) {
+                submitButton.addEventListener('click', function() {
+                    if (validateFormStep(currentFormStep)) {
+                        // عرض رسالة نجاح
+                        showNotification('تم إرسال طلب الشحنة بنجاح! سنتواصل معك قريباً.', 'success');
+                        
+                        // إعادة تعيين النموذج بعد 2 ثانية
+                        setTimeout(() => {
+                            resetShipmentForm();
+                        }, 2000);
+                    }
+                });
+            }
+
+            // تحديث شريط التقدم
+            function updateProgressBar(step) {
+                const progressBar = document.querySelector('.progress-bar');
+                const percentage = (step / 4) * 100;
+                progressBar.style.width = `${percentage}%`;
+            }
+
+            // التحقق من صحة خطوات النموذج
+            function validateFormStep(step) {
+                let isValid = true;
+
+                if (step === 1) {
+                    // التحقق من اختيار نوع الشحنة
+                    const selectedPackage = document.querySelector('.package-type.selected');
+                    if (!selectedPackage) {
+                        showNotification('يرجى اختيار نوع الشحنة', 'error');
+                        isValid = false;
+                    }
+                } else if (step === 2) {
+                    // التحقق من الوزن والأبعاد
+                    const weight = document.getElementById('weight').value;
+                    if (!weight || weight <= 0) {
+                        showNotification('يرجى إدخال وزن صحيح للشحنة', 'error');
+                        isValid = false;
+                    }
+                } else if (step === 3) {
+                    // التحقق من المدن
+                    const fromCity = document.getElementById('from-city').value;
+                    const toCity = document.getElementById('to-city').value;
+                    
+                    if (!fromCity || !toCity) {
+                        showNotification('يرجى اختيار مدني الإرسال والاستلام', 'error');
+                        isValid = false;
+                    } else if (fromCity === toCity) {
+                        showNotification('مدينة الإرسال والاستلام يجب أن تكونا مختلفتين', 'error');
+                        isValid = false;
+                    } else {
+                        // تحديث صفحة المراجعة
+                        updateReviewSection();
+                    }
+                }
+
+                return isValid;
+            }
+
+            // تحديث قسم المراجعة
+            function updateReviewSection() {
+                const selectedPackage = document.querySelector('.package-type.selected');
+                const weight = document.getElementById('weight').value;
+                const fromCity = document.getElementById('from-city').value;
+                const toCity = document.getElementById('to-city').value;
+
+                if (selectedPackage) {
+                    document.getElementById('review-type').textContent = selectedPackage.querySelector('.text-sm').textContent;
+                }
+                document.getElementById('review-weight').textContent = weight;
+                document.getElementById('review-from').textContent = fromCity;
+                document.getElementById('review-to').textContent = toCity;
+
+                // حساب السعر التقديري
+                const price = calculatePrice(weight, fromCity, toCity);
+                document.getElementById('review-price').textContent = price;
+            }
+
+            // حساب السعر التقديري
+            function calculatePrice(weight, fromCity, toCity) {
+                let basePrice = 50; // سعر أساسي
+                let weightPrice = weight * 5; // 5 ريال لكل كيلو
+                let distanceMultiplier = 1;
+
+                // مضاعف المسافة (مثال مبسط)
+                if (fromCity === 'الرياض' && toCity === 'جدة') distanceMultiplier = 1.5;
+                else if (fromCity === 'الرياض' && toCity === 'الدمام') distanceMultiplier = 1.2;
+                else if (fromCity === 'جدة' && toCity === 'الدمام') distanceMultiplier = 1.3;
+
+                const totalPrice = Math.round((basePrice + weightPrice) * distanceMultiplier);
+                return totalPrice;
+            }
+
+            // إعادة تعيين النموذج
+            function resetShipmentForm() {
+                // إعادة تعيين الخطوات
+                document.querySelectorAll('.step-content').forEach((step, index) => {
+                    if (index === 0) {
+                        step.classList.remove('hidden');
+                    } else {
+                        step.classList.add('hidden');
+                    }
+                });
+
+                // إعادة تعيين التحديد
+                document.querySelectorAll('.package-type').forEach(type => {
+                    type.classList.remove('selected', 'border-orange-500', 'bg-orange-50');
+                });
+
+                // إعادة تعيين الحقول
+                document.getElementById('weight').value = '';
+                document.getElementById('length').value = '';
+                document.getElementById('width').value = '';
+                document.getElementById('height').value = '';
+                document.getElementById('from-city').value = '';
+                document.getElementById('to-city').value = '';
+                document.getElementById('description').value = '';
+
+                // إعادة تعيين شريط التقدم
+                updateProgressBar(1);
+                currentFormStep = 1;
+            }
+
+            // وظيفة لعرض الإشعارات
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white transform transition-transform duration-300 ${
+                    type === 'success' ? 'bg-green-500' : 
+                    type === 'error' ? 'bg-red-500' : 
+                    type === 'warning' ? 'bg-yellow-500' : 
+                    'bg-blue-500'
+                }`;
+                
+                notification.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span>${message}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" class="mr-2 text-white hover:text-gray-200">
+                            ✕
+                        </button>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // إزالة الإشعار تلقائياً بعد 5 ثوانٍ
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 5000);
             }
 
             // جعل الأرقام تعمل (العدادات)
@@ -719,7 +977,78 @@
                 observer.observe(counter);
             });
 
-            // إضافة تأثيرات hover للكروت
+            // تفعيل شرائح الآراء (Testimonials)
+            if (typeof Splide !== 'undefined') {
+                new Splide('.splide', {
+                    type: 'loop',
+                    perPage: 1,
+                    autoplay: true,
+                    interval: 4000,
+                    pauseOnHover: true,
+                    breakpoints: {
+                        768: {
+                            perPage: 1,
+                        }
+                    }
+                }).mount();
+            }
+
+            console.log('تم تحميل جميع الوظائف بنجاح!');
+        });
+
+        // إضافة تأثيرات CSS إضافية
+        const style = document.createElement('style');
+        style.textContent = `
+            .package-type.selected {
+                border-color: #ed8936 !important;
+                background-color: #fff7ed !important;
+                transform: scale(1.05);
+            }
+            
+            .progress-bar {
+                transition: width 0.5s ease-in-out;
+            }
+            
+            .fade-in {
+                animation: fadeIn 0.5s ease-in;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    <!-- JavaScript المعدل للكروت -->
+    <script>
+        // دالة معالجة زر "أرسل شحنتك"
+        function handleSendShipment() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (currentUser && currentUser.uid) {
+                // إذا كان مسجل دخول، اذهب إلى لوحة التحكم مع فتح نموذج الشحنة
+                window.location.href = 'dashboard.html?action=create-shipment';
+            } else {
+                // إذا لم يكن مسجل، انتقل إلى صفحة التسجيل
+                window.location.href = 'register.html?type=client';
+            }
+        }
+
+        // دالة معالجة زر "توصيل شحنات"
+        function handleDeliverShipments() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (currentUser && currentUser.uid) {
+                // إذا كان مسجل دخول، اذهب إلى لوحة التحكم
+                window.location.href = 'dashboard.html';
+            } else {
+                // إذا لم يكن مسجل، انتقل إلى صفحة التسجيل كمسافر
+                window.location.href = 'register.html?type=traveler';
+            }
+        }
+    </script>
+    </script>
+        // إضافة تأثيرات hover للكروت
+        document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.bg-white\\/10');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
@@ -732,5 +1061,8 @@
             });
         });
     </script>
+</body>
+</body>
+</html>
 </body>
 </html>
