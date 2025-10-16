@@ -246,18 +246,15 @@
 <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
     <h3 class="text-lg font-bold text-gray-800 mb-4">إجراءات سريعة</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- زر إرسال شحنة جديد -->
-        <button onclick="showCreateShipmentForm()" class="bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors text-lg flex items-center justify-center">
-            <span class="ml-2">📦</span>
-            إرسال شحنة جديدة
-        </button>
-        
-        <!-- زر طلبات الشحن المتاحة -->
-        <button onclick="showAvailableShipments()" class="bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors text-lg flex items-center justify-center">
-            <span class="ml-2">🚗</span>
-            طلبات الشحن المتاحة
-        </button>
-    </div>
+    <button type="button" onclick="showCreateShipmentForm()" class="bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors text-lg flex items-center justify-center">
+        <span class="ml-2">📦</span>
+        إرسال شحنة جديدة
+    </button>
+    
+    <button type="button" onclick="showAvailableShipments()" class="bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors text-lg flex items-center justify-center">
+        <span class="ml-2">🚗</span>
+        طلبات الشحن المتاحة
+    </button>
 </div>
                         
                         <!-- Statistics Chart -->
@@ -931,5 +928,33 @@
             showShipmentsTab();
         });
     </script>
+<script>
+    // ✅ تأكد أن المستخدم المسجل ما يُرجعش لصفحة تسجيل الدخول لما يضغط على الأزرار
+    function showCreateShipmentForm() {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (!user || !user.uid) {
+            alert('يرجى تسجيل الدخول أولاً');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // إخفاء كل التبويبات
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+        // إظهار نموذج إنشاء الشحنة
+        document.getElementById('create-shipment-content').classList.remove('hidden');
+    }
+
+    function showAvailableShipments() {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (!user || !user.uid) {
+            alert('يرجى تسجيل الدخول أولاً');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // ممكن تضيف هنا عرض الطلبات المتاحة لاحقًا
+        alert('سيتم عرض طلبات الشحن المتاحة قريباً');
+    }
+</script>
 </body>
 </html>
