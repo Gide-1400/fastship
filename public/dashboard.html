@@ -14,11 +14,8 @@
     
     <!-- Firebase -->
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        
-        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
             authDomain: "fastship-2026.firebaseapp.com",
@@ -27,12 +24,8 @@
             messagingSenderId: "646769615933",
             appId: "1:646769615933:web:5fd3c82c31969192f9f654"
         };
-
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        
-        // جعل auth متاحاً globally
         window.firebaseAuth = auth;
         window.firebaseOnAuthStateChanged = onAuthStateChanged;
         window.firebaseSignOut = signOut;
@@ -40,7 +33,6 @@
     
     <!-- Animation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    
     <!-- ECharts -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     
@@ -50,75 +42,49 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        
         .gradient-text {
             background: linear-gradient(45deg, #ed8936, #1a365d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
         .card-hover {
             transition: all 0.3s ease;
         }
-        
         .card-hover:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 24px rgba(0,0,0,0.15);
         }
-        
         .dashboard-tab {
             transition: all 0.3s ease;
         }
-        
         .dashboard-tab.active {
             background-color: #3b82f6;
             color: white;
         }
-        
         .tab-content {
             animation: fadeIn 0.3s ease-in-out;
         }
-        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
         .rtl {
             direction: rtl;
         }
-        
         .ltr {
             direction: ltr;
         }
-        
         .status-badge {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
             border-radius: 0.375rem;
             font-weight: 500;
         }
-        
-        .status-pending {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-        
-        .status-in-transit {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-        
-        .status-delivered {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        
-        .status-cancelled {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-in-transit { background-color: #dbeafe; color: #1e40af; }
+        .status-delivered { background-color: #d1fae5; color: #065f46; }
+        .status-cancelled { background-color: #fee2e2; color: #991b1b; }
     </style>
 </head>
 <body class="rtl">
@@ -131,7 +97,6 @@
                         <h1 class="text-2xl font-bold gradient-text">الشحنة السريعة</h1>
                     </div>
                 </div>
-                
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
                         <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
@@ -140,25 +105,16 @@
                         <a href="support.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الدعم</a>
                     </div>
                 </div>
-                
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <a href="login.html" id="login-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
-                        تسجيل الدخول
-                    </a>
-                    <a href="register.html" id="register-btn" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                        إنشاء حساب
-                    </a>
+                    <a href="login.html" id="login-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">تسجيل الدخول</a>
+                    <a href="register.html" id="register-btn" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">إنشاء حساب</a>
                     <div id="user-menu" class="hidden flex items-center space-x-4 space-x-reverse">
-                        <div class="flex items-center">
-                            <img id="user-avatar" src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="الملف الشخصي" class="w-8 h-8 rounded-full object-cover ml-2">
-                            <div class="text-right">
-                                <div id="user-name" class="text-sm font-medium text-gray-700"></div>
-                                <div id="user-type" class="text-xs text-gray-500"></div>
-                            </div>
+                        <img id="user-avatar" src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="الملف الشخصي" class="w-8 h-8 rounded-full object-cover ml-2">
+                        <div class="text-right">
+                            <div id="user-name" class="text-sm font-medium text-gray-700"></div>
+                            <div id="user-type" class="text-xs text-gray-500"></div>
                         </div>
-                        <button onclick="logout()" class="text-gray-700 hover:text-blue-600 text-sm">
-                            تسجيل الخروج
-                        </button>
+                        <button onclick="logout()" class="text-gray-700 hover:text-blue-600 text-sm">تسجيل الخروج</button>
                     </div>
                 </div>
             </div>
@@ -207,18 +163,10 @@
                         
                         <!-- Navigation Tabs -->
                         <nav class="space-y-2">
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-blue-500 text-white font-medium transition-colors" data-tab="shipments">
-                                📦 شحناتي
-                            </button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="messages">
-                                💬 الرسائل
-                            </button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="profile">
-                                👤 الملف الشخصي
-                            </button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="settings">
-                                ⚙️ الإعدادات
-                            </button>
+                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-blue-500 text-white font-medium transition-colors" data-tab="shipments">📦 شحناتي</button>
+                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="messages">💬 الرسائل</button>
+                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="profile">👤 الملف الشخصي</button>
+                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="settings">⚙️ الإعدادات</button>
                         </nav>
                     </div>
                 </div>
@@ -231,31 +179,27 @@
                         <h3 class="text-2xl font-bold text-gray-800 mb-4">يجب تسجيل الدخول</h3>
                         <p class="text-gray-600 mb-6">يجب عليك تسجيل الدخول للوصول إلى لوحة التحكم</p>
                         <div class="flex justify-center gap-4">
-                            <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                تسجيل الدخول
-                            </a>
-                            <a href="register.html" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                إنشاء حساب
-                            </a>
+                            <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">تسجيل الدخول</a>
+                            <a href="register.html" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">إنشاء حساب</a>
                         </div>
                     </div>
 
                     <!-- Shipments Tab -->
                     <div id="shipments-content" class="tab-content hidden">
                         <!-- Quick Actions -->
-<div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
-    <h3 class="text-lg font-bold text-gray-800 mb-4">إجراءات سريعة</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <button type="button" onclick="showCreateShipmentForm()" class="bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors text-lg flex items-center justify-center">
-        <span class="ml-2">📦</span>
-        إرسال شحنة جديدة
-    </button>
-    
-    <button type="button" onclick="showAvailableShipments()" class="bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors text-lg flex items-center justify-center">
-        <span class="ml-2">🚗</span>
-        طلبات الشحن المتاحة
-    </button>
-</div>
+                        <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">إجراءات سريعة</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <button type="button" onclick="showCreateShipmentForm()" class="bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors text-lg flex items-center justify-center">
+                                    <span class="ml-2">📦</span>
+                                    إرسال شحنة جديدة
+                                </button>
+                                <button type="button" onclick="showAvailableShipments()" class="bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg font-semibold transition-colors text-lg flex items-center justify-center">
+                                    <span class="ml-2">🚗</span>
+                                    طلبات الشحن المتاحة
+                                </button>
+                            </div>
+                        </div>
                         
                         <!-- Statistics Chart -->
                         <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
@@ -324,76 +268,66 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Create Shipment Form -->
-            <div id="create-shipment-content" class="tab-content hidden">
-                <div class="bg-white rounded-2xl p-6 shadow-lg">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">إرسال شحنة جديدة</h3>
-                    
-                    <form id="createShipmentForm" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">نوع الشحنة</label>
-                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                                    <option value="">اختر نوع الشحنة</option>
-                                    <option value="documents">مستندات</option>
-                                    <option value="electronics">إلكترونيات</option>
-                                    <option value="clothes">ملابس</option>
-                                    <option value="food">أطعمة</option>
-                                </select>
-                            </div>
+                    <!-- Create Shipment Form -->
+                    <div id="create-shipment-content" class="tab-content hidden">
+                        <div class="bg-white rounded-2xl p-6 shadow-lg">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6">إرسال شحنة جديدة</h3>
                             
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">الوزن (كجم)</label>
-                                <input type="number" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="الوزن بالكيلو">
-                            </div>
-                        </div>
+                            <form id="createShipmentForm" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع الشحنة</label>
+                                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">اختر نوع الشحنة</option>
+                                            <option value="documents">مستندات</option>
+                                            <option value="electronics">إلكترونيات</option>
+                                            <option value="clothes">ملابس</option>
+                                            <option value="food">أطعمة</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">الوزن (كجم)</label>
+                                        <input type="number" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="الوزن بالكيلو">
+                                    </div>
+                                </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">مدينة الإرسال</label>
-                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                                    <option value="">اختر المدينة</option>
-                                    <option value="الرياض">الرياض</option>
-                                    <option value="جدة">جدة</option>
-                                    <option value="الدمام">الدمام</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">مدينة الاستلام</label>
-                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                                    <option value="">اختر المدينة</option>
-                                    <option value="الرياض">الرياض</option>
-                                    <option value="جدة">جدة</option>
-                                    <option value="الدمام">الدمام</option>
-                                </select>
-                            </div>
-                        </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">مدينة الإرسال</label>
+                                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">اختر المدينة</option>
+                                            <option value="الرياض">الرياض</option>
+                                            <option value="جدة">جدة</option>
+                                            <option value="الدمام">الدمام</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">مدينة الاستلام</label>
+                                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">اختر المدينة</option>
+                                            <option value="الرياض">الرياض</option>
+                                            <option value="جدة">جدة</option>
+                                            <option value="الدمام">الدمام</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">وصف الشحنة</label>
-                            <textarea rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="وصف محتويات الشحنة"></textarea>
-                        </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">وصف الشحنة</label>
+                                    <textarea rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="وصف محتويات الشحنة"></textarea>
+                                </div>
 
-                        <div class="flex gap-4">
-                            <button type="button" onclick="showShipmentsTab()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                رجوع
-                            </button>
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                إرسال الشحنة
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-                    
-            <!-- Messages Tab -->
-            <div id="messages-content" class="tab-content hidden">
-                            </div>
+                                <div class="flex gap-4">
+                                    <button type="button" onclick="showShipmentsTab()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">رجوع</button>
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">إرسال الشحنة</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     
@@ -483,9 +417,7 @@
                                         </select>
                                     </div>
                                     
-                                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
-                                        تحديث المعلومات
-                                    </button>
+                                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">تحديث المعلومات</button>
                                 </form>
                             </div>
                             
@@ -593,15 +525,9 @@
                                 <div>
                                     <h4 class="text-md font-semibold text-gray-700 mb-4">إعدادات الحساب</h4>
                                     <div class="space-y-4">
-                                        <button class="w-full text-right px-4 py-3 bg-orange-50 text-orange-700 rounded-lg hover:bg-orange-100 transition-colors">
-                                            تغيير كلمة المرور
-                                        </button>
-                                        <button class="w-full text-right px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors">
-                                            تحديث بيانات التواصل
-                                        </button>
-                                        <button class="w-full text-right px-4 py-3 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors">
-                                            حذف الحساب
-                                        </button>
+                                        <button class="w-full text-right px-4 py-3 bg-orange-50 text-orange-700 rounded-lg hover:bg-orange-100 transition-colors">تغيير كلمة المرور</button>
+                                        <button class="w-full text-right px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors">تحديث بيانات التواصل</button>
+                                        <button class="w-full text-right px-4 py-3 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors">حذف الحساب</button>
                                     </div>
                                 </div>
                             </div>
@@ -678,21 +604,15 @@
             const userAvatar = document.getElementById('user-avatar');
 
             if (user) {
-                // إخفاء أزرار تسجيل الدخول والتسجيل
                 if (loginBtn) loginBtn.style.display = 'none';
                 if (registerBtn) registerBtn.style.display = 'none';
-                
-                // إظهار قائمة المستخدم
                 if (userMenu) userMenu.classList.remove('hidden');
                 if (userName) userName.textContent = user.displayName || user.email;
                 if (userType) userType.textContent = 'مستخدم';
                 if (userAvatar) userAvatar.src = user.photoURL || 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg';
             } else {
-                // إظهار أزرار تسجيل الدخول والتسجيل
                 if (loginBtn) loginBtn.style.display = 'block';
                 if (registerBtn) registerBtn.style.display = 'block';
-                
-                // إخفاء قائمة المستخدم
                 if (userMenu) userMenu.classList.add('hidden');
             }
         }
@@ -896,44 +816,58 @@
                 }, 5000);
             }
         });
-<script>
-// دوال مضمونة ما ترجعك لتسجيل الدخول
-function showCreateShipmentForm() {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (!user.uid) {
-        alert('يرجى تسجيل الدخول أولاً');
-        window.location.href = 'login.html';
-        return;
-    }
 
-    // إخفاء كل التبويبات
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-    // إظهار نموذج إنشاء الشحنة
-    document.getElementById('create-shipment-content').classList.remove('hidden');
-}
+        // دوال مضمونة (تتحقق من تسجيل الدخول أولاً)
+        function showCreateShipmentForm() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!user.uid) {
+                alert('يرجى تسجيل الدخول أولاً');
+                window.location.href = 'login.html';
+                return;
+            }
 
-function showAvailableShipments() {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (!user.uid) {
-        alert('يرجى تسجيل الدخول أولاً');
-        window.location.href = 'login.html';
-        return;
-    }
+            // إخفاء كل التبويبات
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            // إظهار نموذج إنشاء الشحنة
+            document.getElementById('create-shipment-content').classList.remove('hidden');
+            
+            // ✅ تحديث التبويب النشط بصرياً
+            document.querySelectorAll('.dashboard-tab').forEach(t => {
+                t.classList.remove('bg-blue-500','text-white');
+                t.classList.add('bg-gray-200','text-gray-700');
+            });
+            document.querySelector('[data-tab="shipments"]').classList.add('bg-blue-500','text-white');
+        }
 
-    alert('سيتم عرض طلبات الشحن المتاحة قريباً');
-}
+        function showAvailableShipments() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!user.uid) {
+                alert('يرجى تسجيل الدخول أولاً');
+                window.location.href = 'login.html';
+                return;
+            }
 
-function showShipmentsTab() {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-    document.getElementById('shipments-content').classList.remove('hidden');
-}
+            alert('سيتم عرض طلبات الشحن المتاحة قريباً');
+        }
 
-// معالجة نموذج إرسال الشحنة
-document.getElementById('createShipmentForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('تم إرسال طلب الشحنة بنجاح!');
-    showShipmentsTab();
-});
-</script>
+        function showShipmentsTab() {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.getElementById('shipments-content').classList.remove('hidden');
+            
+            // ✅ تحديث التبويب النشط بصرياً
+            document.querySelectorAll('.dashboard-tab').forEach(t => {
+                t.classList.remove('bg-blue-500','text-white');
+                t.classList.add('bg-gray-200','text-gray-700');
+            });
+            document.querySelector('[data-tab="shipments"]').classList.add('bg-blue-500','text-white');
+        }
+
+        // معالجة نموذج إرسال الشحنة
+        document.getElementById('createShipmentForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('تم إرسال طلب الشحنة بنجاح!');
+            showShipmentsTab();
+        });
+    </script>
 </body>
 </html>
