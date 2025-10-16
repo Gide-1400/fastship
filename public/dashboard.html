@@ -339,17 +339,205 @@
                     
                     <!-- Messages Tab -->
                     <div id="messages-content" class="tab-content hidden">
-                        <!-- نفس المحتوى السابق -->
+                        <div class="bg-white rounded-2xl p-6 shadow-lg">
+                            <h3 class="text-lg font-bold text-gray-800 mb-6">الرسائل</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <img src="https://kimi-web-img.moonshot.cn/img/www.logos3pl.com/5d00aff09838f481e5de19381115e8d8e0e18878.jpg" alt="خالد السيد" class="w-12 h-12 rounded-full object-cover ml-4">
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <h4 class="font-semibold text-gray-800">خالد السيد</h4>
+                                            <span class="text-xs text-gray-500">منذ 2 ساعة</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-1">مرحباً، أرغب في نقل شحنتك من الرياض إلى جدة...</p>
+                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">شحنة #SH-2024-003</span>
+                                    </div>
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                                </div>
+                                
+                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <img src="https://kimi-web-img.moonshot.cn/img/citydelivery.com.vn/91e8f1c59ea323b3451428d49d42e5175d177b1b.jpg" alt="فاطمة الزهراني" class="w-12 h-12 rounded-full object-cover ml-4">
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <h4 class="font-semibold text-gray-800">فاطمة الزهراني</h4>
+                                            <span class="text-xs text-gray-500">منذ 5 ساعات</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-1">تم استلام الشحنة بنجاح، سيتم التوصيل غداً...</p>
+                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">شحنة #SH-2024-002</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <img src="https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/04dc512f136ba384803bf3a0bc2e3634f672862b.jpg" alt="عبدالله الراشد" class="w-12 h-12 rounded-full object-cover ml-4">
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <h4 class="font-semibold text-gray-800">عبدالله الراشد</h4>
+                                            <span class="text-xs text-gray-500">أمس</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-1">شكراً لاختيارك لنقل شحنتك، تم توصيلها بنجاح...</p>
+                                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">شحنة #SH-2024-001</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Profile Tab -->
                     <div id="profile-content" class="tab-content hidden">
-                        <!-- نفس المحتوى السابق -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Personal Information -->
+                            <div class="bg-white rounded-2xl p-6 shadow-lg">
+                                <h3 class="text-lg font-bold text-gray-800 mb-6">المعلومات الشخصية</h3>
+                                
+                                <form id="profile-form" class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الأول</label>
+                                        <input type="text" id="first-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">اسم العائلة</label>
+                                        <input type="text" id="last-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                                        <input type="email" id="profile-email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">رقم الجوال</label>
+                                        <input type="tel" id="profile-phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">المدينة</label>
+                                        <select id="profile-city" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                            <option value="">اختر المدينة</option>
+                                            <option value="الرياض">الرياض</option>
+                                            <option value="جدة">جدة</option>
+                                            <option value="مكة">مكة</option>
+                                            <option value="المدينة">المدينة المنورة</option>
+                                            <option value="الدمام">الدمام</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">تحديث المعلومات</button>
+                                </form>
+                            </div>
+                            
+                            <!-- Account Statistics -->
+                            <div class="bg-white rounded-2xl p-6 shadow-lg">
+                                <h3 class="text-lg font-bold text-gray-800 mb-6">إحصائيات الحساب</h3>
+                                
+                                <div class="space-y-6">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">إجمالي الشحنات</span>
+                                        <span id="stats-total" class="font-bold text-blue-600">0 شحنة</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">الشحنات المكتملة</span>
+                                        <span id="stats-completed" class="font-bold text-green-600">0 شحنة</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">الشحنات قيد الانتظار</span>
+                                        <span id="stats-pending" class="font-bold text-orange-600">0 شحنة</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">متوسط التقييم</span>
+                                        <div class="flex items-center">
+                                            <span class="text-yellow-500 ml-1">★</span>
+                                            <span id="stats-rating" class="font-bold text-gray-800">-</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">إجمالي المدفوعات</span>
+                                        <span id="stats-payments" class="font-bold text-green-600">0 ريال</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">تاريخ الانضمام</span>
+                                        <span id="stats-join-date" class="text-gray-800">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Settings Tab -->
                     <div id="settings-content" class="tab-content hidden">
-                        <!-- نفس المحتوى السابق -->
+                        <div class="bg-white rounded-2xl p-6 shadow-lg">
+                            <h3 class="text-lg font-bold text-gray-800 mb-6">الإعدادات</h3>
+                            
+                            <div class="space-y-8">
+                                <!-- Notifications Settings -->
+                                <div>
+                                    <h4 class="text-md font-semibold text-gray-700 mb-4">إعدادات الإشعارات</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-700">إشعارات الشحنات</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" checked class="sr-only peer">
+                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-700">إشعارات الرسائل</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" checked class="sr-only peer">
+                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-700">إشعارات العروض</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Privacy Settings -->
+                                <div>
+                                    <h4 class="text-md font-semibold text-gray-700 mb-4">الخصوصية</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-700">إظهار رقم الجوال</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-700">إظهار الموقع</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" checked class="sr-only peer">
+                                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Account Settings -->
+                                <div>
+                                    <h4 class="text-md font-semibold text-gray-700 mb-4">إعدادات الحساب</h4>
+                                    <div class="space-y-4">
+                                        <button class="w-full text-right px-4 py-3 bg-orange-50 text-orange-700 rounded-lg hover:bg-orange-100 transition-colors">تغيير كلمة المرور</button>
+                                        <button class="w-full text-right px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors">تحديث بيانات التواصل</button>
+                                        <button class="w-full text-right px-4 py-3 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors">حذف الحساب</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -358,7 +546,56 @@
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
-        <!-- نفس المحتوى السابق -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text mb-4">الشحنة السريعة</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات داخل المملكة وخارجها.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">الرئيسية</a></li>
+                        <li><a href="travelers.html" class="text-gray-400 hover:text-white transition-colors">المسافرون</a></li>
+                        <li><a href="dashboard.html" class="text-gray-400 hover:text-white transition-colors">لوحة التحكم</a></li>
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الدعم الفني</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">المساعدة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الأسئلة الشائعة</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">الشروط والأحكام</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</a></li>
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">معلومات التواصل</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p>📧 gide1979@gmail.com</p>
+                        <p>📞 +966551519723</p>
+                        <p>📍 المملكة العربية السعودية</p>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-400">
+                            صاحب الفكرة: قايد صالح المصعبي
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 الشحنة السريعة. جميع الحقوق محفوظة | قايد صالح المصعبي
+                </p>
+            </div>
+        </div>
     </footer>
 
     <!-- JavaScript -->
@@ -594,6 +831,13 @@
         }
 
         function showDeliveriesTab() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!user.uid) {
+                alert('يرجى تسجيل الدخول أولاً');
+                window.location.href = 'login.html';
+                return;
+            }
+
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             document.getElementById('deliveries-content').classList.remove('hidden');
             
@@ -617,6 +861,64 @@
             document.querySelector('[data-tab="shipments"]').classList.add('bg-blue-500','text-white');
             
             loadUserShipments();
+        }
+
+        // إعداد نموذج إنشاء الشحنة
+        function setupCreateShipmentForm() {
+            const form = document.getElementById('createShipmentForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    if (!currentUser) {
+                        alert('يرجى تسجيل الدخول أولاً');
+                        return;
+                    }
+                    
+                    try {
+                        const formData = {
+                            userId: currentUser.uid,
+                            type: document.getElementById('shipment-type').value,
+                            weight: document.getElementById('shipment-weight').value,
+                            fromCity: document.getElementById('from-city').value,
+                            toCity: document.getElementById('to-city').value,
+                            description: document.getElementById('shipment-description').value,
+                            status: 'pending',
+                            price: calculatePrice(document.getElementById('from-city').value, document.getElementById('to-city').value, document.getElementById('shipment-weight').value),
+                            createdAt: window.firebaseServerTimestamp(),
+                            shipmentNumber: 'SH-' + Date.now()
+                        };
+                        
+                        // التحقق من تعبئة جميع الحقول
+                        if (!formData.type || !formData.weight || !formData.fromCity || !formData.toCity) {
+                            showNotification('يرجى تعبئة جميع الحقول المطلوبة', 'error');
+                            return;
+                        }
+                        
+                        await window.firebaseAddDoc(window.firebaseCollection(db, "shipments"), formData);
+                        
+                        showNotification('تم إرسال طلب الشحنة بنجاح!', 'success');
+                        showShipmentsTab();
+                        
+                        // تنظيف النموذج
+                        form.reset();
+                        
+                    } catch (error) {
+                        console.error('خطأ في إرسال الشحنة:', error);
+                        showNotification('حدث خطأ في إرسال الشحنة', 'error');
+                    }
+                });
+            }
+        }
+
+        // معالجة التنقل من خلال الـ hash
+        function handleHashNavigation() {
+            const hash = window.location.hash;
+            if (hash === '#create-shipment') {
+                showCreateShipmentForm();
+            } else if (hash === '#deliveries') {
+                showDeliveriesTab();
+            }
         }
 
         // Dashboard functionality
@@ -645,6 +947,7 @@
                     initializeChart();
                     setupProfileForm();
                     setupCreateShipmentForm();
+                    handleHashNavigation();
                 } else {
                     currentUser = null;
                     localStorage.removeItem('currentUser');
@@ -718,54 +1021,6 @@
                 });
             }
 
-            function setupCreateShipmentForm() {
-                const form = document.getElementById('createShipmentForm');
-                if (form) {
-                    form.addEventListener('submit', async function(e) {
-                        e.preventDefault();
-                        
-                        if (!currentUser) {
-                            alert('يرجى تسجيل الدخول أولاً');
-                            return;
-                        }
-                        
-                        try {
-                            const formData = {
-                                userId: currentUser.uid,
-                                type: document.getElementById('shipment-type').value,
-                                weight: document.getElementById('shipment-weight').value,
-                                fromCity: document.getElementById('from-city').value,
-                                toCity: document.getElementById('to-city').value,
-                                description: document.getElementById('shipment-description').value,
-                                status: 'pending',
-                                price: calculatePrice(document.getElementById('from-city').value, document.getElementById('to-city').value, document.getElementById('shipment-weight').value),
-                                createdAt: window.firebaseServerTimestamp(),
-                                shipmentNumber: 'SH-' + Date.now()
-                            };
-                            
-                            // التحقق من تعبئة جميع الحقول
-                            if (!formData.type || !formData.weight || !formData.fromCity || !formData.toCity) {
-                                showNotification('يرجى تعبئة جميع الحقول المطلوبة', 'error');
-                                return;
-                            }
-                            
-                            await window.firebaseAddDoc(window.firebaseCollection(db, "shipments"), formData);
-                            
-                            showNotification('تم إرسال طلب الشحنة بنجاح!', 'success');
-                            showShipmentsTab();
-                            
-                            // تنظيف النموذج
-                            form.reset();
-                            
-                        } catch (error) {
-                            console.error('خطأ في إرسال الشحنة:', error);
-                            showNotification('حدث خطأ في إرسال الشحنة', 'error');
-                        }
-                    });
-                }
-            }
-
-            // باقي الدوال بدون تغيير
             function initializeChart() {
                 const chartDom = document.getElementById('shipments-chart');
                 if (chartDom) {
