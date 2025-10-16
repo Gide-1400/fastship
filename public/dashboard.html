@@ -897,71 +897,66 @@
             }
         });
 <script>
-    // ✅ دوال مضمونة ما ترجعك لتسجيل الدخول
-    function showCreateShipmentForm() {
-        const user = JSON.parse(localStorage.getItem('currentUser'));
-        if (!user || !user.uid) {
-            alert('يرجى تسجيل الدخول أولاً');
-            window.location.href = 'login.html';
-            return;
-        }
+/* ========== معالجة الـ Dashboard بالكامل ========== */
+(() => {
+  // ننتظر Firebase يخبرنا هل في مستخدم ولا لا
+  window.firebaseOnAuthStateChanged(window.firebaseAuth, fbUser => {
+    if (fbUser) {
+      // ✔️ مسجَّل دخول
+      localStorage.setItem('currentUser', JSON.stringify({
+        uid: fbUser.uid,
+        email: fbUser.email,
+        displayName: fbUser.displayName,
+        photoURL: fbUser.photoURL
+      }));
+      updateAuthUI(fbUser);               // تعديل الـ Header
+      document.getElementById('login-required').style.display = 'none';
+      document.getElementById('shipments-content').classList.remove('hidden');
 
-        // إخفاء كل التبويبات
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-        // إظهار نموذج إنشاء الشحنة
-        document.getElementById('create-shipment-content').classList.remove('hidden');
+      // نفعّل زرّ التبويب بالشكل الصحيح
+      document.querySelectorAll('.dashboard-tab').forEach(t => {
+        t.classList.remove('bg-blue-500','text-white');
+        t.classList.add('bg-gray-200','text-gray-700');
+      });
+      document.querySelector('[data-tab="shipments"]').classList.add('bg-blue-500','text-white');
+      updateUserInfo(fbUser);             // بيانات المستخدم الجانبيّة
+      initializeChart();
+      setupProfileForm();
+    } else {
+      // ❌ مو مسجَّل → نُظهر رسالة تسجيل الدخول فقط
+      localStorage.removeItem('currentUser');
+      updateAuthUI(null);
+      document.getElementById('login-required').style.display = 'block';
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     }
+  });
 
-    function showAvailableShipments() {
-        const user = JSON.parse(localStorage.getItem('currentUser'));
-        if (!user || !user.uid) {
-            alert('يرجى تسجيل الدخول أولاً');
-            window.location.href = 'login.html';
-            return;
-        }
+  // دوال الأزرار (تعمل بعد ما نتأكد من الـ user)
+  window.showCreateShipmentForm = () => {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (!user.uid) { alert('يرجى تسجيل الدخول أولاً'); location.href = 'login.html'; return; }
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+    document.getElementById('create-shipment-content').classList.remove('hidden');
+  };
+  window.showAvailableShipments = () => {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (!user.uid) { alert('يرجى تسجيل الدخول أولاً'); location.href = 'login.html'; return; }
+    alert('سيتم عرض طلبات الشحن المتاحة قريباً');
+  };
+  window.showShipmentsTab = () => {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+    document.getElementById('shipments-content').classList.remove('hidden');
+  };
 
-        alert('سيتم عرض طلبات الشحن المتاحة قريباً');
-    }
-
-    function showShipmentsTab() {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-        document.getElementById('shipments-content').classList.remove('hidden');
-    }
-
-    // معالجة نموذج إرسال الشحنة
-    document.getElementById('createShipmentForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('تم إرسال طلب الشحنة بنجاح!');
-        showShipmentsTab();
+  // إرسال النموذج
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('createShipmentForm')?.addEventListener('submit', e => {
+      e.preventDefault();
+      alert('تم إرسال طلب الشحنة بنجاح!');
+      showShipmentsTab();
     });
-</script>
-<script>
-    // ✅ تأكد أن المستخدم المسجل ما يُرجعش لصفحة تسجيل الدخول لما يضغط على الأزرار
-    function showCreateShipmentForm() {
-        const user = JSON.parse(localStorage.getItem('currentUser'));
-        if (!user || !user.uid) {
-            alert('يرجى تسجيل الدخول أولاً');
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // إخفاء كل التبويبات
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-        // إظهار نموذج إنشاء الشحنة
-        document.getElementById('create-shipment-content').classList.remove('hidden');
-    }
-
-    function showAvailableShipments() {
-        const user = JSON.parse(localStorage.getItem('currentUser'));
-        if (!user || !user.uid) {
-            alert('يرجى تسجيل الدخول أولاً');
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // ممكن تضيف هنا عرض الطلبات المتاحة لاحقًا
-        alert('سيتم عرض طلبات الشحن المتاحة قريباً');
-    }
+  });
+})();
 </script>
 </body>
 </html>
