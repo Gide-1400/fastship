@@ -274,10 +274,67 @@
                         </div>
                     </div>
 
-                    <!-- باقي المحتوى بدون تغيير -->
                     <!-- Create Shipment Form -->
                     <div id="create-shipment-content" class="tab-content hidden">
-                        <!-- نفس المحتوى السابق -->
+                        <div class="bg-white rounded-2xl p-6 shadow-lg">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6">إرسال شحنة جديدة</h3>
+                            
+                            <form id="createShipmentForm" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع الشحنة</label>
+                                        <select id="shipment-type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">اختر نوع الشحنة</option>
+                                            <option value="documents">مستندات</option>
+                                            <option value="electronics">إلكترونيات</option>
+                                            <option value="clothes">ملابس</option>
+                                            <option value="food">أطعمة</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">الوزن (كجم)</label>
+                                        <input type="number" id="shipment-weight" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="الوزن بالكيلو">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">مدينة الإرسال</label>
+                                        <select id="from-city" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">اختر المدينة</option>
+                                            <option value="الرياض">الرياض</option>
+                                            <option value="جدة">جدة</option>
+                                            <option value="الدمام">الدمام</option>
+                                            <option value="مكة">مكة</option>
+                                            <option value="المدينة">المدينة المنورة</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">مدينة الاستلام</label>
+                                        <select id="to-city" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">اختر المدينة</option>
+                                            <option value="الرياض">الرياض</option>
+                                            <option value="جدة">جدة</option>
+                                            <option value="الدمام">الدمام</option>
+                                            <option value="مكة">مكة</option>
+                                            <option value="المدينة">المدينة المنورة</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">وصف الشحنة</label>
+                                    <textarea id="shipment-description" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="وصف محتويات الشحنة"></textarea>
+                                </div>
+
+                                <div class="flex gap-4">
+                                    <button type="button" onclick="showShipmentsTab()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">رجوع</button>
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">إرسال الشحنة</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     
                     <!-- Messages Tab -->
@@ -516,6 +573,26 @@
         }
 
         // دوال التبويبات
+        function showCreateShipmentForm() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!user.uid) {
+                alert('يرجى تسجيل الدخول أولاً');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // إخفاء كل التبويبات
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            // إظهار نموذج إنشاء الشحنة
+            document.getElementById('create-shipment-content').classList.remove('hidden');
+            
+            // تحديث التبويب النشط بصرياً
+            document.querySelectorAll('.dashboard-tab').forEach(t => {
+                t.classList.remove('bg-blue-500','text-white');
+                t.classList.add('bg-gray-200','text-gray-700');
+            });
+        }
+
         function showDeliveriesTab() {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             document.getElementById('deliveries-content').classList.remove('hidden');
@@ -529,13 +606,17 @@
             loadAvailableShipments();
         }
 
-        // باقي الدوال بدون تغيير
-        function showCreateShipmentForm() {
-            // نفس الدالة السابقة
-        }
-
         function showShipmentsTab() {
-            // نفس الدالة السابقة
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.getElementById('shipments-content').classList.remove('hidden');
+            
+            document.querySelectorAll('.dashboard-tab').forEach(t => {
+                t.classList.remove('bg-blue-500','text-white');
+                t.classList.add('bg-gray-200','text-gray-700');
+            });
+            document.querySelector('[data-tab="shipments"]').classList.add('bg-blue-500','text-white');
+            
+            loadUserShipments();
         }
 
         // Dashboard functionality
@@ -563,6 +644,7 @@
                     setupTabs();
                     initializeChart();
                     setupProfileForm();
+                    setupCreateShipmentForm();
                 } else {
                     currentUser = null;
                     localStorage.removeItem('currentUser');
@@ -576,9 +658,32 @@
                 }
             });
 
-            // باقي الكود بدون تغيير
             function updateUserInfo(user) {
-                // نفس الدالة السابقة
+                // Update header
+                document.getElementById('welcome-message').textContent = `مرحباً ${user.displayName || user.email}!`;
+                
+                // Update sidebar
+                document.getElementById('sidebar-user-name').textContent = user.displayName || user.email;
+                document.getElementById('profile-image').src = user.photoURL || 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg';
+                document.getElementById('member-since').textContent = `عضو منذ ${new Date().getFullYear()}`;
+                document.getElementById('user-rating').textContent = '5.0';
+                
+                // Update stats
+                document.getElementById('completed-shipments').textContent = '12';
+                document.getElementById('total-paid').textContent = '2,450';
+                
+                // Update profile form
+                document.getElementById('first-name').value = user.displayName ? user.displayName.split(' ')[0] : '';
+                document.getElementById('last-name').value = user.displayName ? user.displayName.split(' ')[1] || '' : '';
+                document.getElementById('profile-email').value = user.email;
+                
+                // Update stats in profile tab
+                document.getElementById('stats-total').textContent = '12 شحنة';
+                document.getElementById('stats-completed').textContent = '10 شحنات';
+                document.getElementById('stats-pending').textContent = '2 شحنة';
+                document.getElementById('stats-rating').textContent = '5.0';
+                document.getElementById('stats-payments').textContent = '2,450 ريال';
+                document.getElementById('stats-join-date').textContent = new Date().getFullYear();
             }
 
             function setupTabs() {
@@ -613,52 +718,143 @@
                 });
             }
 
+            function setupCreateShipmentForm() {
+                const form = document.getElementById('createShipmentForm');
+                if (form) {
+                    form.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        
+                        if (!currentUser) {
+                            alert('يرجى تسجيل الدخول أولاً');
+                            return;
+                        }
+                        
+                        try {
+                            const formData = {
+                                userId: currentUser.uid,
+                                type: document.getElementById('shipment-type').value,
+                                weight: document.getElementById('shipment-weight').value,
+                                fromCity: document.getElementById('from-city').value,
+                                toCity: document.getElementById('to-city').value,
+                                description: document.getElementById('shipment-description').value,
+                                status: 'pending',
+                                price: calculatePrice(document.getElementById('from-city').value, document.getElementById('to-city').value, document.getElementById('shipment-weight').value),
+                                createdAt: window.firebaseServerTimestamp(),
+                                shipmentNumber: 'SH-' + Date.now()
+                            };
+                            
+                            // التحقق من تعبئة جميع الحقول
+                            if (!formData.type || !formData.weight || !formData.fromCity || !formData.toCity) {
+                                showNotification('يرجى تعبئة جميع الحقول المطلوبة', 'error');
+                                return;
+                            }
+                            
+                            await window.firebaseAddDoc(window.firebaseCollection(db, "shipments"), formData);
+                            
+                            showNotification('تم إرسال طلب الشحنة بنجاح!', 'success');
+                            showShipmentsTab();
+                            
+                            // تنظيف النموذج
+                            form.reset();
+                            
+                        } catch (error) {
+                            console.error('خطأ في إرسال الشحنة:', error);
+                            showNotification('حدث خطأ في إرسال الشحنة', 'error');
+                        }
+                    });
+                }
+            }
+
             // باقي الدوال بدون تغيير
             function initializeChart() {
-                // نفس الدالة السابقة
+                const chartDom = document.getElementById('shipments-chart');
+                if (chartDom) {
+                    const myChart = echarts.init(chartDom);
+                    
+                    const option = {
+                        title: {
+                            text: 'نشاط الشحنات الشهري',
+                            textStyle: {
+                                color: '#374151',
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: ['الشحنات المكتملة', 'الشحنات الجديدة']
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر']
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                name: 'الشحنات المكتملة',
+                                type: 'bar',
+                                data: [2, 1, 3, 2, 1, 2, 1, 0, 0, 0],
+                                itemStyle: { color: '#10b981' }
+                            },
+                            {
+                                name: 'الشحنات الجديدة',
+                                type: 'bar',
+                                data: [1, 2, 2, 1, 1, 1, 2, 1, 0, 0],
+                                itemStyle: { color: '#3b82f6' }
+                            }
+                        ]
+                    };
+
+                    myChart.setOption(option);
+                }
             }
 
             function setupProfileForm() {
-                // نفس الدالة السابقة
+                const profileForm = document.getElementById('profile-form');
+                if (profileForm) {
+                    profileForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        const updatedData = {
+                            firstName: document.getElementById('first-name').value,
+                            lastName: document.getElementById('last-name').value,
+                            email: document.getElementById('profile-email').value,
+                            phone: document.getElementById('profile-phone').value,
+                            city: document.getElementById('profile-city').value
+                        };
+                        
+                        // في الإصدار الحقيقي، هنا سنقوم بتحديث البيانات في Firebase
+                        showNotification('تم تحديث الملف الشخصي بنجاح!', 'success');
+                        
+                        // تحديث واجهة المستخدم
+                        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                        currentUser.displayName = `${updatedData.firstName} ${updatedData.lastName}`;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        updateUserInfo(currentUser);
+                    });
+                }
             }
 
             function showNotification(message, type = 'info') {
-                // نفس الدالة السابقة
-            }
-        });
-
-        // معالجة نموذج إرسال الشحنة
-        document.getElementById('createShipmentForm')?.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            if (!currentUser) {
-                alert('يرجى تسجيل الدخول أولاً');
-                return;
-            }
-            
-            try {
-                const formData = {
-                    userId: currentUser.uid,
-                    type: this.querySelector('select').value,
-                    weight: this.querySelector('input[type="number"]').value,
-                    fromCity: this.querySelectorAll('select')[1].value,
-                    toCity: this.querySelectorAll('select')[2].value,
-                    description: this.querySelector('textarea').value,
-                    status: 'pending',
-                    price: calculatePrice(this.querySelectorAll('select')[1].value, this.querySelectorAll('select')[2].value, this.querySelector('input[type="number"]').value),
-                    createdAt: window.firebaseServerTimestamp(),
-                    shipmentNumber: 'SH-' + Date.now()
-                };
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white ${
+                    type === 'success' ? 'bg-green-500' : 
+                    type === 'error' ? 'bg-red-500' : 
+                    'bg-blue-500'
+                }`;
+                notification.textContent = message;
                 
-                await window.firebaseAddDoc(window.firebaseCollection(db, "shipments"), formData);
+                document.body.appendChild(notification);
                 
-                showNotification('تم إرسال طلب الشحنة بنجاح!', 'success');
-                showShipmentsTab();
-                loadUserShipments(); // تحديث قائمة الشحنات
-                
-            } catch (error) {
-                console.error('خطأ في إرسال الشحنة:', error);
-                showNotification('حدث خطأ في إرسال الشحنة', 'error');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 5000);
             }
         });
 
