@@ -897,37 +897,44 @@
             }
         });
 <script>
-        // دوال جديدة للشحنات
-        function showCreateShipmentForm() {
-            // إخفاء جميع المحتويات
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
-            });
-            // إظهار نموذج إرسال الشحنة
-            document.getElementById('create-shipment-content').classList.remove('hidden');
+    // ✅ دوال مضمونة ما ترجعك لتسجيل الدخول
+    function showCreateShipmentForm() {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (!user || !user.uid) {
+            alert('يرجى تسجيل الدخول أولاً');
+            window.location.href = 'login.html';
+            return;
         }
 
-        function showAvailableShipments() {
-            alert('سيتم عرض طلبات الشحن المتاحة قريباً');
-            // يمكنك إضافة محتوى حقيقي هنا لاحقاً
+        // إخفاء كل التبويبات
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+        // إظهار نموذج إنشاء الشحنة
+        document.getElementById('create-shipment-content').classList.remove('hidden');
+    }
+
+    function showAvailableShipments() {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (!user || !user.uid) {
+            alert('يرجى تسجيل الدخول أولاً');
+            window.location.href = 'login.html';
+            return;
         }
 
-        function showShipmentsTab() {
-            // إخفاء جميع المحتويات
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
-            });
-            // إظهار تبويب الشحنات
-            document.getElementById('shipments-content').classList.remove('hidden');
-        }
+        alert('سيتم عرض طلبات الشحن المتاحة قريباً');
+    }
 
-        // معالجة نموذج إرسال الشحنة
-        document.getElementById('createShipmentForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('تم إرسال طلب الشحنة بنجاح!');
-            showShipmentsTab();
-        });
-    </script>
+    function showShipmentsTab() {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+        document.getElementById('shipments-content').classList.remove('hidden');
+    }
+
+    // معالجة نموذج إرسال الشحنة
+    document.getElementById('createShipmentForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('تم إرسال طلب الشحنة بنجاح!');
+        showShipmentsTab();
+    });
+</script>
 <script>
     // ✅ تأكد أن المستخدم المسجل ما يُرجعش لصفحة تسجيل الدخول لما يضغط على الأزرار
     function showCreateShipmentForm() {
