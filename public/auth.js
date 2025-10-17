@@ -35,12 +35,19 @@ class AuthManager {
             const userCredential = await window.firebaseSignIn(window.firebaseAuth, email, password);
             const user = userCredential.user;
             
+            // جلب البيانات الكاملة من Firestore
+            const userDoc = await window.firebaseGetDoc(window.firebaseDoc(window.firebaseDB, "users", user.uid));
+            const userProfile = userDoc.data();
+            
             const userData = {
                 uid: user.uid,
                 email: user.email,
                 emailVerified: user.emailVerified,
                 displayName: user.displayName,
-                photoURL: user.photoURL
+                photoURL: user.photoURL,
+                accountType: userProfile?.accountType || 'user',
+                firstName: userProfile?.firstName,
+                lastName: userProfile?.lastName
             };
             
             this.saveCurrentUser(userData);
@@ -93,10 +100,14 @@ class AuthManager {
                 email: user.email,
                 emailVerified: user.emailVerified,
                 displayName: user.displayName,
-                photoURL: user.photoURL
+                photoURL: user.photoURL,
+                accountType: userData.accountType,
+                firstName: userData.firstName,
+                lastName: userData.lastName
             };
             
             this.saveCurrentUser(currentUserData);
+            this.updateUI();
             return true;
             
         } catch (error) {
@@ -117,33 +128,8 @@ class AuthManager {
     }
 
     updateUI() {
-        // تحديث واجهة المستخدم بناءً على حالة تسجيل الدخول
-        const loginBtn = document.getElementById('login-btn');
-        const registerBtn = document.getElementById('register-btn');
-        const userMenu = document.getElementById('user-menu');
-        const userName = document.getElementById('user-name');
-        const userType = document.getElementById('user-type');
-
-        if (this.currentUser) {
-            // إخفاء أزرار تسجيل الدخول والتسجيل
-            if (loginBtn) loginBtn.style.display = 'none';
-            if (registerBtn) registerBtn.style.display = 'none';
-            
-            // إظهار قائمة المستخدم
-            if (userMenu) userMenu.style.display = 'block';
-            if (userName) userName.textContent = this.currentUser.displayName || this.currentUser.email;
-            if (userType) {
-                userType.textContent = 'مستخدم';
-                userType.className = 'bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs';
-            }
-        } else {
-            // إظهار أزرار تسجيل الدخول والتسجيل
-            if (loginBtn) loginBtn.style.display = 'block';
-            if (registerBtn) registerBtn.style.display = 'block';
-            
-            // إخفاء قائمة المستخدم
-            if (userMenu) userMenu.style.display = 'none';
-        }
+        // استخدام الدالة المحسنة لتحديث الواجهة
+        updateAuthUI(this.currentUser);
     }
 
     isLoggedIn() {
@@ -180,7 +166,10 @@ class AuthManager {
 
             // تحديث البيانات المحلية
             this.currentUser.displayName = `${profileData.firstName} ${profileData.lastName}`;
+            this.currentUser.firstName = profileData.firstName;
+            this.currentUser.lastName = profileData.lastName;
             this.saveCurrentUser(this.currentUser);
+            this.updateUI();
             
             return true;
         } catch (error) {
@@ -190,18 +179,47 @@ class AuthManager {
     }
 
     async changePassword(currentPassword, newPassword) {
-        // في Firebase، تحتاج إلى إعادة المصادقة لتغيير كلمة المرور
-        // هذا يتطلب تنفيذ أكثر تعقيداً
-        console.log('تغيير كلمة المرور يتطلب تنفيذ إضافي في Firebase');
-        return false;
+        if (!this.currentUser) return false;
+
+        try {
+            const user = window.firebaseAuth.currentUser;
+            
+            // إعادة المصادقة أولاً
+            const credential = window.firebaseEmailAuthProvider.credential(
+                this.currentUser.email, 
+                currentPassword
+            );
+            await window.firebaseReauthenticateWithCredential(user, credential);
+            
+            // تغيير كلمة المرور
+            await window.firebaseUpdatePassword(user, newPassword);
+            
+            showNotification('تم تغيير كلمة المرور بنجاح', 'success');
+            return true;
+        } catch (error) {
+            console.error('خطأ في تغيير كلمة المرور:', error);
+            showNotification('فشل في تغيير كلمة المرور. تأكد من كلمة المرور الحالية.', 'error');
+            return false;
+        }
     }
 
     // الحصول على المسافرين المتاحين
     async getAvailableTravelers() {
         try {
-            // هذا يتطلب استعلام Firestore
-            console.log('جاري جلب بيانات المسافرين من Firestore');
-            return [];
+            const travelersQuery = window.firebaseQuery(
+                window.firebaseCollection(window.firebaseDB, "users"),
+                window.firebaseWhere("accountType", "==", "traveler"),
+                window.firebaseWhere("isActive", "==", true)
+            );
+            
+            const querySnapshot = await window.firebaseGetDocs(travelersQuery);
+            const travelers = [];
+            
+            querySnapshot.forEach((doc) => {
+                travelers.push({ id: doc.id, ...doc.data() });
+            });
+            
+            return travelers;
         } catch (error) {
             console.error('خطأ في جلب المسافرين:', error);
             return [];
@@ -213,16 +231,55 @@ class AuthManager {
         if (!this.currentUser) return null;
 
         try {
-            // جلب الإحصائيات من Firestore
-            // هذا مثال بسيط - في التطبيق الحقيقي تحتاج لجلب البيانات من Firestore
-            return {
-                completedTrips: 12,
-                rating: 5.0,
-                earnings: 2450
-            };
+            const userDoc = await window.firebaseGetDoc(
+                window.firebaseDoc(window.firebaseDB, "users", this.currentUser.uid)
+            );
+            
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                return {
+                    completedTrips: userData.completedTrips || 0,
+                    rating: userData.rating || 0,
+                    earnings: userData.earnings || 0,
+                    joinedDate: userData.createdAt || new Date().toISOString()
+                };
+            }
+            
+            return null;
         } catch (error) {
             console.error('خطأ في جلب الإحصائيات:', error);
             return null;
+        }
+    }
+
+    // تحديث صورة الملف الشخصي
+    async updateProfileImage(imageUrl) {
+        if (!this.currentUser) return false;
+
+        try {
+            const user = window.firebaseAuth.currentUser;
+            if (user) {
+                await window.firebaseUpdateProfile(user, {
+                    photoURL: imageUrl
+                });
+            }
+
+            // تحديث البيانات في Firestore
+            await window.firebaseSetDoc(
+                window.firebaseDoc(window.firebaseDB, "users", this.currentUser.uid),
+                { profileImage: imageUrl },
+                { merge: true }
+            );
+
+            // تحديث البيانات المحلية
+            this.currentUser.photoURL = imageUrl;
+            this.saveCurrentUser(this.currentUser);
+            this.updateUI();
+            
+            return true;
+        } catch (error) {
+            console.error('خطأ في تحديث صورة الملف:', error);
+            return false;
         }
     }
 }
@@ -230,16 +287,48 @@ class AuthManager {
 // تهيئة نظام المصادقة
 window.authManager = new AuthManager();
 
-// تحديث الواجهة عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    window.authManager.updateUI();
-    
-    // عرض رسالة النجاح إذا كان المستخدم قد سجل للتو
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('registered') === 'true') {
-        showNotification('تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.', 'success');
+// وظيفة تحديث واجهة المستخدم (النسخة المحسنة)
+function updateAuthUI(user) {
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const userMenu = document.getElementById('user-menu');
+    const userName = document.getElementById('user-name');
+    const userType = document.getElementById('user-type');
+    const userAvatar = document.getElementById('user-avatar');
+
+    if (user && user.uid) {
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (registerBtn) registerBtn.style.display = 'none';
+        if (userMenu) userMenu.classList.remove('hidden');
+        
+        if (userName) {
+            userName.textContent = user.displayName || user.email || 'مستخدم';
+        }
+        
+        if (userType) {
+            const accountType = user.accountType;
+            if (accountType === 'traveler') {
+                userType.textContent = 'موصل';
+                userType.className = 'bg-green-100 text-green-800 px-2 py-1 rounded text-xs';
+            } else if (accountType === 'client') {
+                userType.textContent = 'عميل';
+                userType.className = 'bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs';
+            } else {
+                userType.textContent = 'مستخدم';
+                userType.className = 'bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs';
+            }
+        }
+        
+        if (userAvatar) {
+            userAvatar.src = user.photoURL || user.profileImage || 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg';
+            userAvatar.alt = user.displayName || 'صورة المستخدم';
+        }
+    } else {
+        if (loginBtn) loginBtn.style.display = 'block';
+        if (registerBtn) registerBtn.style.display = 'block';
+        if (userMenu) userMenu.classList.add('hidden');
     }
-});
+}
 
 // وظيفة لعرض الإشعارات
 function showNotification(message, type = 'info') {
@@ -271,3 +360,41 @@ function isValidSaudiPhone(phone) {
     const phoneRegex = /^05\d{8}$/;
     return phoneRegex.test(phone);
 }
+
+// تحديث الواجهة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.authManager.updateUI();
+    
+    // عرض رسالة النجاح إذا كان المستخدم قد سجل للتو
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registered') === 'true') {
+        showNotification('تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.', 'success');
+    }
+    
+    if (urlParams.get('login') === 'true') {
+        showNotification('تم تسجيل الدخول بنجاح!', 'success');
+    }
+    
+    if (urlParams.get('logout') === 'true') {
+        showNotification('تم تسجيل الخروج بنجاح', 'info');
+    }
+});
+
+// إضافة مستمعي الأحداث لأزرار التسجيل والدخول
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.authManager.logout();
+        });
+    }
+    
+    const profileBtn = document.getElementById('profile-btn');
+    if (profileBtn) {
+        profileBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'profile.html';
+        });
+    }
+});
