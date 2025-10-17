@@ -12,33 +12,6 @@
     <!-- Custom Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
-            authDomain: "fastship-2026.firebaseapp.com",
-            projectId: "fastship-2026",
-            storageBucket: "fastship-2026.firebasestorage.app",
-            messagingSenderId: "646769615933",
-            appId: "1:646769615933:web:5fd3c82c31969192f9f654"
-        };
-
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-    </script>
-    
-    <!-- Animation Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <!-- ECharts -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    
     <style>
         body {
             font-family: 'Tajawal', 'Inter', sans-serif;
@@ -117,16 +90,16 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <div id="user-menu" class="hidden flex items-center space-x-4 space-x-reverse">
+                    <div id="user-menu" class="flex items-center space-x-4 space-x-reverse">
                         <img id="user-avatar" src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="الملف الشخصي" class="w-8 h-8 rounded-full object-cover ml-2">
                         <div class="text-right">
-                            <div id="user-name" class="text-sm font-medium text-gray-700"></div>
-                            <div id="user-type" class="text-xs text-gray-500"></div>
+                            <div id="user-name" class="text-sm font-medium text-gray-700">زائر</div>
+                            <div id="user-type" class="text-xs text-gray-500">مستخدم</div>
                         </div>
                         <button onclick="logout()" class="text-gray-700 hover:text-blue-600 text-sm">تسجيل الخروج</button>
                     </div>
-                    <a href="login.html" id="login-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">تسجيل الدخول</a>
-                    <a href="register.html" id="register-btn" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">إنشاء حساب</a>
+                    <a href="login.html" id="login-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors hidden">تسجيل الدخول</a>
+                    <a href="register.html" id="register-btn" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors hidden">إنشاء حساب</a>
                 </div>
             </div>
         </div>
@@ -136,7 +109,7 @@
     <section class="pt-24 pb-8 bg-gradient-to-br from-blue-600 to-purple-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-white">
-                <h1 class="text-3xl lg:text-4xl font-bold mb-2" id="welcome-message">مرحباً!</h1>
+                <h1 class="text-3xl lg:text-4xl font-bold mb-2" id="welcome-message">مرحباً، زائر!</h1>
                 <p class="text-blue-100">إدارة شحناتك ومتابعة نشاطك على المنصة</p>
             </div>
         </div>
@@ -153,48 +126,37 @@
                         <div class="text-center mb-8">
                             <img id="profile-image" src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="الملف الشخصي" class="w-20 h-20 rounded-full object-cover mx-auto mb-4">
                             <h3 id="sidebar-user-name" class="text-lg font-bold text-gray-800">زائر</h3>
-                            <p id="member-since" class="text-sm text-gray-600">يرجى تسجيل الدخول</p>
+                            <p id="member-since" class="text-sm text-gray-600">عضو منذ 2024</p>
                             <div class="flex items-center justify-center mt-2">
                                 <span class="text-yellow-500 ml-1">★</span>
-                                <span id="user-rating" class="text-sm text-gray-600">-</span>
+                                <span id="user-rating" class="text-sm text-gray-600">5.0</span>
                             </div>
                         </div>
                         
                         <!-- Quick Stats -->
                         <div class="grid grid-cols-2 gap-4 mb-8">
                             <div class="text-center">
-                                <div id="completed-shipments" class="text-2xl font-bold text-blue-600">0</div>
+                                <div id="completed-shipments" class="text-2xl font-bold text-blue-600">3</div>
                                 <div class="text-xs text-gray-600">شحنة مكتملة</div>
                             </div>
                             <div class="text-center">
-                                <div id="total-earnings" class="text-2xl font-bold text-green-600">0</div>
+                                <div id="total-earnings" class="text-2xl font-bold text-green-600">625</div>
                                 <div class="text-xs text-gray-600">ريال أرباح</div>
                             </div>
                         </div>
                         
                         <!-- Navigation Tabs -->
                         <nav class="space-y-2">
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-blue-500 text-white font-medium transition-colors active" data-tab="shipments">📦 شحناتي</button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="travelers">🚗 المسافرون</button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="messages">💬 الرسائل</button>
-                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="profile">👤 الملف الشخصي</button>
+                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-blue-500 text-white font-medium transition-colors active" data-tab="shipments" onclick="switchTab('shipments')">📦 شحناتي</button>
+                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="travelers" onclick="switchTab('travelers')">🚗 المسافرون</button>
+                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="messages" onclick="switchTab('messages')">💬 الرسائل</button>
+                            <button class="dashboard-tab w-full text-right px-4 py-3 rounded-lg bg-gray-200 text-gray-700 font-medium transition-colors hover:bg-gray-300" data-tab="profile" onclick="switchTab('profile')">👤 الملف الشخصي</button>
                         </nav>
                     </div>
                 </div>
                 
                 <!-- Main Content -->
                 <div class="lg:col-span-3">
-                    <!-- Login Required Message -->
-                    <div id="login-required" class="bg-white rounded-2xl p-8 shadow-lg text-center">
-                        <div class="text-6xl mb-4">🔒</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-4">يجب تسجيل الدخول</h3>
-                        <p class="text-gray-600 mb-6">يجب عليك تسجيل الدخول للوصول إلى لوحة التحكم</p>
-                        <div class="flex justify-center gap-4">
-                            <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">تسجيل الدخول</a>
-                            <a href="register.html" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">إنشاء حساب</a>
-                        </div>
-                    </div>
-
                     <!-- Shipments Tab -->
                     <div id="shipments-content" class="tab-content">
                         <!-- Quick Actions -->
@@ -210,12 +172,6 @@
                                     المسافرون المتاحون
                                 </button>
                             </div>
-                        </div>
-                        
-                        <!-- Statistics Chart -->
-                        <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
-                            <h3 class="text-lg font-bold text-gray-800 mb-4">إحصائيات الشحنات</h3>
-                            <div id="shipments-chart" style="height: 300px;"></div>
                         </div>
                         
                         <!-- Recent Shipments -->
@@ -237,8 +193,46 @@
                                             <th class="text-right py-3 px-4 font-semibold text-gray-700">الإجراءات</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="shipments-table-body">
-                                        <!-- سيتم ملؤها بالبيانات -->
+                                    <tbody>
+                                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                            <td class="py-3 px-4 text-sm">#SH-2024-001</td>
+                                            <td class="py-3 px-4 text-sm">📱 إلكترونيات</td>
+                                            <td class="py-3 px-4 text-sm">الرياض → جدة</td>
+                                            <td class="py-3 px-4 text-sm">
+                                                <span class="status-badge status-delivered">تم التوصيل</span>
+                                            </td>
+                                            <td class="py-3 px-4 text-sm font-semibold text-green-600">280 ريال</td>
+                                            <td class="py-3 px-4 text-sm">
+                                                <button class="text-blue-600 hover:text-blue-800 ml-2" onclick="viewShipmentDetails('SH-2024-001')">تفاصيل</button>
+                                                <button class="text-orange-600 hover:text-orange-800" onclick="rateShipment('SH-2024-001')">تقييم</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                            <td class="py-3 px-4 text-sm">#SH-2024-002</td>
+                                            <td class="py-3 px-4 text-sm">📄 مستندات</td>
+                                            <td class="py-3 px-4 text-sm">مكة → الدمام</td>
+                                            <td class="py-3 px-4 text-sm">
+                                                <span class="status-badge status-in-transit">في الطريق</span>
+                                            </td>
+                                            <td class="py-3 px-4 text-sm font-semibold text-blue-600">150 ريال</td>
+                                            <td class="py-3 px-4 text-sm">
+                                                <button class="text-blue-600 hover:text-blue-800 ml-2" onclick="viewShipmentDetails('SH-2024-002')">تفاصيل</button>
+                                                <button class="text-green-600 hover:text-green-800" onclick="trackShipment('SH-2024-002')">تتبع</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                            <td class="py-3 px-4 text-sm">#SH-2024-003</td>
+                                            <td class="py-3 px-4 text-sm">👕 ملابس</td>
+                                            <td class="py-3 px-4 text-sm">جدة → المدينة</td>
+                                            <td class="py-3 px-4 text-sm">
+                                                <span class="status-badge status-pending">قيد الانتظار</span>
+                                            </td>
+                                            <td class="py-3 px-4 text-sm font-semibold text-orange-600">95 ريال</td>
+                                            <td class="py-3 px-4 text-sm">
+                                                <button class="text-blue-600 hover:text-blue-800 ml-2" onclick="viewShipmentDetails('SH-2024-003')">تفاصيل</button>
+                                                <button class="text-red-600 hover:text-red-800" onclick="cancelShipment('SH-2024-003')">إلغاء</button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -251,13 +245,13 @@
                             <div class="flex justify-between items-center mb-6">
                                 <h3 class="text-lg font-bold text-gray-800">المسافرون المتاحون</h3>
                                 <div class="flex gap-2">
-                                    <select id="city-filter" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <select id="city-filter" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" onchange="filterTravelers()">
                                         <option value="">جميع المدن</option>
                                         <option value="الرياض">الرياض</option>
                                         <option value="جدة">جدة</option>
                                         <option value="الدمام">الدمام</option>
                                     </select>
-                                    <select id="vehicle-filter" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <select id="vehicle-filter" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" onchange="filterTravelers()">
                                         <option value="">جميع المركبات</option>
                                         <option value="سيارة">سيارة</option>
                                         <option value="شاحنة">شاحنة</option>
@@ -276,7 +270,7 @@
                         <div class="bg-white rounded-2xl p-6 shadow-lg">
                             <h3 class="text-2xl font-bold text-gray-800 mb-6">إرسال شحنة جديدة</h3>
                             
-                            <form id="createShipmentForm" class="space-y-6">
+                            <form id="createShipmentForm" class="space-y-6" onsubmit="createNewShipment(event)">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">نوع الشحنة</label>
@@ -361,32 +355,31 @@
                             <div class="bg-white rounded-2xl p-6 shadow-lg">
                                 <h3 class="text-lg font-bold text-gray-800 mb-6">المعلومات الشخصية</h3>
                                 
-                                <form id="profile-form" class="space-y-4">
+                                <form id="profile-form" class="space-y-4" onsubmit="updateProfile(event)">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الأول</label>
-                                        <input type="text" id="first-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <input type="text" id="first-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="زائر">
                                     </div>
                                     
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">اسم العائلة</label>
-                                        <input type="text" id="last-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <input type="text" id="last-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="مستخدم">
                                     </div>
                                     
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
-                                        <input type="email" id="profile-email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" readonly>
+                                        <input type="email" id="profile-email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="visitor@example.com" readonly>
                                     </div>
                                     
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">رقم الجوال</label>
-                                        <input type="tel" id="profile-phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <input type="tel" id="profile-phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="0550000000">
                                     </div>
                                     
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">المدينة</label>
                                         <select id="profile-city" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                            <option value="">اختر المدينة</option>
-                                            <option value="الرياض">الرياض</option>
+                                            <option value="الرياض" selected>الرياض</option>
                                             <option value="جدة">جدة</option>
                                             <option value="مكة">مكة</option>
                                             <option value="المدينة">المدينة المنورة</option>
@@ -405,30 +398,30 @@
                                 <div class="space-y-6">
                                     <div class="flex justify-between items-center">
                                         <span class="text-gray-600">إجمالي الشحنات</span>
-                                        <span id="stats-total" class="font-bold text-blue-600">0 شحنة</span>
+                                        <span id="stats-total" class="font-bold text-blue-600">3 شحنة</span>
                                     </div>
                                     
                                     <div class="flex justify-between items-center">
                                         <span class="text-gray-600">الشحنات المكتملة</span>
-                                        <span id="stats-completed" class="font-bold text-green-600">0 شحنة</span>
+                                        <span id="stats-completed" class="font-bold text-green-600">1 شحنة</span>
                                     </div>
                                     
                                     <div class="flex justify-between items-center">
                                         <span class="text-gray-600">الشحنات قيد الانتظار</span>
-                                        <span id="stats-pending" class="font-bold text-orange-600">0 شحنة</span>
+                                        <span id="stats-pending" class="font-bold text-orange-600">1 شحنة</span>
                                     </div>
                                     
                                     <div class="flex justify-between items-center">
                                         <span class="text-gray-600">متوسط التقييم</span>
                                         <div class="flex items-center">
                                             <span class="text-yellow-500 ml-1">★</span>
-                                            <span id="stats-rating" class="font-bold text-gray-800">-</span>
+                                            <span id="stats-rating" class="font-bold text-gray-800">5.0</span>
                                         </div>
                                     </div>
                                     
                                     <div class="flex justify-between items-center">
                                         <span class="text-gray-600">تاريخ الانضمام</span>
-                                        <span id="stats-join-date" class="text-gray-800">-</span>
+                                        <span id="stats-join-date" class="text-gray-800">2024</span>
                                     </div>
                                 </div>
                             </div>
@@ -495,437 +488,244 @@
 
     <!-- JavaScript -->
     <script>
-        // نظام لوحة التحكم
-        class DashboardManager {
-            constructor() {
-                this.shipments = JSON.parse(localStorage.getItem('shipments') || '[]');
-                this.travelers = [];
-                this.init();
+        // بيانات وهمية للمسافرين
+        const travelers = [
+            {
+                id: 1,
+                name: 'سالم الأحمد',
+                route: 'الرياض - الدمام',
+                vehicle: 'سيارة',
+                rating: 4.9,
+                availableSpace: 'صندوق صغير',
+                phone: '0551234567',
+                photo: 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg',
+                city: 'الرياض'
+            },
+            {
+                id: 2,
+                name: 'نورة السعد',
+                route: 'جدة - مكة',
+                vehicle: 'شاحنة',
+                rating: 4.5,
+                availableSpace: 'حقيبة متوسطة',
+                phone: '0557654321',
+                photo: 'https://kimi-web-img.moonshot.cn/img/citydelivery.com.vn/91e8f1c59ea323b3451428d49d42e5175d177b1b.jpg',
+                city: 'جدة'
+            },
+            {
+                id: 3,
+                name: 'فهد العتيبي',
+                route: 'الرياض - جدة',
+                vehicle: 'سيارة',
+                rating: 5.0,
+                availableSpace: 'مساحة كبيرة',
+                phone: '0555555555',
+                photo: 'https://kimi-web-img.moonshot.cn/img/www.logos3pl.com/5d00aff09838f481e5de19381115e8d8e0e18878.jpg',
+                city: 'الرياض'
             }
+        ];
 
-            init() {
-                this.setupEventListeners();
-                this.loadTravelers();
-                this.updateDashboard();
-            }
+        // دوال التحكم بالتبويبات
+        function switchTab(tabName) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
 
-            setupEventListeners() {
-                // تبويبات التنقل
-                document.querySelectorAll('.dashboard-tab').forEach(tab => {
-                    tab.addEventListener('click', (e) => {
-                        const tabName = e.target.dataset.tab;
-                        this.switchTab(tabName);
-                    });
-                });
+            // إزالة النشاط من جميع الأزرار
+            document.querySelectorAll('.dashboard-tab').forEach(tab => {
+                tab.classList.remove('active', 'bg-blue-500', 'text-white');
+                tab.classList.add('bg-gray-200', 'text-gray-700');
+            });
 
-                // نموذج إنشاء الشحنة
-                document.getElementById('createShipmentForm')?.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.createNewShipment();
-                });
+            // إظهار المحتوى المطلوب
+            document.getElementById(`${tabName}-content`).classList.remove('hidden');
 
-                // نموذج الملف الشخصي
-                document.getElementById('profile-form')?.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.updateProfile();
-                });
+            // تفعيل الزر النشط
+            document.querySelector(`[data-tab="${tabName}"]`).classList.remove('bg-gray-200', 'text-gray-700');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active', 'bg-blue-500', 'text-white');
 
-                // مرشحات المسافرين
-                document.getElementById('city-filter')?.addEventListener('change', () => this.filterTravelers());
-                document.getElementById('vehicle-filter')?.addEventListener('change', () => this.filterTravelers());
-            }
-
-            switchTab(tabName) {
-                // إخفاء جميع المحتويات
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.add('hidden');
-                });
-
-                // إزالة النشاط من جميع الأزرار
-                document.querySelectorAll('.dashboard-tab').forEach(tab => {
-                    tab.classList.remove('active', 'bg-blue-500', 'text-white');
-                    tab.classList.add('bg-gray-200', 'text-gray-700');
-                });
-
-                // إظهار المحتوى المطلوب
-                document.getElementById(`${tabName}-content`).classList.remove('hidden');
-
-                // تفعيل الزر النشط
-                document.querySelector(`[data-tab="${tabName}"]`).classList.remove('bg-gray-200', 'text-gray-700');
-                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active', 'bg-blue-500', 'text-white');
-
-                // تحميل البيانات إذا لزم الأمر
-                if (tabName === 'travelers') {
-                    this.loadTravelers();
-                }
-            }
-
-            async loadTravelers() {
-                try {
-                    // محاكاة جلب البيانات من الخادم
-                    this.travelers = [
-                        {
-                            id: 1,
-                            name: 'سالم الأحمد',
-                            route: 'الرياض - الدمام',
-                            vehicle: 'سيارة',
-                            rating: 4.9,
-                            availableSpace: 'صندوق صغير',
-                            phone: '0551234567',
-                            photo: 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg',
-                            city: 'الرياض'
-                        },
-                        {
-                            id: 2,
-                            name: 'نورة السعد',
-                            route: 'جدة - مكة',
-                            vehicle: 'شاحنة',
-                            rating: 4.5,
-                            availableSpace: 'حقيبة متوسطة',
-                            phone: '0557654321',
-                            photo: 'https://kimi-web-img.moonshot.cn/img/citydelivery.com.vn/91e8f1c59ea323b3451428d49d42e5175d177b1b.jpg',
-                            city: 'جدة'
-                        },
-                        {
-                            id: 3,
-                            name: 'فهد العتيبي',
-                            route: 'الرياض - جدة',
-                            vehicle: 'سيارة',
-                            rating: 5.0,
-                            availableSpace: 'مساحة كبيرة',
-                            phone: '0555555555',
-                            photo: 'https://kimi-web-img.moonshot.cn/img/www.logos3pl.com/5d00aff09838f481e5de19381115e8d8e0e18878.jpg',
-                            city: 'الرياض'
-                        }
-                    ];
-
-                    this.displayTravelers(this.travelers);
-                } catch (error) {
-                    console.error('Error loading travelers:', error);
-                }
-            }
-
-            displayTravelers(travelers) {
-                const grid = document.getElementById('travelers-grid');
-                if (!grid) return;
-
-                grid.innerHTML = travelers.map(traveler => `
-                    <div class="traveler-card bg-white rounded-lg p-4 border border-gray-200">
-                        <div class="flex items-center mb-3">
-                            <img src="${traveler.photo}" alt="${traveler.name}" class="w-12 h-12 rounded-full object-cover ml-3">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-800">${traveler.name}</h4>
-                                <div class="flex items-center text-sm text-gray-600">
-                                    <span class="text-yellow-500 ml-1">★</span>
-                                    <span>${traveler.rating}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <div class="flex justify-between">
-                                <span>المسار:</span>
-                                <span class="font-medium">${traveler.route}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>المركبة:</span>
-                                <span class="font-medium">${traveler.vehicle}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>المساحة:</span>
-                                <span class="font-medium">${traveler.availableSpace}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>المدينة:</span>
-                                <span class="font-medium">${traveler.city}</span>
-                            </div>
-                        </div>
-                        <button onclick="contactTraveler(${traveler.id})" 
-                                class="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
-                            تواصل مع المسافر
-                        </button>
-                    </div>
-                `).join('');
-            }
-
-            filterTravelers() {
-                const cityFilter = document.getElementById('city-filter').value;
-                const vehicleFilter = document.getElementById('vehicle-filter').value;
-
-                let filtered = this.travelers;
-
-                if (cityFilter) {
-                    filtered = filtered.filter(t => t.city === cityFilter);
-                }
-
-                if (vehicleFilter) {
-                    filtered = filtered.filter(t => t.vehicle === vehicleFilter);
-                }
-
-                this.displayTravelers(filtered);
-            }
-
-            createNewShipment() {
-                const formData = {
-                    type: document.getElementById('shipment-type').value,
-                    weight: document.getElementById('shipment-weight').value,
-                    fromCity: document.getElementById('from-city').value,
-                    toCity: document.getElementById('to-city').value,
-                    description: document.getElementById('shipment-description').value
-                };
-
-                // التحقق من البيانات
-                if (!formData.type || !formData.weight || !formData.fromCity || !formData.toCity) {
-                    alert('يرجى ملء جميع الحقول المطلوبة');
-                    return;
-                }
-
-                if (formData.fromCity === formData.toCity) {
-                    alert('مدينة الإرسال والاستلام يجب أن تكونا مختلفتين');
-                    return;
-                }
-
-                // إنشاء الشحنة
-                const shipment = {
-                    id: 'SH-' + Date.now(),
-                    ...formData,
-                    status: 'pending',
-                    createdAt: new Date().toISOString(),
-                    price: this.calculatePrice(formData.weight, formData.fromCity, formData.toCity)
-                };
-
-                this.shipments.push(shipment);
-                localStorage.setItem('shipments', JSON.stringify(this.shipments));
-
-                alert('تم إرسال الشحنة بنجاح! سيتم التواصل مع المسافرين المتاحين.');
-                this.showShipmentsTab();
-                this.updateDashboard();
-            }
-
-            calculatePrice(weight, fromCity, toCity) {
-                let basePrice = 50;
-                let weightPrice = weight * 5;
-                let distanceMultiplier = 1;
-
-                if (fromCity === 'الرياض' && toCity === 'جدة') distanceMultiplier = 1.5;
-                else if (fromCity === 'الرياض' && toCity === 'الدمام') distanceMultiplier = 1.2;
-                else if (fromCity === 'جدة' && toCity === 'الدمام') distanceMultiplier = 1.3;
-
-                return Math.round((basePrice + weightPrice) * distanceMultiplier);
-            }
-
-            updateDashboard() {
-                const user = window.authManager?.getCurrentUser();
-                if (!user) return;
-
-                // تحديث الشحنات
-                const userShipments = this.shipments; // في الواقع، يجب تصفية حسب المستخدم
-                this.displayShipments(userShipments);
-
-                // تحديث الإحصائيات
-                const completed = userShipments.filter(s => s.status === 'delivered').length;
-                const pending = userShipments.filter(s => s.status === 'pending').length;
-
-                document.getElementById('completed-shipments').textContent = completed;
-                document.getElementById('stats-total').textContent = userShipments.length + ' شحنة';
-                document.getElementById('stats-completed').textContent = completed + ' شحنة';
-                document.getElementById('stats-pending').textContent = pending + ' شحنة';
-
-                // تحديث الملف الشخصي
-                this.updateProfileInfo(user);
-            }
-
-            displayShipments(shipments) {
-                const tbody = document.getElementById('shipments-table-body');
-                if (!tbody) return;
-
-                tbody.innerHTML = shipments.map(shipment => `
-                    <tr class="border-b border-gray-100 hover:bg-gray-50">
-                        <td class="py-3 px-4 text-sm">${shipment.id}</td>
-                        <td class="py-3 px-4 text-sm">${this.getShipmentTypeIcon(shipment.type)} ${this.getShipmentTypeText(shipment.type)}</td>
-                        <td class="py-3 px-4 text-sm">${shipment.fromCity} → ${shipment.toCity}</td>
-                        <td class="py-3 px-4 text-sm">
-                            <span class="status-badge ${this.getStatusClass(shipment.status)}">${this.getStatusText(shipment.status)}</span>
-                        </td>
-                        <td class="py-3 px-4 text-sm font-semibold ${shipment.status === 'delivered' ? 'text-green-600' : 'text-blue-600'}">${shipment.price} ريال</td>
-                        <td class="py-3 px-4 text-sm">
-                            <button class="text-blue-600 hover:text-blue-800 ml-2" onclick="viewShipmentDetails('${shipment.id}')">تفاصيل</button>
-                            ${shipment.status === 'pending' ? '<button class="text-red-600 hover:text-red-800" onclick="cancelShipment(\'' + shipment.id + '\')">إلغاء</button>' : ''}
-                        </td>
-                    </tr>
-                `).join('');
-            }
-
-            getShipmentTypeIcon(type) {
-                const icons = {
-                    'documents': '📄',
-                    'electronics': '📱',
-                    'clothes': '👕',
-                    'food': '🍕',
-                    'other': '📦'
-                };
-                return icons[type] || '📦';
-            }
-
-            getShipmentTypeText(type) {
-                const texts = {
-                    'documents': 'مستندات',
-                    'electronics': 'إلكترونيات',
-                    'clothes': 'ملابس',
-                    'food': 'أطعمة',
-                    'other': 'أخرى'
-                };
-                return texts[type] || 'أخرى';
-            }
-
-            getStatusClass(status) {
-                const classes = {
-                    'pending': 'status-pending',
-                    'in-transit': 'status-in-transit',
-                    'delivered': 'status-delivered',
-                    'cancelled': 'status-cancelled'
-                };
-                return classes[status] || 'status-pending';
-            }
-
-            getStatusText(status) {
-                const texts = {
-                    'pending': 'قيد الانتظار',
-                    'in-transit': 'في الطريق',
-                    'delivered': 'تم التوصيل',
-                    'cancelled': 'ملغية'
-                };
-                return texts[status] || 'قيد الانتظار';
-            }
-
-            updateProfileInfo(user) {
-                document.getElementById('sidebar-user-name').textContent = user.displayName || user.email;
-                document.getElementById('user-name').textContent = user.displayName || user.email;
-                document.getElementById('profile-email').value = user.email;
-                document.getElementById('member-since').textContent = `عضو منذ ${new Date().getFullYear()}`;
-            }
-
-            updateProfile() {
-                alert('تم تحديث الملف الشخصي بنجاح!');
-                // في الواقع، يجب حفظ التغييرات في قاعدة البيانات
+            // تحميل البيانات إذا لزم الأمر
+            if (tabName === 'travelers') {
+                loadTravelers();
             }
         }
 
-        // دوال عامة
+        // دوال الشحنات
         function showCreateShipmentForm() {
-            const user = window.authManager?.getCurrentUser();
-            if (!user) {
-                alert('يرجى تسجيل الدخول أولاً');
-                window.location.href = 'login.html';
-                return;
-            }
-            window.dashboardManager.switchTab('create-shipment');
+            switchTab('create-shipment');
         }
 
         function showAvailableTravelers() {
-            window.dashboardManager.switchTab('travelers');
+            switchTab('travelers');
         }
 
         function showShipmentsTab() {
-            window.dashboardManager.switchTab('shipments');
+            switchTab('shipments');
+        }
+
+        function createNewShipment(event) {
+            event.preventDefault();
+            
+            const type = document.getElementById('shipment-type').value;
+            const weight = document.getElementById('shipment-weight').value;
+            const fromCity = document.getElementById('from-city').value;
+            const toCity = document.getElementById('to-city').value;
+            const description = document.getElementById('shipment-description').value;
+
+            if (!type || !weight || !fromCity || !toCity) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+
+            if (fromCity === toCity) {
+                alert('مدينة الإرسال والاستلام يجب أن تكونا مختلفتين');
+                return;
+            }
+
+            alert('تم إرسال الشحنة بنجاح! سيتم التواصل مع المسافرين المتاحين.');
+            showShipmentsTab();
+            
+            // إعادة تعيين النموذج
+            document.getElementById('createShipmentForm').reset();
+        }
+
+        // دوال المسافرين
+        function loadTravelers() {
+            const grid = document.getElementById('travelers-grid');
+            grid.innerHTML = travelers.map(traveler => `
+                <div class="traveler-card bg-white rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-center mb-3">
+                        <img src="${traveler.photo}" alt="${traveler.name}" class="w-12 h-12 rounded-full object-cover ml-3">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-800">${traveler.name}</h4>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="text-yellow-500 ml-1">★</span>
+                                <span>${traveler.rating}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>المسار:</span>
+                            <span class="font-medium">${traveler.route}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>المركبة:</span>
+                            <span class="font-medium">${traveler.vehicle}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>المساحة:</span>
+                            <span class="font-medium">${traveler.availableSpace}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>المدينة:</span>
+                            <span class="font-medium">${traveler.city}</span>
+                        </div>
+                    </div>
+                    <button onclick="contactTraveler(${traveler.id})" 
+                            class="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
+                        تواصل مع المسافر
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filterTravelers() {
+            const cityFilter = document.getElementById('city-filter').value;
+            const vehicleFilter = document.getElementById('vehicle-filter').value;
+
+            let filtered = travelers;
+
+            if (cityFilter) {
+                filtered = filtered.filter(t => t.city === cityFilter);
+            }
+
+            if (vehicleFilter) {
+                filtered = filtered.filter(t => t.vehicle === vehicleFilter);
+            }
+
+            const grid = document.getElementById('travelers-grid');
+            grid.innerHTML = filtered.map(traveler => `
+                <div class="traveler-card bg-white rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-center mb-3">
+                        <img src="${traveler.photo}" alt="${traveler.name}" class="w-12 h-12 rounded-full object-cover ml-3">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-800">${traveler.name}</h4>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <span class="text-yellow-500 ml-1">★</span>
+                                <span>${traveler.rating}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>المسار:</span>
+                            <span class="font-medium">${traveler.route}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>المركبة:</span>
+                            <span class="font-medium">${traveler.vehicle}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>المساحة:</span>
+                            <span class="font-medium">${traveler.availableSpace}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>المدينة:</span>
+                            <span class="font-medium">${traveler.city}</span>
+                        </div>
+                    </div>
+                    <button onclick="contactTraveler(${traveler.id})" 
+                            class="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
+                        تواصل مع المسافر
+                    </button>
+                </div>
+            `).join('');
         }
 
         function contactTraveler(travelerId) {
-            const traveler = window.dashboardManager.travelers.find(t => t.id === travelerId);
+            const traveler = travelers.find(t => t.id === travelerId);
             if (traveler) {
                 alert(`سيتم التواصل مع المسافر ${traveler.name}\nرقم الجوال: ${traveler.phone}\n\nملاحظة: يتم الاتفاق على السعر والتفاصيل مباشرة مع المسافر.`);
             }
         }
 
+        // دوال الشحنات التفصيلية
         function viewShipmentDetails(shipmentId) {
-            const shipment = window.dashboardManager.shipments.find(s => s.id === shipmentId);
-            if (shipment) {
-                alert(`تفاصيل الشحنة:\n\nرقم الشحنة: ${shipment.id}\nالنوع: ${window.dashboardManager.getShipmentTypeText(shipment.type)}\nالمسار: ${shipment.fromCity} → ${shipment.toCity}\nالوزن: ${shipment.weight} كجم\nالحالة: ${window.dashboardManager.getStatusText(shipment.status)}\nالسعر: ${shipment.price} ريال`);
-            }
+            alert(`تفاصيل الشحنة:\n\nرقم الشحنة: ${shipmentId}\nالحالة: نشطة\nيمكنك التواصل مع المسافر للمزيد من التفاصيل.`);
+        }
+
+        function rateShipment(shipmentId) {
+            alert(`تقييم الشحنة ${shipmentId}\n\nسيتم فتح نموذج التقييم قريباً.`);
+        }
+
+        function trackShipment(shipmentId) {
+            alert(`تتبع الشحنة ${shipmentId}\n\nنظام التتبع قيد التطوير.`);
         }
 
         function cancelShipment(shipmentId) {
             if (confirm('هل أنت متأكد من إلغاء هذه الشحنة؟')) {
-                const shipment = window.dashboardManager.shipments.find(s => s.id === shipmentId);
-                if (shipment) {
-                    shipment.status = 'cancelled';
-                    localStorage.setItem('shipments', JSON.stringify(window.dashboardManager.shipments));
-                    window.dashboardManager.updateDashboard();
-                    alert('تم إلغاء الشحنة بنجاح');
-                }
+                alert(`تم إلغاء الشحنة ${shipmentId} بنجاح`);
             }
         }
 
-        async function logout() {
-            await window.authManager.logout();
+        // دوال الملف الشخصي
+        function updateProfile(event) {
+            event.preventDefault();
+            alert('تم تحديث الملف الشخصي بنجاح!');
         }
 
-        // تهيئة لوحة التحكم عند تحميل الصفحة
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            const user = window.authManager?.getCurrentUser();
-            
-            if (user) {
-                document.getElementById('login-required').style.display = 'none';
-                window.dashboardManager = new DashboardManager();
-                
-                // تهيئة الرسم البياني
-                initializeChart();
-            } else {
-                document.getElementById('login-required').style.display = 'block';
-                document.querySelectorAll('.tab-content').forEach(tab => {
-                    tab.classList.add('hidden');
-                });
-            }
-
-            // تحديث واجهة المستخدم
-            window.authManager.updateUI();
+            loadTravelers();
         });
-
-        function initializeChart() {
-            const chartDom = document.getElementById('shipments-chart');
-            if (chartDom) {
-                const myChart = echarts.init(chartDom);
-                
-                const option = {
-                    title: {
-                        text: 'نشاط الشحنات الشهري',
-                        textStyle: {
-                            color: '#374151',
-                            fontSize: 16,
-                            fontWeight: 'bold'
-                        }
-                    },
-                    tooltip: {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data: ['الشحنات المكتملة', 'الشحنات الجديدة']
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر']
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [
-                        {
-                            name: 'الشحنات المكتملة',
-                            type: 'bar',
-                            data: [2, 1, 3, 2, 1, 2, 1, 0, 0, 0],
-                            itemStyle: { color: '#10b981' }
-                        },
-                        {
-                            name: 'الشحنات الجديدة',
-                            type: 'bar',
-                            data: [1, 2, 2, 1, 1, 1, 2, 1, 0, 0],
-                            itemStyle: { color: '#3b82f6' }
-                        }
-                    ]
-                };
-
-                myChart.setOption(option);
-            }
-        }
     </script>
 </body>
 </html>
