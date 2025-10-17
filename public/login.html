@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - الشحنة السريعة</title>
+    <meta name="description" content="تسجيل الدخول إلى حسابك في منصة الشحنة السريعة">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
+            authDomain: "fastship-2026.firebaseapp.com",
+            projectId: "fastship-2026",
+            storageBucket: "fastship-2026.firebasestorage.app",
+            messagingSenderId: "646769615933",
+            appId: "1:646769615933:web:5fd3c82c31969192f9f654"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        window.firebaseAuth = auth;
+        window.firebaseSignIn = signInWithEmailAndPassword;
+        window.firebaseOnAuthStateChanged = onAuthStateChanged;
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #ed8936, #1a365d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .rtl {
+            direction: rtl;
+        }
+        
+        .ltr {
+            direction: ltr;
+        }
+    </style>
+</head>
+<body class="rtl">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-2xl font-bold gradient-text">الشحنة السريعة</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
+                        <a href="travelers.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">المسافرون</a>
+                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لوحة التحكم</a>
+                        <a href="support.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الدعم الفني</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <a href="register.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        إنشاء حساب
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="min-h-screen flex items-center justify-center pt-16 pb-12">
+        <div class="max-w-md w-full mx-4">
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl card-hover">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold gradient-text mb-2">تسجيل الدخول</h1>
+                    <p class="text-gray-600">مرحباً بعودتك! سجل الدخول إلى حسابك</p>
+                </div>
+
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                        <input type="email" id="email" name="email" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                               placeholder="أدخل بريدك الإلكتروني">
+                        <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
+                        <input type="password" id="password" name="password" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                               placeholder="أدخل كلمة المرور">
+                        <div id="password-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="remember" class="ml-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm text-gray-600">تذكرني</span>
+                        </label>
+                        <a href="forgot-password.html" class="text-sm text-blue-600 hover:text-blue-800">نسيت كلمة المرور؟</a>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center">
+                        <span id="login-text">تسجيل الدخول</span>
+                        <div id="login-spinner" class="hidden animate-spin ml-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                    </button>
+
+                    <div class="text-center">
+                        <span class="text-sm text-gray-600">ليس لديك حساب؟</span>
+                        <a href="register.html" class="text-sm text-blue-600 hover:text-blue-800 font-semibold mr-2">إنشاء حساب جديد</a>
+                    </div>
+                </form>
+
+                <!-- Social Login -->
+                <div class="mt-8">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">أو سجل الدخول باستخدام</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-2 gap-3">
+                        <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            <span>Google</span>
+                        </button>
+                        <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            <span>Apple</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Accounts -->
+            <div class="mt-6 bg-blue-50 rounded-xl p-4">
+                <h3 class="text-sm font-semibold text-blue-800 mb-2">حسابات تجريبية للاختبار:</h3>
+                <div class="text-xs text-blue-700 space-y-1">
+                    <p><strong>عميل:</strong> client@example.com / password123</p>
+                    <p><strong>موصل:</strong> traveler@example.com / password123</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400">
+                    © 2024 الشحنة السريعة. جميع الحقوق محفوظة | قايد صالح المصعبي
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Show loading state
+            document.getElementById('login-text').classList.add('hidden');
+            document.getElementById('login-spinner').classList.remove('hidden');
+            
+            // Clear previous errors
+            document.getElementById('email-error').classList.add('hidden');
+            document.getElementById('password-error').classList.add('hidden');
+            
+            try {
+                // تسجيل الدخول باستخدام Firebase
+                const userCredential = await window.firebaseSignIn(window.firebaseAuth, email, password);
+                const user = userCredential.user;
+                
+                // حفظ بيانات المستخدم في localStorage
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    emailVerified: user.emailVerified,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                };
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+                
+            } catch (error) {
+                console.error('خطأ في تسجيل الدخول:', error);
+                
+                // عرض رسالة الخطأ المناسبة
+                let errorMessage = 'حدث خطأ أثناء تسجيل الدخول';
+                
+                if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'البريد الإلكتروني غير صحيح';
+                    document.getElementById('email-error').textContent = errorMessage;
+                    document.getElementById('email-error').classList.remove('hidden');
+                } else if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'لا يوجد حساب مرتبط بهذا البريد الإلكتروني';
+                    document.getElementById('email-error').textContent = errorMessage;
+                    document.getElementById('email-error').classList.remove('hidden');
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage = 'كلمة المرور غير صحيحة';
+                    document.getElementById('password-error').textContent = errorMessage;
+                    document.getElementById('password-error').classList.remove('hidden');
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'تم محاولة الدخول عدة مرات، يرجى المحاولة لاحقاً';
+                    document.getElementById('password-error').textContent = errorMessage;
+                    document.getElementById('password-error').classList.remove('hidden');
+                } else {
+                    document.getElementById('password-error').textContent = errorMessage;
+                    document.getElementById('password-error').classList.remove('hidden');
+                }
+                
+                // Reset loading state
+                document.getElementById('login-text').classList.remove('hidden');
+                document.getElementById('login-spinner').classList.add('hidden');
+            }
+        });
+
+        // التحقق من حالة المستخدم إذا كان مسجلاً بالفعل
+        window.firebaseOnAuthStateChanged(window.firebaseAuth, (user) => {
+            if (user) {
+                // المستخدم مسجل الدخول بالفعل
+                console.log('المستخدم مسجل الدخول:', user);
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
+[file content end]
+
+[file name]: travelers.html
+[file content begin]
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البحث عن موصلين - الشحنة السريعة</title>
+    <meta name="description" content="ابحث عن الموصلين المتاحين لنقل شحنتك بأفضل الأسعار">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
+            authDomain: "fastship-2026.firebaseapp.com",
+            projectId: "fastship-2026",
+            storageBucket: "fastship-2026.firebasestorage.app",
+            messagingSenderId: "646769615933",
+            appId: "1:646769615933:web:5fd3c82c31969192f9f654"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        window.firebaseAuth = auth;
+        window.firebaseOnAuthStateChanged = onAuthStateChanged;
+        window.firebaseSignOut = signOut;
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #ed8936, #1a365d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .rtl {
+            direction: rtl;
+        }
+        
+        .ltr {
+            direction: ltr;
+        }
+        
+        .type-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            font-weight: 600;
+        }
+        .type-small { background: #dbeafe; color: #1e40af; }
+        .type-medium { background: #fef3c7; color: #92400e; }
+        .type-large { background: #dcfce7; color: #166534; }
+        .type-x-large { background: #fae8ff; color: #86198f; }
+        
+        .traveler-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .traveler-card:hover {
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="rtl">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-2xl font-bold gradient-text">الشحنة السريعة</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
+                        <a href="travelers.html" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-blue-600">المسافرون</a>
+                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لوحة التحكم</a>
+                        <a href="support.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الدعم</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <a href="login.html" id="login-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        تسجيل الدخول
+                    </a>
+                    <a href="register.html" id="register-btn" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        إنشاء حساب
+                    </a>
+                    <div id="user-menu" class="hidden flex items-center space-x-4 space-x-reverse">
+                        <div class="flex items-center">
+                            <img id="user-avatar" src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="الملف الشخصي" class="w-8 h-8 rounded-full object-cover ml-2">
+                            <div class="text-right">
+                                <div id="user-name" class="text-sm font-medium text-gray-700"></div>
+                                <div id="user-type" class="text-xs text-gray-500"></div>
+                            </div>
+                        </div>
+                        <button onclick="logout()" class="text-gray-700 hover:text-blue-600 text-sm">
+                            تسجيل الخروج
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-24 pb-8 bg-gradient-to-br from-blue-600 to-purple-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-white">
+                <h1 class="text-3xl lg:text-4xl font-bold mb-2">ابحث عن الموصلين المناسبين</h1>
+                <p class="text-blue-100">اختر من بين أفضل الموصلين المتاحين لنقل شحنتك</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filters -->
+    <section class="py-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">🔍 بحث متقدم</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">من مدينة</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="">اختر المدينة</option>
+                            <option value="الرياض">الرياض</option>
+                            <option value="جدة">جدة</option>
+                            <option value="الدمام">الدمام</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">إلى مدينة</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="">اختر المدينة</option>
+                            <option value="الرياض">الرياض</option>
+                            <option value="جدة">جدة</option>
+                            <option value="الدمام">الدمام</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع الموصل</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="">جميع الأنواع</option>
+                            <option value="small">مسافر عادي</option>
+                            <option value="medium">صاحب سيارة</option>
+                            <option value="large">صاحب شاحنة</option>
+                            <option value="x-large">أساطيل الشحن</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">السعر الأقصى</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="">أي سعر</option>
+                            <option value="100">حتى 100 ريال</option>
+                            <option value="200">حتى 200 ريال</option>
+                            <option value="500">حتى 500 ريال</option>
+                            <option value="1000">حتى 1000 ريال</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center mt-6">
+                    <button class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg">
+                        🔄 إعادة تعيين
+                    </button>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+                        🔍 بحث
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Travelers Grid -->
+    <section class="py-8 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">الموصلون المتاحون</h2>
+                <div class="text-sm text-gray-600">
+                    <span id="travelers-count">12</span> موصل متاح
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Traveler Card 1 -->
+                <div class="traveler-card bg-white border border-gray-200 rounded-2xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="أحمد محمد" class="w-12 h-12 rounded-full object-cover ml-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">أحمد محمد</h4>
+                                <span class="type-badge type-small">مسافر عادي</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">70 ريال</div>
+                            <div class="text-sm text-gray-500">لـ 20 كجم</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <div class="flex justify-between">
+                            <span>🚗 المركبة:</span>
+                            <span>تاكسي</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>📍 المسار:</span>
+                            <span>الرياض → جدة</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⏰ المغادرة:</span>
+                            <span>غداً 08:00 ص</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⭐ التقييم:</span>
+                            <span class="text-yellow-500">4.8 ★ (12 رحلة)</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                        اختر هذا الموصل
+                    </button>
+                </div>
+
+                <!-- Traveler Card 2 -->
+                <div class="traveler-card bg-white border border-gray-200 rounded-2xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img src="https://kimi-web-img.moonshot.cn/img/www.logos3pl.com/5d00aff09838f481e5de19381115e8d8e0e18878.jpg" alt="خالد السيد" class="w-12 h-12 rounded-full object-cover ml-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">خالد السيد</h4>
+                                <span class="type-badge type-medium">صاحب سيارة</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">120 ريال</div>
+                            <div class="text-sm text-gray-500">لـ 500 كجم</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <div class="flex justify-between">
+                            <span>🚗 المركبة:</span>
+                            <span>سيارة خاصة</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>📍 المسار:</span>
+                            <span>الدمام → الرياض</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⏰ المغادرة:</span>
+                            <span>بعد غد 10:00 ص</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⭐ التقييم:</span>
+                            <span class="text-yellow-500">4.9 ★ (8 رحلات)</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                        اختر هذا الموصل
+                    </button>
+                </div>
+
+                <!-- Traveler Card 3 -->
+                <div class="traveler-card bg-white border border-gray-200 rounded-2xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img src="https://kimi-web-img.moonshot.cn/img/citydelivery.com.vn/91e8f1c59ea323b3451428d49d42e5175d177b1b.jpg" alt="فاطمة الزهراني" class="w-12 h-12 rounded-full object-cover ml-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">فاطمة الزهراني</h4>
+                                <span class="type-badge type-small">مسافر عادي</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">65 ريال</div>
+                            <div class="text-sm text-gray-500">لـ 15 كجم</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <div class="flex justify-between">
+                            <span>🚗 المركبة:</span>
+                            <span>باص</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>📍 المسار:</span>
+                            <span>مكة → المدينة</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⏰ المغادرة:</span>
+                            <span>اليوم 02:00 م</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⭐ التقييم:</span>
+                            <span class="text-yellow-500">4.7 ★ (15 رحلة)</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                        اختر هذا الموصل
+                    </button>
+                </div>
+
+                <!-- Traveler Card 4 -->
+                <div class="traveler-card bg-white border border-gray-200 rounded-2xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img src="https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/04dc512f136ba384803bf3a0bc2e3634f672862b.jpg" alt="عبدالله الراشد" class="w-12 h-12 rounded-full object-cover ml-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">عبدالله الراشد</h4>
+                                <span class="type-badge type-large">صاحب شاحنة</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">800 ريال</div>
+                            <div class="text-sm text-gray-500">لـ 5 أطنان</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <div class="flex justify-between">
+                            <span>🚗 المركبة:</span>
+                            <span>شاحنة دينة</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>📍 المسار:</span>
+                            <span>جدة → أبها</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⏰ المغادرة:</span>
+                            <span>الجمعة 06:00 ص</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⭐ التقييم:</span>
+                            <span class="text-yellow-500">4.8 ★ (20 رحلة)</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                        اختر هذا الموصل
+                    </button>
+                </div>
+
+                <!-- Traveler Card 5 -->
+                <div class="traveler-card bg-white border border-gray-200 rounded-2xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/9b0fe9c31b4d3f3b8e7c9d8c8a3e7d3a.jpg" alt="محمد العتيبي" class="w-12 h-12 rounded-full object-cover ml-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">محمد العتيبي</h4>
+                                <span class="type-badge type-medium">صاحب بيك اب</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">250 ريال</div>
+                            <div class="text-sm text-gray-500">لـ 1 طن</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <div class="flex justify-between">
+                            <span>🚗 المركبة:</span>
+                            <span>بيك اب</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>📍 المسار:</span>
+                            <span>الرياض → القصيم</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⏰ المغادرة:</span>
+                            <span>غداً 09:00 ص</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⭐ التقييم:</span>
+                            <span class="text-yellow-500">4.6 ★ (10 رحلات)</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                        اختر هذا الموصل
+                    </button>
+                </div>
+
+                <!-- Traveler Card 6 -->
+                <div class="traveler-card bg-white border border-gray-200 rounded-2xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/8a7b9c4d6e5f3a2b1c0d9e8f7a6b5c4d.jpg" alt="نورة الشمري" class="w-12 h-12 rounded-full object-cover ml-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">نورة الشمري</h4>
+                                <span class="type-badge type-small">مسافر عادي</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">55 ريال</div>
+                            <div class="text-sm text-gray-500">لـ 10 كجم</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <div class="flex justify-between">
+                            <span>🚗 المركبة:</span>
+                            <span>سيارة عائلية</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>📍 المسار:</span>
+                            <span>الطائف → مكة</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⏰ المغادرة:</span>
+                            <span>اليوم 04:00 م</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>⭐ التقييم:</span>
+                            <span class="text-yellow-500">4.9 ★ (7 رحلات)</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                        اختر هذا الموصل
+                    </button>
+                </div>
+            </div>
+
+            <!-- Load More -->
+            <div class="text-center mt-8">
+                <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg transition-colors">
+                    عرض المزيد من الموصلين
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">كيف تختار الموصل المناسب؟</h2>
+                <p class="text-xl text-gray-600">نصائح لاختيار أفضل موصل لشحنتك</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📊</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">تحقق من التقييمات</h3>
+                    <p class="text-gray-600">اقرأ تقييمات المستخدمين السابقين لتتأكد من جودة الخدمة</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">💰</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">قارن الأسعار</h3>
+                    <p class="text-gray-600">قارن بين عروض الأسعار المختلفة لتحصل على أفضل صفقة</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🚗</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">اختر نوع المركبة</h3>
+                    <p class="text-gray-600">اختر المركبة المناسبة لحجم وشكل شحنتك</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text mb-4">الشحنة السريعة</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات داخل المملكة وخارجها.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">الرئيسية</a></li>
+                        <li><a href="travelers.html" class="text-gray-400 hover:text-white transition-colors">المسافرون</a></li>
+                        <li><a href="dashboard.html" class="text-gray-400 hover:text-white transition-colors">لوحة التحكم</a></li>
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الدعم الفني</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">المساعدة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الأسئلة الشائعة</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">الشروط والأحكام</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</a></li>
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">معلومات التواصل</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p>📧 gide1979@gmail.com</p>
+                        <p>📞 +966551519723</p>
+                        <p>📍 المملكة العربية السعودية</p>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-400">
+                            صاحب الفكرة: قايد صالح المصعبي
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 الشحنة السريعة. جميع الحقوق محفوظة | قايد صالح المصعبي
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="shipment.js"></script>
+    <script>
+        // تحديث واجهة المستخدم بناءً على حالة تسجيل الدخول
+        function updateAuthUI(user) {
+            const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
+            const userMenu = document.getElementById('user-menu');
+            const userName = document.getElementById('user-name');
+            const userType = document.getElementById('user-type');
+            const userAvatar = document.getElementById('user-avatar');
+
+            if (user) {
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (registerBtn) registerBtn.style.display = 'none';
+                if (userMenu) userMenu.classList.remove('hidden');
+                if (userName) userName.textContent = user.displayName || user.email;
+                if (userType) userType.textContent = 'مستخدم';
+                if (userAvatar) userAvatar.src = user.photoURL || 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg';
+            } else {
+                if (loginBtn) loginBtn.style.display = 'block';
+                if (registerBtn) registerBtn.style.display = 'block';
+                if (userMenu) userMenu.classList.add('hidden');
+            }
+        }
+
+        // تسجيل الخروج
+        async function logout() {
+            try {
+                await window.firebaseSignOut(window.firebaseAuth);
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('خطأ في تسجيل الخروج:', error);
+            }
+        }
+
+        // معالجة اختيار موصل
+        function selectTraveler(travelerId) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!currentUser.uid) {
+                alert('يرجى تسجيل الدخول أولاً لاختيار موصل');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            alert('تم اختيار الموصل بنجاح! سيتم التواصل معك قريباً.');
+            // في التطبيق الحقيقي: إرسال طلب إلى الموصل
+        }
+
+        // إضافة event listeners لأزرار الاختيار
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectButtons = document.querySelectorAll('.traveler-card button');
+            selectButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const travelerCard = this.closest('.traveler-card');
+                    const travelerName = travelerCard.querySelector('h4').textContent;
+                    selectTraveler(travelerName);
+                });
+            });
+
+            // التحقق من حالة المصادقة
+            window.firebaseOnAuthStateChanged(window.firebaseAuth, (user) => {
+                if (user) {
+                    const userData = {
+                        uid: user.uid,
+                        email: user.email,
+                        emailVerified: user.emailVerified,
+                        displayName: user.displayName,
+                        photoURL: user.photoURL
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    updateAuthUI(userData);
+                } else {
+                    localStorage.removeItem('currentUser');
+                    updateAuthUI(null);
+                }
+            });
+
+            // تحميل بيانات المستخدم من localStorage
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                updateAuthUI(JSON.parse(savedUser));
+            }
+
+            // تحميل بيانات الموصلين من النظام
+            loadTravelersData();
+        });
+
+        function loadTravelersData() {
+            // في التطبيق الحقيقي: جلب البيانات من shipmentManager
+            const travelers = window.shipmentManager?.travelers || [];
+            document.getElementById('travelers-count').textContent = travelers.length || '12';
+        }
+    </script>
+</body>
+</html>
+[file content end]
+
+[file name]: support.html
+[file content begin]
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدعم الفني - الشحنة السريعة</title>
+    <meta name="description" content="مركز المساعدة والدعم الفني لمنصة الشحنة السريعة">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #ed8936, #1a365d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .rtl {
+            direction: rtl;
+        }
+        
+        .ltr {
+            direction: ltr;
+        }
+        
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body class="rtl">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-2xl font-bold gradient-text">الشحنة السريعة</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
+                        <a href="travelers.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">المسافرون</a>
+                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لوحة التحكم</a>
+                        <a href="support.html" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-blue-600">الدعم</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <a href="login.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        تسجيل الدخول
+                    </a>
+                    <a href="register.html" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        إنشاء حساب
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-24 pb-12 bg-gradient-to-br from-blue-600 to-purple-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-white">
+                <h1 class="text-4xl lg:text-5xl font-bold mb-4">مركز المساعدة والدعم</h1>
+                <p class="text-xl text-blue-100">نحن هنا لمساعدتك في أي استفسار أو مشكلة تواجهك</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Options -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">📞</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">الدعم الهاتفي</h3>
+                    <p class="text-gray-600 mb-4">تواصل معنا مباشرة عبر الهاتف</p>
+                    <div class="text-blue-600 font-semibold text-lg">+966551519723</div>
+                    <p class="text-sm text-gray-500 mt-2">متاح من 8 صباحاً إلى 10 مساءً</p>
+                </div>
+                
+                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">📧</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">البريد الإلكتروني</h3>
+                    <p class="text-gray-600 mb-4">أرسل استفسارك وسنرد خلال 24 ساعة</p>
+                    <div class="text-green-600 font-semibold text-lg">gide1979@gmail.com</div>
+                    <p class="text-sm text-gray-500 mt-2">رد سريع ومفصل</p>
+                </div>
+                
+                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
+                    <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">💬</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">الدردشة المباشرة</h3>
+                    <p class="text-gray-600 mb-4">محادثة فورية مع فريق الدعم</p>
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                        ابدأ الدردشة
+                    </button>
+                    <p class="text-sm text-gray-500 mt-2">متاح 24/7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">الأسئلة الشائعة</h2>
+                <p class="text-xl text-gray-600">إجابات على أكثر الأسئلة شيوعاً</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item bg-white rounded-2xl p-6 card-hover">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(1)">
+                        <h3 class="text-lg font-semibold text-gray-800">كيف يمكنني إرسال شحنة؟</h3>
+                        <span class="text-xl text-gray-600">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-gray-600 leading-relaxed">
+                            لإرسال شحنة:
+                            <br>1. سجل الدخول إلى حسابك
+                            <br>2. انقر على "إرسال شحنة جديدة"
+                            <br>3. املأ معلومات الشحنة (النوع، الوزن، المدن)
+                            <br>4. اختر من بين الموصلين المتاحين
+                            <br>5. تأكد من الطلب وانتظر التواصل
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item bg-white rounded-2xl p-6 card-hover">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(2)">
+                        <h3 class="text-lg font-semibold text-gray-800">كيف أصبح موصلًا؟</h3>
+                        <span class="text-xl text-gray-600">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-gray-600 leading-relaxed">
+                            لتصبح موصلًا:
+                            <br>1. أنشئ حساباً واختر "موصل"
+                            <br>2. املأ معلومات مرkبتك وسعتك
+                            <br>3. ارفع رخصة القيادة والوثائق المطلوبة
+                            <br>4. حدد مسارات رحلاتك وأسعارك
+                            <br>5. ابدأ في استقبال طلبات الشحن المتطابقة
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item bg-white rounded-2xl p-6 card-hover">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(3)">
+                        <h3 class="text-lg font-semibold text-gray-800">كيف يتم حساب الأسعار؟</h3>
+                        <span class="text-xl text-gray-600">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-gray-600 leading-relaxed">
+                            الأسعار تعتمد على:
+                            <br>• <strong>الوزن والحجم:</strong> الشحنات الأكبر تكلف أكثر
+                            <br>• <strong>المسافة:</strong> المدن البعيدة تكلف أكثر
+                            <br>• <strong>نوع المركبة:</strong> الشاحنات تكلف أكثر من السيارات
+                            <br>• <strong>السرعة:</strong> التوصيل السريع قد يكلف أكثر
+                            <br>• <strong>نوع الشحنة:</strong> بعض الأنواع تتطلب عناية خاصة
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item bg-white rounded-2xl p-6 card-hover">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(4)">
+                        <h3 class="text-lg font-semibold text-gray-800">هل الشحنات مؤمنة؟</h3>
+                        <span class="text-xl text-gray-600">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-gray-600 leading-relaxed">
+                            نعم، جميع الشحنات مؤمنة:
+                            <br>• <strong>تأمين أساسي:</strong> يغطي معظم الحوادث
+                            <br>• <strong>تأمين إضافي:</strong> متاح للشحنات القيمة
+                            <br>• <strong>نظام التتبع:</strong> متابعة لحظية للشحنة
+                            <br>• <strong>التوثيق:</strong> جميع الموصلين موثقون
+                            <br>• <strong>حل النزاعات:</strong> فريق مختص لحل أي مشاكل
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="faq-item bg-white rounded-2xl p-6 card-hover">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleFAQ(5)">
+                        <h3 class="text-lg font-semibold text-gray-800">ماذا لو تأخرت الشحنة؟</h3>
+                        <span class="text-xl text-gray-600">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-gray-600 leading-relaxed">
+                            في حال التأخير:
+                            <br>1. <strong>التواصل المباشر:</strong> تواصل مع الموصل أولاً
+                            <br>2. <strong>تتبع الشحنة:</strong> استخدم نظام التتبع اللحظي
+                            <br>3. <strong>الدعم الفني:</strong> تواصل معنا فوراً
+                            <br>4. <strong>التعويض:</strong> قد يكون هناك تعويض حسب المدة
+                            <br>5. <strong>التقييم:</strong> قيم الخدمة لمساعدة الآخرين
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="py-16 bg-white">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">اتصل بنا</h2>
+                <p class="text-xl text-gray-600">أرسل استفسارك وسنرد عليك في أقرب وقت</p>
+            </div>
+
+            <form class="bg-gray-50 rounded-2xl p-8 card-hover">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الكامل</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" placeholder="أدخل اسمك الكامل">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                        <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" placeholder="أدخل بريدك الإلكتروني">
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">نوع الاستفسار</label>
+                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
+                        <option value="">اختر نوع الاستفسار</option>
+                        <option value="technical">مشكلة تقنية</option>
+                        <option value="shipment">استفسار عن شحنة</option>
+                        <option value="payment">استفسار عن الدفع</option>
+                        <option value="account">استفسار عن الحساب</option>
+                        <option value="other">استفسار آخر</option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">الرسالة</label>
+                    <textarea rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" placeholder="صف استفسارك بالتفصيل..."></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
+                    إرسال الاستفسار
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text mb-4">الشحنة السريعة</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات داخل المملكة وخارجها.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">الرئيسية</a></li>
+                        <li><a href="travelers.html" class="text-gray-400 hover:text-white transition-colors">المسافرون</a></li>
+                        <li><a href="dashboard.html" class="text-gray-400 hover:text-white transition-colors">لوحة التحكم</a></li>
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الدعم الفني</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">المساعدة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الأسئلة الشائعة</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">الشروط والأحكام</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</a></li>
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">معلومات التواصل</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p>📧 gide1979@gmail.com</p>
+                        <p>📞 +966551519723</p>
+                        <p>📍 المملكة العربية السعودية</p>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-400">
+                            صاحب الفكرة: قايد صالح المصعبي
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 الشحنة السريعة. جميع الحقوق محفوظة | قايد صالح المصعبي
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function toggleFAQ(index) {
+            const faqItem = document.querySelectorAll('.faq-item')[index - 1];
+            const isActive = faqItem.classList.contains('active');
+            
+            // إغلاق جميع الأسئلة الأخرى
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('span').textContent = '+';
+            });
+            
+            // فتح/إغلاق السؤال المحدد
+            if (!isActive) {
+                faqItem.classList.add('active');
+                faqItem.querySelector('span').textContent = '−';
+            }
+        }
+
+        // إضافة تأثيرات للأسئلة الشائعة
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    toggleFAQ(index + 1);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+[file content end]
