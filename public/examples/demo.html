@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastShip - مثال تجريبي للمنطق الأساسي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- FastShip Core -->
+    <script src="../core/models.js"></script>
+    <script src="../core/matching-engine.js"></script>
+    <script src="../core/pricing-engine.js"></script>
+    <script src="../core/trip-manager.js"></script>
+    <script src="../core/mock-data.js"></script>
+    <script src="../core/fastship-core.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        .demo-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .output {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            direction: ltr;
+            text-align: left;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-800 mb-8">🚀 FastShip - مثال تجريبي</h1>
+        
+        <!-- إحصائيات المنصة -->
+        <div class="demo-section">
+            <h2 class="text-2xl font-bold mb-4">📊 إحصائيات المنصة</h2>
+            <button onclick="showStatistics()" class="btn btn-primary">عرض الإحصائيات</button>
+            <div id="stats-output" class="output mt-4" style="display: none;"></div>
+        </div>
+        
+        <!-- إنشاء شحنة -->
+        <div class="demo-section">
+            <h2 class="text-2xl font-bold mb-4">📦 إنشاء شحنة جديدة</h2>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block mb-2">الفئة:</label>
+                    <select id="category" class="w-full p-2 border rounded">
+                        <option value="electronics">إلكترونيات</option>
+                        <option value="documents">مستندات</option>
+                        <option value="clothes">ملابس</option>
+                        <option value="food">أطعمة</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-2">الوزن (كجم):</label>
+                    <input type="number" id="weight" value="5" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">من:</label>
+                    <select id="fromCity" class="w-full p-2 border rounded">
+                        <option value="الرياض">الرياض</option>
+                        <option value="جدة">جدة</option>
+                        <option value="الدمام">الدمام</option>
+                        <option value="المدينة المنورة">المدينة المنورة</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-2">إلى:</label>
+                    <select id="toCity" class="w-full p-2 border rounded">
+                        <option value="جدة">جدة</option>
+                        <option value="الرياض">الرياض</option>
+                        <option value="الدمام">الدمام</option>
+                        <option value="المدينة المنورة">المدينة المنورة</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="createShipment()" class="btn btn-primary">إنشاء الشحنة</button>
+            <div id="shipment-output" class="output mt-4" style="display: none;"></div>
+        </div>
+        
+        <!-- البحث عن موصلين -->
+        <div class="demo-section">
+            <h2 class="text-2xl font-bold mb-4">🔍 البحث عن موصلين</h2>
+            <button onclick="findCarriers()" class="btn btn-primary">بحث عن موصلين</button>
+            <div id="carriers-output" class="output mt-4" style="display: none;"></div>
+        </div>
+        
+        <!-- حساب السعر -->
+        <div class="demo-section">
+            <h2 class="text-2xl font-bold mb-4">💰 حساب السعر</h2>
+            <button onclick="calculatePrice()" class="btn btn-primary">حساب السعر</button>
+            <div id="price-output" class="output mt-4" style="display: none;"></div>
+        </div>
+        
+        <!-- البحث عن رحلات -->
+        <div class="demo-section">
+            <h2 class="text-2xl font-bold mb-4">🛣️ البحث عن رحلات متاحة</h2>
+            <button onclick="findTrips()" class="btn btn-primary">بحث عن رحلات</button>
+            <div id="trips-output" class="output mt-4" style="display: none;"></div>
+        </div>
+        
+        <!-- تحسين المساحة -->
+        <div class="demo-section">
+            <h2 class="text-2xl font-bold mb-4">🎯 تحسين استغلال المساحة</h2>
+            <button onclick="optimizeSpace()" class="btn btn-primary">تحسين المساحة</button>
+            <div id="optimize-output" class="output mt-4" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <script>
+        let lastShipmentId = null;
+        
+        // انتظار جاهزية المنصة
+        window.addEventListener('fastship:ready', function() {
+            console.log('✅ FastShip ready!');
+        });
+        
+        // عرض الإحصائيات
+        function showStatistics() {
+            const stats = window.FastShip.getStatistics();
+            const output = document.getElementById('stats-output');
+            output.style.display = 'block';
+            output.innerHTML = JSON.stringify(stats, null, 2);
+        }
+        
+        // إنشاء شحنة
+        function createShipment() {
+            const category = document.getElementById('category').value;
+            const weight = parseFloat(document.getElementById('weight').value);
+            const fromCity = document.getElementById('fromCity').value;
+            const toCity = document.getElementById('toCity').value;
+            
+            // الحصول على بيانات المدن
+            const cities = window.FastShipMockData.saudiCities;
+            const fromCityData = cities.find(c => c.city === fromCity);
+            const toCityData = cities.find(c => c.city === toCity);
+            
+            const shipment = window.FastShip.createShipment({
+                senderId: 'USR-DEMO',
+                category,
+                weight,
+                dimensions: { length: 30, width: 20, height: 10 },
+                fromLocation: new window.FastShipModels.Location(fromCityData),
+                toLocation: new window.FastShipModels.Location(toCityData),
+                pickupDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                description: 'شحنة تجريبية',
+                value: 1000,
+                insuranceRequired: true
+            });
+            
+            lastShipmentId = shipment.id;
+            
+            const output = document.getElementById('shipment-output');
+            output.style.display = 'block';
+            output.innerHTML = JSON.stringify({
+                id: shipment.id,
+                type: shipment.type,
+                weight: shipment.weight,
+                from: fromCity,
+                to: toCity,
+                status: shipment.status
+            }, null, 2);
+        }
+        
+        // البحث عن موصلين
+        function findCarriers() {
+            if (!lastShipmentId) {
+                alert('يرجى إنشاء شحنة أولاً');
+                return;
+            }
+            
+            const matches = window.FastShip.findCarriersForShipment(lastShipmentId, {
+                minRating: 4.0,
+                verifiedOnly: true
+            });
+            
+            const output = document.getElementById('carriers-output');
+            output.style.display = 'block';
+            output.innerHTML = JSON.stringify(matches.map(m => ({
+                carrier: {
+                    id: m.carrier.id,
+                    type: m.carrier.type,
+                    rating: m.carrier.rating,
+                    availableSpace: m.carrier.availableSpace
+                },
+                score: m.score,
+                tripsCount: m.trips.length
+            })), null, 2);
+        }
+        
+        // حساب السعر
+        function calculatePrice() {
+            if (!lastShipmentId) {
+                alert('يرجى إنشاء شحنة أولاً');
+                return;
+            }
+            
+            const matches = window.FastShip.findCarriersForShipment(lastShipmentId);
+            
+            if (matches.length === 0) {
+                alert('لا يوجد موصلين متاحين');
+                return;
+            }
+            
+            const pricing = window.FastShip.calculateShipmentPrice(
+                lastShipmentId,
+                matches[0].carrier.id,
+                {
+                    urgency: 'nextDay',
+                    includeInsurance: true
+                }
+            );
+            
+            const output = document.getElementById('price-output');
+            output.style.display = 'block';
+            output.innerHTML = JSON.stringify({
+                basePrice: pricing.basePrice + ' ريال',
+                additionalFees: pricing.additionalFees + ' ريال',
+                insurance: pricing.insuranceCost + ' ريال',
+                tax: pricing.taxAmount + ' ريال',
+                totalPrice: pricing.totalPrice + ' ريال',
+                carrierEarnings: pricing.carrierEarnings + ' ريال',
+                platformCommission: pricing.platformCommission + ' ريال'
+            }, null, 2);
+        }
+        
+        // البحث عن رحلات
+        function findTrips() {
+            if (!lastShipmentId) {
+                alert('يرجى إنشاء شحنة أولاً');
+                return;
+            }
+            
+            const trips = window.FastShip.findTripsForShipment(lastShipmentId);
+            
+            const output = document.getElementById('trips-output');
+            output.style.display = 'block';
+            output.innerHTML = JSON.stringify(trips.map(t => ({
+                tripId: t.trip.id,
+                carrierId: t.trip.carrierId,
+                price: t.price + ' ريال',
+                distance: t.distance + ' كم',
+                duration: t.estimatedDuration + ' ساعة',
+                matchScore: t.matchScore
+            })), null, 2);
+        }
+        
+        // تحسين المساحة
+        function optimizeSpace() {
+            const trips = window.FastShipTripManager.getAllTrips();
+            
+            if (trips.length === 0) {
+                alert('لا توجد رحلات متاحة');
+                return;
+            }
+            
+            const optimization = window.FastShip.optimizeTripSpace(trips[0].id);
+            
+            const output = document.getElementById('optimize-output');
+            output.style.display = 'block';
+            output.innerHTML = JSON.stringify({
+                selectedShipments: optimization.shipments.length,
+                totalWeight: optimization.totalWeight + ' كجم',
+                utilization: optimization.utilization.toFixed(2) + '%',
+                remainingCapacity: optimization.remainingCapacity + ' كجم'
+            }, null, 2);
+        }
+    </script>
+</body>
+</html>
