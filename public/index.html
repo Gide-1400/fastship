@@ -28,14 +28,23 @@
             appId: "1:646769615933:web:5fd3c82c31969192f9f654"
         };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        
-        // جعل auth متاحاً globally
-        window.firebaseAuth = auth;
-        window.firebaseOnAuthStateChanged = onAuthStateChanged;
-        window.firebaseSignOut = signOut;
+        // التحقق من التكوين قبل التهيئة
+        if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+            console.error('Firebase configuration is incomplete');
+        } else {
+            try {
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                
+                // جعل auth متاحاً globally
+                window.firebaseAuth = auth;
+                window.firebaseOnAuthStateChanged = onAuthStateChanged;
+                window.firebaseSignOut = signOut;
+            } catch (error) {
+                console.error('Firebase initialization error:', error);
+            }
+        }
     </script>
     
     <!-- Animation Libraries -->
@@ -59,7 +68,7 @@
         }
         
         .hero-bg {
-            background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url('resources/hero-logistics.jpg');
+            background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -166,7 +175,7 @@
                     </a>
                     <div id="user-menu" class="hidden flex items-center space-x-4 space-x-reverse">
                         <div class="flex items-center">
-                            <img id="user-avatar" src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="الملف الشخصي" class="w-8 h-8 rounded-full object-cover ml-2">
+                            <img id="user-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="الملف الشخصي" class="w-8 h-8 rounded-full object-cover ml-2" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=ش'">
                             <div class="text-right">
                                 <div id="user-name" class="text-sm font-medium text-gray-700"></div>
                                 <div id="user-type" class="text-xs text-gray-500"></div>
@@ -465,7 +474,7 @@
                 <!-- العميل 1 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/citydelivery.com.vn/91e8f1c59ea323b3451428d49d42e5175d177b1b.jpg" alt="فاطمة الزهراني" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="فاطمة الزهراني" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=ف'">
                         <div>
                             <h4 class="font-bold text-gray-800">فاطمة الزهراني</h4>
                             <div class="flex text-yellow-500">
@@ -481,7 +490,7 @@
                 <!-- العميل 2 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg" alt="أحمد محمد" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="أحمد محمد" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=أ'">
                         <div>
                             <h4 class="font-bold text-gray-800">أحمد محمد</h4>
                             <div class="flex text-yellow-500">
@@ -497,7 +506,7 @@
                 <!-- العميل 3 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/www.logos3pl.com/5d00aff09838f481e5de19381115e8d8e0e18878.jpg" alt="خالد السيد" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="خالد السيد" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=خ'">
                         <div>
                             <h4 class="font-bold text-gray-800">خالد السيد</h4>
                             <div class="flex text-yellow-500">
@@ -513,7 +522,7 @@
                 <!-- العميل 4 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/04dc512f136ba384803bf3a0bc2e3634f672862b.jpg" alt="سارة القحطاني" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="سارة القحطاني" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=س'">
                         <div>
                             <h4 class="font-bold text-gray-800">سارة القحطاني</h4>
                             <div class="flex text-yellow-500">
@@ -529,7 +538,7 @@
                 <!-- العميل 5 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/9b0fe9c31b4d3f3b8e7c9d8c8a3e7d3a.jpg" alt="محمد العتيبي" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="محمد العتيبي" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=م'">
                         <div>
                             <h4 class="font-bold text-gray-800">محمد العتيبي</h4>
                             <div class="flex text-yellow-500">
@@ -545,7 +554,7 @@
                 <!-- العميل 6 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/8a7b9c4d6e5f3a2b1c0d9e8f7a6b5c4d.jpg" alt="نورة الشمري" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="نورة الشمري" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=ن'">
                         <div>
                             <h4 class="font-bold text-gray-800">نورة الشمري</h4>
                             <div class="flex text-yellow-500">
@@ -561,7 +570,7 @@
                 <!-- العميل 7 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d.jpg" alt="عبدالله الغامدي" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1517070208541-6ddc4d3efbcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="عبدالله الغامدي" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=ع'">
                         <div>
                             <h4 class="font-bold text-gray-800">عبدالله الغامدي</h4>
                             <div class="flex text-yellow-500">
@@ -577,7 +586,7 @@
                 <!-- العميل 8 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/6e5f4d3c2b1a0b9c8d7e6f5a4b3c2d1e.jpg" alt="لطيفة الحربي" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="لطيفة الحربي" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=ل'">
                         <div>
                             <h4 class="font-bold text-gray-800">لطيفة الحربي</h4>
                             <div class="flex text-yellow-500">
@@ -593,7 +602,7 @@
                 <!-- العميل 9 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/5d4c3b2a1b0c9d8e7f6a5b4c3d2e1f0a.jpg" alt="ياسر الرشيد" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="ياسر الرشيد" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=ي'">
                         <div>
                             <h4 class="font-bold text-gray-800">ياسر الرشيد</h4>
                             <div class="flex text-yellow-500">
@@ -609,7 +618,7 @@
                 <!-- العميل 10 -->
                 <div class="testimonial-card">
                     <div class="flex items-center mb-6">
-                        <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/4c3b2a1b0c9d8e7f6a5b4c3d2e1f0a9b.jpg" alt="ريم الفهد" class="w-16 h-16 rounded-full object-cover ml-4">
+                        <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="ريم الفهد" class="w-16 h-16 rounded-full object-cover ml-4" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=ر'">
                         <div>
                             <h4 class="font-bold text-gray-800">ريم الفهد</h4>
                             <div class="flex text-yellow-500">
@@ -721,25 +730,34 @@
     <script>
         // Typing Animation
         document.addEventListener('DOMContentLoaded', function() {
-            var typed = new Typed('.typed-text', {
-                strings: ['بسرعة', 'بأمان', 'بسهولة', 'بثقة'],
-                typeSpeed: 50,
-                backSpeed: 30,
-                backDelay: 2000,
-                loop: true
-            });
+            try {
+                var typed = new Typed('.typed-text', {
+                    strings: ['بسرعة', 'بأمان', 'بسهولة', 'بثقة'],
+                    typeSpeed: 50,
+                    backSpeed: 30,
+                    backDelay: 2000,
+                    loop: true
+                });
+            } catch (error) {
+                console.error('Typed.js error:', error);
+            }
             
             // Counter Animation
             function animateCounter(element, target, duration = 2000) {
+                if (!element || isNaN(target)) {
+                    console.error('Invalid counter element or target');
+                    return;
+                }
+                
                 let start = 0;
                 const increment = target / (duration / 16);
                 const timer = setInterval(() => {
                     start += increment;
                     if (start >= target) {
-                        element.textContent = target;
+                        element.textContent = target.toLocaleString();
                         clearInterval(timer);
                     } else {
-                        element.textContent = Math.floor(start);
+                        element.textContent = Math.floor(start).toLocaleString();
                     }
                 }, 16);
             }
@@ -749,34 +767,58 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const target = parseInt(entry.target.getAttribute('data-target'));
-                        animateCounter(entry.target, target);
-                        observer.unobserve(entry.target);
+                        if (!isNaN(target)) {
+                            animateCounter(entry.target, target);
+                            observer.unobserve(entry.target);
+                        }
                     }
                 });
             }, { threshold: 0.5 });
             
             document.querySelectorAll('.counter').forEach(counter => {
-                observer.observe(counter);
+                if (counter && counter.getAttribute('data-target')) {
+                    observer.observe(counter);
+                }
             });
             
             // Check authentication state
             if (window.firebaseOnAuthStateChanged) {
                 window.firebaseOnAuthStateChanged(window.firebaseAuth, (user) => {
-                    const loginBtn = document.getElementById('login-btn');
-                    const registerBtn = document.getElementById('register-btn');
-                    const userMenu = document.getElementById('user-menu');
-                    
-                    if (user) {
-                        loginBtn.classList.add('hidden');
-                        registerBtn.classList.add('hidden');
-                        userMenu.classList.remove('hidden');
+                    try {
+                        const loginBtn = document.getElementById('login-btn');
+                        const registerBtn = document.getElementById('register-btn');
+                        const userMenu = document.getElementById('user-menu');
                         
-                        document.getElementById('user-name').textContent = user.displayName || user.email;
-                        document.getElementById('user-type').textContent = 'عميل';
-                    } else {
-                        loginBtn.classList.remove('hidden');
-                        registerBtn.classList.remove('hidden');
-                        userMenu.classList.add('hidden');
+                        if (!loginBtn || !registerBtn || !userMenu) {
+                            console.error('Authentication elements not found');
+                            return;
+                        }
+                        
+                        if (user) {
+                            loginBtn.classList.add('hidden');
+                            registerBtn.classList.add('hidden');
+                            userMenu.classList.remove('hidden');
+                            
+                            const userNameElement = document.getElementById('user-name');
+                            const userTypeElement = document.getElementById('user-type');
+                            const userAvatarElement = document.getElementById('user-avatar');
+                            
+                            if (userNameElement) {
+                                userNameElement.textContent = user.displayName || user.email || 'مستخدم';
+                            }
+                            if (userTypeElement) {
+                                userTypeElement.textContent = 'عميل';
+                            }
+                            if (userAvatarElement && user.photoURL) {
+                                userAvatarElement.src = user.photoURL;
+                            }
+                        } else {
+                            loginBtn.classList.remove('hidden');
+                            registerBtn.classList.remove('hidden');
+                            userMenu.classList.add('hidden');
+                        }
+                    } catch (error) {
+                        console.error('Auth state change error:', error);
                     }
                 });
             }
@@ -784,30 +826,42 @@
         
         // Handle Send Shipment
         function handleSendShipment() {
-            if (window.firebaseAuth && window.firebaseAuth.currentUser) {
-                window.location.href = 'dashboard.html?action=create-shipment';
-            } else {
-                window.location.href = 'login.html?redirect=dashboard.html%3Faction%3Dcreate-shipment';
+            try {
+                if (window.firebaseAuth && window.firebaseAuth.currentUser) {
+                    window.location.href = 'dashboard.html?action=create-shipment';
+                } else {
+                    window.location.href = 'login.html?redirect=dashboard.html%3Faction%3Dcreate-shipment';
+                }
+            } catch (error) {
+                console.error('Navigation error:', error);
+                window.location.href = 'login.html';
             }
         }
         
         // Handle Deliver Shipments
         function handleDeliverShipments() {
-            if (window.firebaseAuth && window.firebaseAuth.currentUser) {
-                window.location.href = 'travelers.html';
-            } else {
-                window.location.href = 'login.html?redirect=travelers.html';
+            try {
+                if (window.firebaseAuth && window.firebaseAuth.currentUser) {
+                    window.location.href = 'travelers.html';
+                } else {
+                    window.location.href = 'login.html?redirect=travelers.html';
+                }
+            } catch (error) {
+                console.error('Navigation error:', error);
+                window.location.href = 'login.html';
             }
         }
         
         // Logout Function
-        function logout() {
-            if (window.firebaseSignOut) {
-                window.firebaseSignOut(window.firebaseAuth).then(() => {
+        async function logout() {
+            try {
+                if (window.firebaseSignOut && window.firebaseAuth) {
+                    await window.firebaseSignOut(window.firebaseAuth);
                     window.location.href = 'index.html';
-                }).catch((error) => {
-                    console.error('Logout error:', error);
-                });
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = 'index.html';
             }
         }
     </script>
