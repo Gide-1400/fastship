@@ -70,10 +70,21 @@
         }
         
         .hero-bg {
-            background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(135deg, rgba(26, 54, 93, 0.9), rgba(59, 130, 246, 0.8)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(237, 137, 54, 0.1), rgba(59, 130, 246, 0.1));
+            pointer-events: none;
         }
         
         .gradient-text {
@@ -119,12 +130,92 @@
             50% { transform: translateY(-20px); }
         }
         
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .scale-in {
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+            }
+        }
+        
         .rtl {
             direction: rtl;
         }
         
         .ltr {
             direction: ltr;
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .shipment-type-card,
+            .carrier-type-card {
+                padding: 1.5rem;
+            }
+            
+            .hero-bg {
+                background-attachment: scroll;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .testimonial-card {
+                padding: 1.5rem;
+            }
         }
         
         .testimonials-grid {
@@ -135,16 +226,86 @@
         }
         
         .testimonial-card {
-            background: #f9fafb;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border-radius: 1rem;
             padding: 2rem;
             border: 1px solid #e5e7eb;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ed8936, #3b82f6);
         }
         
         .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .shipment-type-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shipment-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(237, 137, 54, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .shipment-type-card:hover::before {
+            opacity: 1;
+        }
+        
+        .shipment-type-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .carrier-type-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carrier-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(139, 92, 246, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .carrier-type-card:hover::before {
+            opacity: 1;
+        }
+        
+        .carrier-type-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -271,6 +432,47 @@
                         </div>
                     </div>
                     
+                    <!-- Quick Shipment Calculator -->
+                    <div class="mt-12 max-w-4xl mx-auto">
+                        <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+                            <h3 class="text-2xl font-bold text-white text-center mb-6">حاسبة السعر السريعة</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-white font-semibold mb-2">نوع الشحنة</label>
+                                    <select id="quick-shipment-type" class="w-full px-4 py-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-orange-500">
+                                        <option value="">اختر نوع الشحنة</option>
+                                        <option value="small">شحنات صغيرة (حتى 20 كجم)</option>
+                                        <option value="medium">شحنات متوسطة (حتى 1.5 طن)</option>
+                                        <option value="large">شحنات كبيرة (حتى 50 طن)</option>
+                                        <option value="massive">شحنات عملاقة (فوق 50 طن)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-white font-semibold mb-2">الوزن (كجم)</label>
+                                    <input type="number" id="quick-weight" placeholder="أدخل الوزن" 
+                                           class="w-full px-4 py-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-orange-500 placeholder-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-white font-semibold mb-2">المسافة</label>
+                                    <select id="quick-distance" class="w-full px-4 py-3 rounded-lg bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-orange-500">
+                                        <option value="local">داخل المدينة</option>
+                                        <option value="regional">بين المدن</option>
+                                        <option value="national">بين المناطق</option>
+                                        <option value="international">دولي</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-center">
+                                <button id="calculate-price-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
+                                    احسب السعر
+                                </button>
+                                <div id="price-result" class="mt-4 text-2xl font-bold text-white hidden">
+                                    السعر المقدر: <span id="calculated-price">0</span> ريال
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- Trust Indicators -->
                     <div class="grid grid-cols-3 gap-8 text-center mt-16">
                         <div>
@@ -384,56 +586,18 @@
             </div>
             
             <!-- قسم أصحاب الشحنات -->
-            <div class="bg-white rounded-2xl p-8 mb-8">
+            <div class="bg-white rounded-2xl p-8 mb-8 shadow-lg">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6">🎒 لأصحاب الشحنات</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="font-semibold mb-4">الشحنات الصغيرة (حتى 20 كجم)</h4>
-                        <p class="text-gray-600">مستندات، كتب، هدايا صغيرة</p>
-                        <p class="text-sm text-green-600 mt-2">↳ مع: مسافرين عاديين (تاكسي، باص)</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">الشحنات المتوسطة (حتى 1.5 طن)</h4>
-                        <p class="text-gray-600">أجهزة إلكترونية، ملابس، أطعمة</p>
-                        <p class="text-sm text-green-600 mt-2">↳ مع: أصحاب سيارات خاصة</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">الشحنات الكبيرة (حتى 50 طن)</h4>
-                        <p class="text-gray-600">أثاث، أجهزة، بضائع متوسطة</p>
-                        <p class="text-sm text-green-600 mt-2">↳ مع: أصحاب الشاحنات</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">الشحنات العملاقة (فوق 50 طن)</h4>
-                        <p class="text-gray-600">معدات، بضائع كبيرة، حاويات</p>
-                        <p class="text-sm text-green-600 mt-2">↳ مع: أساطيل الشحن</p>
-                    </div>
+                <div id="shipment-types-container">
+                    <!-- سيتم تحميل أنواع الشحنات هنا -->
                 </div>
             </div>
 
             <!-- قسم الموصلين -->
-            <div class="bg-gray-50 rounded-2xl p-8">
+            <div class="bg-gray-50 rounded-2xl p-8 shadow-lg">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6">🚗 للموصلين</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="font-semibold mb-4">مسافر عادي (حتى 20 كجم)</h4>
-                        <p class="text-gray-600">تاكسي، حافلة، طائرة، قطار</p>
-                        <p class="text-sm text-blue-600 mt-2">↳ ينقل: شحنات صغيرة</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">صاحب سيارة (حتى 1.5 طن)</h4>
-                        <p class="text-gray-600">سيارات خاصة، بيك اب</p>
-                        <p class="text-sm text-blue-600 mt-2">↳ ينقل: شحنات متوسطة</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">صاحب شاحنة (حتى 50 طن)</h4>
-                        <p class="text-gray-600">شاحنات، دينات، تريلات</p>
-                        <p class="text-sm text-blue-600 mt-2">↳ ينقل: شحنات كبيرة</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">أساطيل الشحن (فوق 50 طن)</h4>
-                        <p class="text-gray-600">شركات شحن، طائرات، سفن</p>
-                        <p class="text-sm text-blue-600 mt-2">↳ تنقل: شحنات عملاقة</p>
-                    </div>
+                <div id="carrier-types-container">
+                    <!-- سيتم تحميل أنواع الموصلين هنا -->
                 </div>
             </div>
         </div>
@@ -668,6 +832,20 @@
         </div>
     </section>
 
+    <!-- Shipment Wizard Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">إنشاء شحنة جديدة</h2>
+                <p class="text-xl text-gray-600">أرسل شحنتك بسهولة مع معالجنا الذكي</p>
+            </div>
+            
+            <div id="shipment-wizard-container">
+                <!-- سيتم تحميل معالج الشحنات هنا -->
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
         <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
@@ -729,6 +907,10 @@
         </div>
     </footer>
 
+    <!-- Shipment Types Manager -->
+    <script src="shipment-types.js"></script>
+    <script src="shipment-wizard.js"></script>
+    
     <script>
         // Typing Animation
         document.addEventListener('DOMContentLoaded', function() {
@@ -782,6 +964,55 @@
                     observer.observe(counter);
                 }
             });
+            
+            // تهيئة أنواع الشحنات والموصلين
+            if (window.shipmentTypeManager) {
+                // تحميل أنواع الشحنات
+                window.shipmentTypeManager.createShipmentTypeSelector('shipment-types-container');
+                
+                // تحميل أنواع الموصلين
+                window.shipmentTypeManager.createCarrierTypeSelector('carrier-types-container');
+                
+                // إضافة أحداث الاستماع
+                document.addEventListener('shipmentTypeSelected', function(e) {
+                    console.log('تم اختيار نوع الشحنة:', e.detail.type);
+                    // يمكن إضافة منطق إضافي هنا
+                });
+                
+                document.addEventListener('carrierTypeSelected', function(e) {
+                    console.log('تم اختيار نوع الموصل:', e.detail.type);
+                    // يمكن إضافة منطق إضافي هنا
+                });
+            }
+            
+            // تهيئة حاسبة السعر السريعة
+            const calculateBtn = document.getElementById('calculate-price-btn');
+            const priceResult = document.getElementById('price-result');
+            const calculatedPrice = document.getElementById('calculated-price');
+            
+            if (calculateBtn) {
+                calculateBtn.addEventListener('click', function() {
+                    const shipmentType = document.getElementById('quick-shipment-type').value;
+                    const weight = parseFloat(document.getElementById('quick-weight').value);
+                    const distance = document.getElementById('quick-distance').value;
+                    
+                    if (!shipmentType || !weight || weight <= 0) {
+                        alert('يرجى ملء جميع الحقول بشكل صحيح');
+                        return;
+                    }
+                    
+                    if (window.shipmentTypeManager) {
+                        const shipmentTypeData = window.shipmentTypeManager.shipmentTypes[shipmentType];
+                        const carrierType = window.shipmentTypeManager.getCompatibleCarriers(shipmentTypeData)[0];
+                        
+                        if (carrierType) {
+                            const price = window.shipmentTypeManager.calculatePrice(shipmentTypeData, carrierType, distance);
+                            calculatedPrice.textContent = price.toFixed(2);
+                            priceResult.classList.remove('hidden');
+                        }
+                    }
+                });
+            }
             
             // Check authentication state
             if (window.firebaseOnAuthStateChanged) {

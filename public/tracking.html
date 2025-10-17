@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتبع الشحنات - FastShip Platform</title>
+    <meta name="description" content="تتبع شحناتك لحظة بلحظة مع خرائط تفاعلية وتحديثات فورية">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
+            authDomain: "fastship-2026.firebaseapp.com",
+            projectId: "fastship-2026",
+            storageBucket: "fastship-2026.firebasestorage.app",
+            messagingSenderId: "646769615933",
+            appId: "1:646769615933:web:5fd3c82c31969192f9f654"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        window.firebaseAuth = auth;
+        window.firebaseOnAuthStateChanged = onAuthStateChanged;
+        window.firebaseSignOut = signOut;
+    </script>
+    
+    <!-- Leaflet for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #ed8936, #1a365d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tracking-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .tracking-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .map-container {
+            height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .custom-marker {
+            background: transparent;
+            border: none;
+        }
+        
+        .marker-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pickup .marker-icon {
+            background: #10b981;
+            color: white;
+        }
+        
+        .delivery .marker-icon {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .current .marker-icon {
+            background: #3b82f6;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+        
+        .rtl {
+            direction: rtl;
+        }
+        
+        .ltr {
+            direction: ltr;
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .map-container {
+                height: 300px;
+            }
+            
+            .tracking-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="rtl">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold gradient-text">FastShip Tracking</h1>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
+                        <a href="travelers.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">المسافرون</a>
+                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لوحة التحكم</a>
+                        <a href="tracking.html" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-blue-600">تتبع الشحنات</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        تسجيل الدخول
+                    </button>
+                    <button class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        إنشاء حساب
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-24 pb-12 bg-gradient-to-br from-blue-600 to-purple-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-white mb-12">
+                <h1 class="text-4xl lg:text-5xl font-bold mb-4">تتبع شحناتك</h1>
+                <p class="text-xl text-blue-100">تابع شحنتك لحظة بلحظة مع خرائط تفاعلية وتحديثات فورية</p>
+            </div>
+            
+            <!-- Tracking Search -->
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 shadow-2xl">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-white mb-2">رقم التتبع</label>
+                            <input type="text" id="tracking-number" placeholder="أدخل رقم التتبع..." 
+                                   class="w-full px-4 py-3 border border-white/30 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white/20 text-white placeholder-gray-300">
+                        </div>
+                        <div class="flex items-end">
+                            <button id="track-shipment-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                                تتبع الشحنة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Tracking Info -->
+            <div id="tracking-info" class="mb-8">
+                <!-- سيتم تحميل معلومات التتبع هنا -->
+            </div>
+
+            <!-- Map Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Map -->
+                <div class="tracking-card p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">خريطة التتبع</h3>
+                    <div id="tracking-map" class="map-container"></div>
+                </div>
+
+                <!-- Tracking Updates -->
+                <div class="tracking-card p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">تحديثات الشحنة</h3>
+                        <button id="refresh-tracking-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                            تحديث
+                        </button>
+                    </div>
+                    <div id="tracking-updates" class="space-y-4">
+                        <div class="text-center py-12">
+                            <div class="text-6xl mb-4">📦</div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">ابدأ بتتبع شحنتك</h3>
+                            <p class="text-gray-600">أدخل رقم التتبع أعلاه لبدء التتبع</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="mt-12">
+                <h3 class="text-2xl font-bold text-white mb-6 text-center">إجراءات سريعة</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="tracking-card p-6 text-center">
+                        <div class="text-4xl mb-4">📱</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">تطبيق الهاتف</h4>
+                        <p class="text-gray-600 mb-4">حمل تطبيقنا للهاتف المحمول لتتبع أسهل</p>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                            تحميل التطبيق
+                        </button>
+                    </div>
+                    
+                    <div class="tracking-card p-6 text-center">
+                        <div class="text-4xl mb-4">🔔</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">الإشعارات</h4>
+                        <p class="text-gray-600 mb-4">احصل على إشعارات فورية عند تحديث حالة الشحنة</p>
+                        <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                            تفعيل الإشعارات
+                        </button>
+                    </div>
+                    
+                    <div class="tracking-card p-6 text-center">
+                        <div class="text-4xl mb-4">📞</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">الدعم الفني</h4>
+                        <p class="text-gray-600 mb-4">تواصل معنا للحصول على المساعدة</p>
+                        <button class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                            اتصل بنا
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text mb-4">FastShip</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        منصة إلكترونية متطورة تربط بين أصحاب الشحنات والمسافرين لاستغلال المساحة الفارغة وتسهيل نقل الشحنات.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">الرئيسية</a></li>
+                        <li><a href="travelers.html" class="text-gray-400 hover:text-white transition-colors">المسافرون</a></li>
+                        <li><a href="dashboard.html" class="text-gray-400 hover:text-white transition-colors">لوحة التحكم</a></li>
+                        <li><a href="tracking.html" class="text-gray-400 hover:text-white transition-colors">تتبع الشحنات</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">المساعدة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">الأسئلة الشائعة</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">الشروط والأحكام</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</a></li>
+                        <li><a href="support.html" class="text-gray-400 hover:text-white transition-colors">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">معلومات التواصل</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p>📧 info@fastship.com</p>
+                        <p>📞 +966551519723</p>
+                        <p>📍 المملكة العربية السعودية</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 FastShip Platform. جميع الحقوق محفوظة.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+    <script src="tracking-system.js"></script>
+    
+    <script>
+        // تهيئة صفحة التتبع
+        document.addEventListener('DOMContentLoaded', function() {
+            // تهيئة نظام التتبع
+            if (window.trackingSystem) {
+                console.log('نظام التتبع جاهز');
+            }
+        });
+    </script>
+</body>
+</html>
