@@ -870,6 +870,89 @@
             }
         }
     </script>
+    
+    <!-- FastShip Core System -->
+    <script src="fastship-core.js"></script>
+    <script src="fastship-enhanced.js"></script>
+    <script src="fastship-api.js"></script>
+    <script src="fastship-demo-data.js"></script>
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+    <script src="shipment.js"></script>
+    
+    <script>
+        // Initialize FastShip system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update UI based on current user
+            if (window.fastshipAPI) {
+                window.fastshipAPI.updateUI();
+                
+                // Update platform statistics
+                const stats = window.fastshipAPI.getPlatformStats();
+                
+                // Update counters with animation
+                if (stats) {
+                    animateCounter('platformUsers', stats.totalUsers);
+                    animateCounter('platformCarriers', stats.totalCarriers);
+                    animateCounter('platformShipments', stats.totalShipments);
+                }
+            }
+        });
+        
+        // Enhanced handleSendShipment function
+        function handleSendShipment() {
+            if (window.fastshipAPI && window.fastshipAPI.getCurrentUser()) {
+                // User is logged in, go to create shipment
+                window.location.href = 'dashboard.html?tab=create-shipment';
+            } else {
+                // User not logged in, go to login with redirect
+                window.location.href = 'login.html?redirect=create-shipment';
+            }
+        }
+        
+        // Enhanced handleDeliverShipments function
+        function handleDeliverShipments() {
+            if (window.fastshipAPI && window.fastshipAPI.getCurrentUser()) {
+                const user = window.fastshipAPI.getCurrentUser();
+                const carrier = window.fastshipAPI.getCurrentUserCarrier();
+                
+                if (carrier) {
+                    // User is a carrier, go to available shipments
+                    window.location.href = 'dashboard.html?tab=available-shipments';
+                } else {
+                    // User is not a carrier, go to carrier registration
+                    window.location.href = 'register.html?type=carrier';
+                }
+            } else {
+                // User not logged in, go to login with redirect
+                window.location.href = 'login.html?redirect=become-carrier';
+            }
+        }
+        
+        // Animate counter function
+        function animateCounter(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const startValue = 0;
+            const duration = 2000; // 2 seconds
+            const startTime = Date.now();
+            
+            function updateCounter() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
+                
+                element.textContent = currentValue.toLocaleString('ar-SA');
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+            
+            updateCounter();
+        }
+    </script>
 </body>
 </html>
 [file content end]
