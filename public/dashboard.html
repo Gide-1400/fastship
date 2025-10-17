@@ -695,10 +695,33 @@
 
             // إيجاد الشحنات المتطابقة مع المسافر
             findMatchingShipments: function(traveler) {
-                return this.availableShipments.filter(shipment => {
-                    // هنا يمكن إضافة منطق المطابقة بناءً على رحلات المسافر
-                    return shipment.status === 'available';
-                });
+                if (!traveler) return [];
+                const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+
+                // اشتقاق الحد الأقصى للوزن حسب فئة المسافر إن لم تكن موجودة
+                const fallbackMax = (function() {
+                    const cat = profile.travelerCategory;
+                    if (cat === 'independent') return 20; // مستقل
+                    if (cat === 'car') return 1500;      // سيارة خاصة
+                    if (cat === 'truck') return 50000;   // شاحنة (50 طن)
+                    if (cat === 'fleet') return 1_000_000; // أسطول
+                    return 20;
+                })();
+
+                const maxWeight = Number(profile.maxWeightKg) > 0 ? Number(profile.maxWeightKg) : fallbackMax;
+
+                // تبسيط مطابقة المسار: إذا احتوى المسار المفضل على "من → إلى" أو أي من المدينتين
+                const preferredRoutes = Array.isArray(profile.preferredRoutes) ? profile.preferredRoutes : [];
+                const matchesRoute = (shipment) => {
+                    if (preferredRoutes.length === 0) return true; // لا قيود مسار
+                    const path = `${shipment.from}-${shipment.to}`;
+                    return preferredRoutes.some(r => path.includes(r.replace('↔', '-').replace(' ', '')) || r.includes(shipment.from) || r.includes(shipment.to));
+                };
+
+                return this.availableShipments
+                    .filter(s => s.status === 'available')
+                    .filter(s => Number(s.weight) <= maxWeight)
+                    .filter(s => matchesRoute(s));
             }
         };
 
@@ -799,8 +822,14 @@
                 alert('يرجى تسجيل الدخول أولاً');
                 return;
             }
+            const shipments = window.shipmentManager.availableShipments;
+            const idx = shipments.findIndex(s => s.id === shipmentId);
+            if (idx !== -1) {
+                shipments[idx].status = 'matched';
+            }
             alert(`تم قبول الشحنة ${shipmentId} بنجاح!`);
-            // هنا يمكن إضافة منطق قبول الشحنة
+            // إعادة تحميل الجداول
+            loadTravelerShipments();
         }
 
         // تحديث واجهة المستخدم بناءً على حالة تسجيل الدخول

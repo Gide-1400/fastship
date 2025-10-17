@@ -589,6 +589,26 @@
                     accountType: formData.accountType
                 }));
 
+                // حفظ ملف المستخدم (Profile) للمطابقة لاحقاً
+                const maxWeightNum = parseFloat(formData.maxWeight) || 0;
+                const travelerCategory = formData.accountType === 'traveler'
+                    ? (maxWeightNum <= 20 ? 'independent'
+                        : maxWeightNum <= 1500 ? 'car'
+                        : maxWeightNum <= 50000 ? 'truck' : 'fleet')
+                    : 'client';
+
+                const userProfile = {
+                    accountType: formData.accountType,
+                    travelerCategory,
+                    vehicleType: formData.vehicleType || null,
+                    vehicleModel: formData.vehicleModel || null,
+                    licenseNumber: formData.licenseNumber || null,
+                    maxWeightKg: maxWeightNum || (formData.accountType === 'traveler' ? 20 : 0),
+                    maxVolumeM3: parseFloat(formData.maxVolume) || null,
+                    preferredRoutes: Array.isArray(formData.preferredRoutes) ? formData.preferredRoutes : []
+                };
+                localStorage.setItem('userProfile', JSON.stringify(userProfile));
+
                 // عرض رسالة نجاح
                 alert('تم إنشاء الحساب بنجاح! سيتم تحويلك إلى لوحة التحكم.');
                 
