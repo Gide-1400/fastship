@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة - FastShip Platform</title>
+    <meta name="description" content="لوحة إدارة شاملة للشركات والأساطيل في منصة FastShip">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
+            authDomain: "fastship-2026.firebaseapp.com",
+            projectId: "fastship-2026",
+            storageBucket: "fastship-2026.firebasestorage.app",
+            messagingSenderId: "646769615933",
+            appId: "1:646769615933:web:5fd3c82c31969192f9f654"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        window.firebaseAuth = auth;
+        window.firebaseOnAuthStateChanged = onAuthStateChanged;
+        window.firebaseSignOut = signOut;
+    </script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #ed8936, #1a365d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .admin-sidebar {
+            background: linear-gradient(180deg, #1a365d 0%, #2d3748 100%);
+            min-height: 100vh;
+        }
+        
+        .admin-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .stat-card.orange {
+            background: linear-gradient(135deg, #ed8936 0%, #f6ad55 100%);
+        }
+        
+        .stat-card.green {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+        
+        .stat-card.purple {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+        }
+        
+        .fleet-vehicle {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .fleet-vehicle:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+        
+        .rtl {
+            direction: rtl;
+        }
+        
+        .ltr {
+            direction: ltr;
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                min-height: auto;
+            }
+            
+            .admin-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="rtl">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold gradient-text">FastShip Admin</h1>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <div class="flex items-center">
+                        <img id="admin-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="المدير" class="w-8 h-8 rounded-full object-cover ml-2" onerror="this.src='https://via.placeholder.com/100/667eea/ffffff?text=م'">
+                        <div class="text-right">
+                            <div id="admin-name" class="text-sm font-medium text-gray-700">مدير النظام</div>
+                            <div id="admin-role" class="text-xs text-gray-500">شركة شحن</div>
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="text-gray-700 hover:text-blue-600 text-sm">
+                        تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex pt-16">
+        <!-- Sidebar -->
+        <div class="admin-sidebar w-64 p-6 text-white">
+            <div class="space-y-6">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">🏢</span>
+                    </div>
+                    <h2 class="text-xl font-bold">لوحة الإدارة</h2>
+                    <p class="text-sm text-gray-300">إدارة الأسطول والشحنات</p>
+                </div>
+                
+                <nav class="space-y-2">
+                    <a href="#dashboard" class="admin-nav-item flex items-center p-3 rounded-lg hover:bg-white/10 transition-colors">
+                        <span class="text-xl ml-3">📊</span>
+                        <span>لوحة التحكم</span>
+                    </a>
+                    <a href="#fleet" class="admin-nav-item flex items-center p-3 rounded-lg hover:bg-white/10 transition-colors">
+                        <span class="text-xl ml-3">🚚</span>
+                        <span>إدارة الأسطول</span>
+                    </a>
+                    <a href="#shipments" class="admin-nav-item flex items-center p-3 rounded-lg hover:bg-white/10 transition-colors">
+                        <span class="text-xl ml-3">📦</span>
+                        <span>الشحنات</span>
+                    </a>
+                    <a href="#drivers" class="admin-nav-item flex items-center p-3 rounded-lg hover:bg-white/10 transition-colors">
+                        <span class="text-xl ml-3">👥</span>
+                        <span>السائقين</span>
+                    </a>
+                    <a href="#analytics" class="admin-nav-item flex items-center p-3 rounded-lg hover:bg-white/10 transition-colors">
+                        <span class="text-xl ml-3">📈</span>
+                        <span>التقارير</span>
+                    </a>
+                    <a href="#settings" class="admin-nav-item flex items-center p-3 rounded-lg hover:bg-white/10 transition-colors">
+                        <span class="text-xl ml-3">⚙️</span>
+                        <span>الإعدادات</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 p-8">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="admin-section">
+                <h1 class="text-3xl font-bold text-white mb-8">لوحة التحكم الرئيسية</h1>
+                
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="admin-card stat-card p-6">
+                        <div class="flex items-center">
+                            <div class="text-3xl ml-4">🚚</div>
+                            <div>
+                                <div class="text-2xl font-bold">24</div>
+                                <div class="text-sm opacity-90">مركبات في الأسطول</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card stat-card orange p-6">
+                        <div class="flex items-center">
+                            <div class="text-3xl ml-4">📦</div>
+                            <div>
+                                <div class="text-2xl font-bold">156</div>
+                                <div class="text-sm opacity-90">شحنة نشطة</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card stat-card green p-6">
+                        <div class="flex items-center">
+                            <div class="text-3xl ml-4">✅</div>
+                            <div>
+                                <div class="text-2xl font-bold">1,234</div>
+                                <div class="text-sm opacity-90">شحنة مكتملة</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card stat-card purple p-6">
+                        <div class="flex items-center">
+                            <div class="text-3xl ml-4">💰</div>
+                            <div>
+                                <div class="text-2xl font-bold">45,678</div>
+                                <div class="text-sm opacity-90">إجمالي الأرباح (ريال)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="admin-card p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">إحصائيات الشحنات الشهرية</h3>
+                        <div id="shipments-chart" class="h-64"></div>
+                    </div>
+                    
+                    <div class="admin-card p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">توزيع الشحنات حسب النوع</h3>
+                        <div id="shipment-types-chart" class="h-64"></div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="admin-card p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">النشاط الأخير</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center ml-4">
+                                <span class="text-green-600">✓</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold">تم تسليم شحنة #1234</div>
+                                <div class="text-sm text-gray-600">من الرياض إلى جدة - السائق: خالد السيد</div>
+                            </div>
+                            <div class="text-sm text-gray-500">منذ ساعتين</div>
+                        </div>
+                        
+                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center ml-4">
+                                <span class="text-blue-600">🚚</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold">تم إضافة مركبة جديدة</div>
+                                <div class="text-sm text-gray-600">شاحنة فورد ترانزيت - رقم: ABC-123</div>
+                            </div>
+                            <div class="text-sm text-gray-500">منذ 4 ساعات</div>
+                        </div>
+                        
+                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center ml-4">
+                                <span class="text-orange-600">📦</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold">شحنة جديدة مطلوبة</div>
+                                <div class="text-sm text-gray-600">من جدة إلى الدمام - 50 كجم</div>
+                            </div>
+                            <div class="text-sm text-gray-500">منذ 6 ساعات</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fleet Management Section -->
+            <div id="fleet-section" class="admin-section hidden">
+                <h1 class="text-3xl font-bold text-white mb-8">إدارة الأسطول</h1>
+                
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-white">المركبات</h2>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                        إضافة مركبة جديدة
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="fleet-vehicle p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl ml-3">🚚</div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">شاحنة فورد ترانزيت</h3>
+                                <p class="text-sm text-gray-600">رقم اللوحة: ABC-123</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">السعة:</span>
+                                <span class="font-semibold">2,000 كجم</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">الحالة:</span>
+                                <span class="text-green-600 font-semibold">نشطة</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">السائق:</span>
+                                <span class="font-semibold">محمد أحمد</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm transition-colors">
+                                تعديل
+                            </button>
+                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg text-sm transition-colors">
+                                تفاصيل
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="fleet-vehicle p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl ml-3">🚛</div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">تريلة مرسيدس</h3>
+                                <p class="text-sm text-gray-600">رقم اللوحة: XYZ-789</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">السعة:</span>
+                                <span class="font-semibold">25,000 كجم</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">الحالة:</span>
+                                <span class="text-blue-600 font-semibold">في الطريق</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">السائق:</span>
+                                <span class="font-semibold">عبدالله الراشد</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm transition-colors">
+                                تعديل
+                            </button>
+                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg text-sm transition-colors">
+                                تفاصيل
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="fleet-vehicle p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="text-3xl ml-3">✈️</div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">طائرة شحن</h3>
+                                <p class="text-sm text-gray-600">رقم الطائرة: FS-001</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">السعة:</span>
+                                <span class="font-semibold">50,000 كجم</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">الحالة:</span>
+                                <span class="text-yellow-600 font-semibold">صيانة</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">الطيار:</span>
+                                <span class="font-semibold">أحمد الطيار</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm transition-colors">
+                                تعديل
+                            </button>
+                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg text-sm transition-colors">
+                                تفاصيل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipments Section -->
+            <div id="shipments-section" class="admin-section hidden">
+                <h1 class="text-3xl font-bold text-white mb-8">إدارة الشحنات</h1>
+                
+                <div class="admin-card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800">جميع الشحنات</h2>
+                        <div class="flex gap-4">
+                            <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option>جميع الحالات</option>
+                                <option>معلقة</option>
+                                <option>قيد النقل</option>
+                                <option>مكتملة</option>
+                            </select>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                                تصدير
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-right py-3 px-4 font-semibold text-gray-800">رقم الشحنة</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-gray-800">النوع</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-gray-800">الوزن</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-gray-800">من</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-gray-800">إلى</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-gray-800">الحالة</th>
+                                    <th class="text-right py-3 px-4 font-semibold text-gray-800">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4">#1234</td>
+                                    <td class="py-3 px-4">📦 متوسطة</td>
+                                    <td class="py-3 px-4">50 كجم</td>
+                                    <td class="py-3 px-4">الرياض</td>
+                                    <td class="py-3 px-4">جدة</td>
+                                    <td class="py-3 px-4">
+                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">مكتملة</span>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">عرض</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4">#1235</td>
+                                    <td class="py-3 px-4">🚚 كبيرة</td>
+                                    <td class="py-3 px-4">500 كجم</td>
+                                    <td class="py-3 px-4">جدة</td>
+                                    <td class="py-3 px-4">الدمام</td>
+                                    <td class="py-3 px-4">
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">قيد النقل</span>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">عرض</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4">#1236</td>
+                                    <td class="py-3 px-4">🎒 صغيرة</td>
+                                    <td class="py-3 px-4">5 كجم</td>
+                                    <td class="py-3 px-4">الدمام</td>
+                                    <td class="py-3 px-4">الرياض</td>
+                                    <td class="py-3 px-4">
+                                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">معلقة</span>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">عرض</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+    <script src="admin-panel.js"></script>
+    
+    <script>
+        // تهيئة لوحة الإدارة
+        document.addEventListener('DOMContentLoaded', function() {
+            // تهيئة الرسوم البيانية
+            initializeCharts();
+            
+            // تهيئة التنقل
+            initializeNavigation();
+        });
+        
+        function initializeCharts() {
+            // تهيئة رسم الشحنات الشهرية
+            const shipmentsChart = echarts.init(document.getElementById('shipments-chart'));
+            const shipmentsOption = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [120, 200, 150, 80, 70, 110],
+                    type: 'line',
+                    smooth: true,
+                    itemStyle: {
+                        color: '#3b82f6'
+                    }
+                }]
+            };
+            shipmentsChart.setOption(shipmentsOption);
+            
+            // تهيئة رسم أنواع الشحنات
+            const typesChart = echarts.init(document.getElementById('shipment-types-chart'));
+            const typesOption = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                series: [{
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        { value: 40, name: 'صغيرة' },
+                        { value: 35, name: 'متوسطة' },
+                        { value: 20, name: 'كبيرة' },
+                        { value: 5, name: 'عملاقة' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+            typesChart.setOption(typesOption);
+        }
+        
+        function initializeNavigation() {
+            const navItems = document.querySelectorAll('.admin-nav-item');
+            const sections = document.querySelectorAll('.admin-section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // إزالة التحديد من جميع العناصر
+                    navItems.forEach(nav => nav.classList.remove('bg-white/20'));
+                    sections.forEach(section => section.classList.add('hidden'));
+                    
+                    // تحديد العنصر المختار
+                    this.classList.add('bg-white/20');
+                    
+                    // إظهار القسم المناسب
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId + '-section');
+                    if (targetSection) {
+                        targetSection.classList.remove('hidden');
+                    }
+                });
+            });
+        }
+        
+        // Logout Function
+        async function logout() {
+            try {
+                if (window.firebaseSignOut && window.firebaseAuth) {
+                    await window.firebaseSignOut(window.firebaseAuth);
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
