@@ -224,12 +224,14 @@
                 const user = userCredential.user;
 
                 // حفظ بيانات المستخدم
+                const storedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
                 const userData = {
                     uid: user.uid,
                     email: user.email,
                     emailVerified: user.emailVerified,
                     displayName: user.displayName,
-                    photoURL: user.photoURL
+                    photoURL: user.photoURL,
+                    accountType: storedProfile.accountType || 'client'
                 };
                 
                 localStorage.setItem('currentUser', JSON.stringify(userData));
