@@ -1208,5 +1208,342 @@
             }
         });
     </script>
+    
+    <!-- FastShip Core System -->
+    <script src="fastship-core.js"></script>
+    <script src="fastship-enhanced.js"></script>
+    <script src="fastship-api.js"></script>
+    <script src="fastship-demo-data.js"></script>
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+    <script src="shipment.js"></script>
+    
+    <script>
+        // Enhanced Dashboard functionality with FastShip integration
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!window.fastshipAPI || !window.fastshipAPI.getCurrentUser()) {
+                window.location.href = 'login.html?redirect=dashboard';
+                return;
+            }
+            
+            // Initialize dashboard with FastShip data
+            initializeFastShipDashboard();
+            
+            // Handle URL parameters for FastShip actions
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab');
+            
+            if (tab) {
+                handleFastShipTab(tab);
+            }
+        });
+        
+        function initializeFastShipDashboard() {
+            const user = window.fastshipAPI.getCurrentUser();
+            const stats = window.fastshipAPI.getUserStats();
+            
+            // Update user info
+            document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
+            document.getElementById('userEmail').textContent = user.email;
+            
+            // Update statistics
+            if (stats) {
+                updateElement('totalShipments', stats.shipments.total);
+                updateElement('pendingShipments', stats.shipments.pending);
+                updateElement('completedShipments', stats.shipments.completed);
+                
+                if (stats.carrier) {
+                    updateElement('totalTrips', stats.carrier.totalTrips);
+                    updateElement('userRating', stats.carrier.rating.toFixed(1));
+                    updateElement('totalEarnings', stats.carrier.earnings + ' ريال');
+                    
+                    // Show carrier-specific elements
+                    const carrierElements = document.querySelectorAll('.carrier-only');
+                    carrierElements.forEach(el => el.style.display = 'block');
+                }
+            }
+            
+            // Load shipments
+            loadUserShipments();
+            
+            // Load available shipments if user is a carrier
+            const carrier = window.fastshipAPI.getCurrentUserCarrier();
+            if (carrier) {
+                loadAvailableShipments();
+            }
+        }
+        
+        function handleFastShipTab(tab) {
+            switch (tab) {
+                case 'create-shipment':
+                    switchToTab('shipments');
+                    setTimeout(() => showCreateShipmentForm(), 500);
+                    break;
+                case 'available-shipments':
+                    switchToTab('available');
+                    break;
+                case 'carrier-profile':
+                    switchToTab('profile');
+                    break;
+                default:
+                    switchToTab('overview');
+            }
+        }
+        
+        function loadUserShipments() {
+            const shipments = window.fastshipAPI.getUserShipments();
+            const container = document.getElementById('shipmentsContainer');
+            
+            if (!container) return;
+            
+            if (shipments.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-gray-400 text-6xl mb-4">📦</div>
+                        <h3 class="text-lg font-semibold text-gray-600 mb-2">لا توجد شحنات حتى الآن</h3>
+                        <p class="text-gray-500 mb-4">ابدأ بإنشاء شحنتك الأولى</p>
+                        <button onclick="showCreateShipmentForm()" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">
+                            إنشاء شحنة جديدة
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = shipments.map(shipment => `
+                <div class="bg-white rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition-shadow">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">${shipment.trackingNumber}</h3>
+                            <p class="text-sm text-gray-500">${formatDate(shipment.createdAt)}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium ${getStatusBadgeClass(shipment.status)}">
+                            ${getStatusText(shipment.status)}
+                        </span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <p class="text-sm text-gray-600">من:</p>
+                            <p class="font-medium">${shipment.pickup.city}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">إلى:</p>
+                            <p class="font-medium">${shipment.delivery.city}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">الوزن:</p>
+                            <p class="font-medium">${shipment.weight} كيلو</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">السعر المقدر:</p>
+                            <p class="font-medium text-green-600">${shipment.estimatedPrice} ريال</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <button onclick="viewShipmentDetails('${shipment.id}')" 
+                                class="text-blue-600 hover:text-blue-800 font-medium">
+                            عرض التفاصيل
+                        </button>
+                        ${shipment.status === 'pending' ? `
+                            <button onclick="cancelShipment('${shipment.id}')" 
+                                    class="text-red-600 hover:text-red-800 font-medium">
+                                إلغاء الشحنة
+                            </button>
+                        ` : ''}
+                        ${['picked_up', 'in_transit'].includes(shipment.status) ? `
+                            <button onclick="trackShipment('${shipment.id}')" 
+                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                تتبع الشحنة
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function loadAvailableShipments() {
+            const availableShipments = window.fastshipAPI.getAvailableShipments();
+            const container = document.getElementById('availableShipmentsContainer');
+            
+            if (!container) return;
+            
+            if (availableShipments.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-gray-400 text-6xl mb-4">🚚</div>
+                        <h3 class="text-lg font-semibold text-gray-600 mb-2">لا توجد شحنات متاحة</h3>
+                        <p class="text-gray-500">لا توجد شحنات مناسبة لمركبتك حالياً</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = availableShipments.map(shipment => `
+                <div class="bg-white rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition-shadow">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">${shipment.trackingNumber}</h3>
+                            <p class="text-sm text-gray-500">نقاط المطابقة: ${shipment.matchScore}/100</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                            متاح للنقل
+                        </span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <p class="text-sm text-gray-600">المسار:</p>
+                            <p class="font-medium">${shipment.pickup.city} → ${shipment.delivery.city}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">الوزن:</p>
+                            <p class="font-medium">${shipment.weight} كيلو</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">الربح المتوقع:</p>
+                            <p class="font-medium text-green-600">${shipment.estimatedEarning} ريال</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <button onclick="viewShipmentDetails('${shipment.id}')" 
+                                class="text-blue-600 hover:text-blue-800 font-medium">
+                            عرض التفاصيل
+                        </button>
+                        <button onclick="acceptShipment('${shipment.id}')" 
+                                class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">
+                            قبول الشحنة
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Enhanced shipment functions
+        async function acceptShipment(shipmentId) {
+            const result = await window.fastshipAPI.acceptShipment(shipmentId);
+            
+            if (result.success) {
+                showNotification('تم قبول الشحنة بنجاح!', 'success');
+                loadAvailableShipments(); // Refresh the list
+                loadUserShipments(); // Refresh user shipments if needed
+            } else {
+                showNotification('خطأ: ' + result.error, 'error');
+            }
+        }
+        
+        async function cancelShipment(shipmentId) {
+            if (!confirm('هل أنت متأكد من إلغاء هذه الشحنة؟')) return;
+            
+            const result = await window.fastshipAPI.updateShipmentStatus(shipmentId, 'cancelled');
+            
+            if (result.success) {
+                showNotification('تم إلغاء الشحنة بنجاح', 'success');
+                loadUserShipments();
+            } else {
+                showNotification('خطأ: ' + result.error, 'error');
+            }
+        }
+        
+        function trackShipment(shipmentId) {
+            const trackingInfo = window.FastShipEnhanced.getTrackingInfo(shipmentId);
+            
+            if (trackingInfo) {
+                // Show tracking modal or redirect to tracking page
+                showTrackingModal(trackingInfo);
+            } else {
+                showNotification('معلومات التتبع غير متاحة حالياً', 'warning');
+            }
+        }
+        
+        function showTrackingModal(trackingInfo) {
+            // Create and show tracking modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">تتبع الشحنة</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700">
+                            ✕
+                        </button>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-600">الحالة الحالية:</p>
+                            <p class="font-medium">${getStatusText(trackingInfo.status)}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">آخر تحديث:</p>
+                            <p class="font-medium">${formatDate(trackingInfo.lastUpdate)}</p>
+                        </div>
+                        ${trackingInfo.currentLocation ? `
+                            <div>
+                                <p class="text-sm text-gray-600">الموقع الحالي:</p>
+                                <p class="font-medium">${trackingInfo.currentLocation.address}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="mt-6">
+                        <button onclick="this.closest('.fixed').remove()" 
+                                class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+                            إغلاق
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        // Helper functions
+        function updateElement(id, value) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+            }
+        }
+        
+        function getStatusText(status) {
+            const statusTexts = {
+                'pending': 'في الانتظار',
+                'matched': 'تم المطابقة',
+                'picked_up': 'تم الاستلام',
+                'in_transit': 'في الطريق',
+                'delivered': 'تم التسليم',
+                'cancelled': 'ملغي'
+            };
+            return statusTexts[status] || status;
+        }
+        
+        function getStatusBadgeClass(status) {
+            const classes = {
+                'pending': 'bg-yellow-100 text-yellow-800',
+                'matched': 'bg-blue-100 text-blue-800',
+                'picked_up': 'bg-purple-100 text-purple-800',
+                'in_transit': 'bg-indigo-100 text-indigo-800',
+                'delivered': 'bg-green-100 text-green-800',
+                'cancelled': 'bg-red-100 text-red-800'
+            };
+            return classes[status] || 'bg-gray-100 text-gray-800';
+        }
+        
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        function viewShipmentDetails(shipmentId) {
+            window.fastshipAPI.viewShipmentDetails(shipmentId);
+        }
+    </script>
 </body>
 </html>
