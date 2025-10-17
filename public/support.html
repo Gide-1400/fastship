@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الدعم الفني - الشحنة السريعة</title>
-    <meta name="description" content="الأسئلة الشائعة، نموذج الاتصال، ومركز المساعدة لمنصة الشحنة السريعة">
+    <meta name="description" content="مركز المساعدة والدعم الفني لمنصة الشحنة السريعة">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,34 +40,20 @@
         
         .faq-item {
             transition: all 0.3s ease;
-            cursor: pointer;
         }
         
-        .faq-item:hover {
-            background-color: #f9fafb;
-        }
-        
-        .faq-answer {
+        .faq-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
         
-        .faq-answer.open {
-            max-height: 200px;
+        .faq-content.active {
+            max-height: 500px;
         }
         
         .rtl {
             direction: rtl;
-        }
-        
-        .ltr {
-            direction: ltr;
-        }
-        
-        .contact-form {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
         }
     </style>
 </head>
@@ -78,7 +64,7 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <h1 class="text-2xl font-bold gradient-text">الشحنة السريعة</h1>
+                        <a href="index.html" class="text-2xl font-bold gradient-text">الشحنة السريعة</a>
                     </div>
                 </div>
                 
@@ -87,17 +73,13 @@
                         <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
                         <a href="travelers.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">المسافرون</a>
                         <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لوحة التحكم</a>
-                        <a href="support.html" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-blue-600">الدعم الفني</a>
+                        <a href="support.html" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-blue-600">الدعم</a>
                     </div>
                 </div>
                 
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
-                        تسجيل الدخول
-                    </button>
-                    <button class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                        إنشاء حساب
-                    </button>
+                    <a href="login.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">تسجيل الدخول</a>
+                    <a href="register.html" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">إنشاء حساب</a>
                 </div>
             </div>
         </div>
@@ -108,290 +90,207 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center text-white">
                 <h1 class="text-4xl lg:text-5xl font-bold mb-4">مركز المساعدة</h1>
-                <p class="text-xl text-blue-100 mb-8">نحن هنا لمساعدتك في كل خطوة على منصة الشحنة السريعة</p>
-                
-                <!-- Search Bar -->
-                <div class="max-w-2xl mx-auto">
-                    <div class="relative">
-                        <input type="text" id="faq-search" placeholder="ابحث عن إجابة لسؤالك..." 
-                               class="w-full px-6 py-4 pr-12 rounded-2xl text-gray-800 focus:ring-2 focus:ring-white focus:outline-none">
-                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
-                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
+                <p class="text-xl text-blue-100">نحن هنا لمساعدتك في كل خطوة</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg sticky top-24">
+                        <h3 class="text-lg font-bold text-gray-800 mb-6">روابط سريعة</h3>
+                        
+                        <nav class="space-y-2">
+                            <a href="#faq" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">الأسئلة الشائعة</a>
+                            <a href="#contact" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">اتصل بنا</a>
+                            <a href="#guides" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">أدلة الاستخدام</a>
+                            <a href="#safety" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">الأمان والسلامة</a>
+                            <a href="#terms" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">الشروط والأحكام</a>
+                        </nav>
+                        
+                        <!-- Contact Info -->
+                        <div class="mt-8 p-4 bg-blue-50 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-3">معلومات التواصل</h4>
+                            <div class="space-y-2 text-sm text-blue-700">
+                                <p>📧 gide1979@gmail.com</p>
+                                <p>📞 +966551519723</p>
+                                <p>🕒 24/7 متاح</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Actions -->
-    <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="text-center card-hover bg-blue-50 rounded-2xl p-6">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-3xl">📞</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">الدعم الهاتفي</h3>
-                    <p class="text-sm text-gray-600">اتصل بنا على 920000000</p>
-                    <p class="text-xs text-gray-500">24/7</p>
-                </div>
                 
-                <div class="text-center card-hover bg-green-50 rounded-2xl p-6">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-3xl">💬</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">الدردشة المباشرة</h3>
-                    <p class="text-sm text-gray-600">تحدث مع فريق الدعم الآن</p>
-                    <button class="text-xs text-green-600 font-semibold">ابدأ المحادثة</button>
-                </div>
-                
-                <div class="text-center card-hover bg-orange-50 rounded-2xl p-6">
-                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-3xl">📧</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">البريد الإلكتروني</h3>
-                    <p class="text-sm text-gray-600">gide1979@gmail.com</p>
-                    <p class="text-xs text-gray-500">رد خلال 24 ساعة</p>
-                </div>
-                
-                <div class="text-center card-hover bg-purple-50 rounded-2xl p-6">
-                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-3xl">📱</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">واتساب</h3>
-                    <p class="text-sm text-gray-600">+966551519723</p>
-                    <p class="text-xs text-gray-500">رد سريع</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">الأسئلة الشائعة</h2>
-                <p class="text-xl text-gray-600">إجابات على أكثر الأسئلة التي يتم طرحها</p>
-            </div>
-            
-            <div class="space-y-4">
-                <!-- FAQ Item 1 -->
-                <div class="faq-item bg-white rounded-2xl p-6 shadow-lg">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-800">كيف أرسل شحنة عبر المنصة؟</h3>
-                        <span class="faq-icon text-2xl text-gray-400">+</span>
-                    </div>
-                    <div class="faq-answer mt-4">
-                        <p class="text-gray-600 leading-relaxed">
-                            إرسال شحنة عبر منصة الشحنة السريعة سهل وبسيط. اتبع الخطوات التالية:
-                            <br><br>
-                            1. أنشئ حسابك على المنصة<br>
-                            2. اختر "إرسال شحنة" من القائمة الرئيسية<br>
-                            3. املأ تفاصيل الشحنة (النوع، الوزن، المواقع)<br>
-                            4. اختر المسافر المناسب من القائمة<br>
-                            5. أكد الطلب وتابع الشحنة لحظة بلحظة
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 2 -->
-                <div class="faq-item bg-white rounded-2xl p-6 shadow-lg">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-800">ما هي تكلفة إرسال الشحنة؟</h3>
-                        <span class="faq-icon text-2xl text-gray-400">+</span>
-                    </div>
-                    <div class="faq-answer mt-4">
-                        <p class="text-gray-600 leading-relaxed">
-                            التكلفة تحسب بناءً على عدة عوامل:
-                            <br><br>
-                            • الوزن والحجم الكلي للشحنة<br>
-                            • المسافة بين نقطة الإرسال والاستلام<br>
-                            • نوع الشحنة (هش، قابل للتلف، عادي)<br>
-                            • سرعة التوصيل المطلوبة<br>
-                            • تقييم المسافر والطلب عليه<br><br>
-                            الأسعار تبدأ من 0.5 ريال للكيلوجرم الواحد.
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 3 -->
-                <div class="faq-item bg-white rounded-2xl p-6 shadow-lg">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-800">كيف أضمن سلامة شحنتي؟</h3>
-                        <span class="faq-icon text-2xl text-gray-400">+</span>
-                    </div>
-                    <div class="faq-answer mt-4">
-                        <p class="text-gray-600 leading-relaxed">
-                            نتخذ عدة إجراءات لضمان سلامة شحنتك:
-                            <br><br>
-                            • توثيق هوية جميع المسافرين<br>
-                            • نظام تقييم متبادل بين المستخدمين<br>
-                            • تأمين شامل على جميع الشحنات<br>
-                            • تتبع لحظي للشحنة أثناء النقل<br>
-                            • دعم فني متاح 24/7<br>
-                            • إمكانية الدفع عند الاستلام
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 4 -->
-                <div class="faq-item bg-white rounded-2xl p-6 shadow-lg">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-800">ما هي أنواع الشحنات المسموح بها؟</h3>
-                        <span class="faq-icon text-2xl text-gray-400">+</span>
-                    </div>
-                    <div class="faq-answer mt-4">
-                        <p class="text-gray-600 leading-relaxed">
-                            نقوم بنقل معظم أنواع الشحنات باستثناء المواد المحظورة:
-                            <br><br>
-                            ✅ مسموح: مستندات، ملابس، إلكترونيات، أطعمة، كتب، أدوية<br>
-                            ❌ محظور: مواد كيميائية، أسلحة، مواد متفجرة، مخدرات<br>
-                            ⚠️ يتطلب تصريح: مواد ثمينة، أعمال فنية، حيوانات حية
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 5 -->
-                <div class="faq-item bg-white rounded-2xl p-6 shadow-lg">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-800">كيف أصبح مسافراً على المنصة؟</h3>
-                        <span class="faq-icon text-2xl text-gray-400">+</span>
-                    </div>
-                    <div class="faq-answer mt-4">
-                        <p class="text-gray-600 leading-relaxed">
-                            لتصبح مسافراً معتمداً:
-                            <br><br>
-                            1. أنشئ حسابك كمسافر<br>
-                            2. أرسل المستندات المطلوبة (رخصة القيادة، استمارة المركبة)<br>
-                            3. انتظر موافقة فريق التحقق (24-48 ساعة)<br>
-                            4. أكمل ملفك الشخصي وأضف صورة للمركبة<br>
-                            5. ابدأ في استلام طلبات الشحن
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 6 -->
-                <div class="faq-item bg-white rounded-2xl p-6 shadow-lg">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-800">ما هي سياسة الإلغاء والاسترداد؟</h3>
-                        <span class="faq-icon text-2xl text-gray-400">+</span>
-                    </div>
-                    <div class="faq-answer mt-4">
-                        <p class="text-gray-600 leading-relaxed">
-                            سياسة الإلغاء والاسترداد واضحة وعادلة:
-                            <br><br>
-                            • إلغاء قبل قبول المسافر: استرداد كامل<br>
-                            • إلغاء بعد قبول المسافر: استرداد 80%<br>
-                            • إلغاء بعد استلام الشحنة: استرداد 50%<br>
-                            • فقدان أو تلف الشحنة: استرداد كامل + تعويض<br>
-                            • تأخر في التوصيل: خصم من تكلفة الشحن
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Form -->
-    <section class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">تواصل معنا</h2>
-                <p class="text-xl text-gray-600">هل لم تجد إجابة لسؤالك؟ أرسل لنا رسالة وسنساعدك بكل سرور</p>
-            </div>
-            
-            <div class="contact-form rounded-2xl p-8 shadow-2xl">
-                <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الكامل</label>
-                        <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="أدخل اسمك الكامل">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <!-- Search Bar -->
+                    <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">ابحث عن المساعدة</h3>
+                        <div class="flex gap-4">
+                            <input type="text" id="searchInput" placeholder="ابحث في الأسئلة الشائعة..." 
+                                   class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <button onclick="searchFAQ()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                بحث
+                            </button>
+                        </div>
                     </div>
                     
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
-                        <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="أدخل بريدك الإلكتروني">
+                    <!-- FAQ Section -->
+                    <div id="faq" class="bg-white rounded-2xl p-6 shadow-lg mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">الأسئلة الشائعة</h3>
+                        
+                        <div class="space-y-4">
+                            <!-- FAQ Item 1 -->
+                            <div class="faq-item border border-gray-200 rounded-lg">
+                                <button class="w-full text-right px-6 py-4 flex justify-between items-center hover:bg-gray-50" onclick="toggleFAQ(1)">
+                                    <span class="font-semibold text-gray-800">كيف أضمن أمان شحنتي؟</span>
+                                    <span class="text-gray-500 transform transition-transform" id="faq-icon-1">+</span>
+                                </button>
+                                <div class="faq-content px-6 pb-4" id="faq-content-1">
+                                    <p class="text-gray-600 leading-relaxed">
+                                        جميع المسافرين في منصتنا يتم التحقق من هويتهم وتقييمهم. كما نقدم تأمين على الشحنات ونظام تتبع لحظي لضمان وصول شحنتك بأمان. يمكنك أيضاً مراجعة تقييمات المسافرين قبل الاختيار.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 2 -->
+                            <div class="faq-item border border-gray-200 rounded-lg">
+                                <button class="w-full text-right px-6 py-4 flex justify-between items-center hover:bg-gray-50" onclick="toggleFAQ(2)">
+                                    <span class="font-semibold text-gray-800">ما هي أنواع الشحنات التي يمكنني إرسالها؟</span>
+                                    <span class="text-gray-500 transform transition-transform" id="faq-icon-2">+</span>
+                                </button>
+                                <div class="faq-content px-6 pb-4" id="faq-content-2">
+                                    <p class="text-gray-600 leading-relaxed">
+                                        يمكنك إرسال معظم أنواع الشحنات باستثناء المواد الخطرة والمحظورة قانونياً. ننقل المستندات، الإلكترونيات، الملابس، الكتب، الهدايا، والأطعمة غير القابلة للتلف. يرجى مراجعة قائمة المواد المحظورة قبل الإرسال.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 3 -->
+                            <div class="faq-item border border-gray-200 rounded-lg">
+                                <button class="w-full text-right px-6 py-4 flex justify-between items-center hover:bg-gray-50" onclick="toggleFAQ(3)">
+                                    <span class="font-semibold text-gray-800">كيف يتم تحديد سعر الشحنة؟</span>
+                                    <span class="text-gray-500 transform transition-transform" id="faq-icon-3">+</span>
+                                </button>
+                                <div class="faq-content px-6 pb-4" id="faq-content-3">
+                                    <p class="text-gray-600 leading-relaxed">
+                                        يعتمد السعر على عدة عوامل: المسافة بين المدن، حجم الشحنة ووزنها، نوع المركبة، وسرعة التوصيل المطلوبة. يمكنك مقارنة عروض المسافرين واختيار الأنسب لميزانيتك. الأسعار تبدأ من 0.5 ريال للكيلو الواحد.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 4 -->
+                            <div class="faq-item border border-gray-200 rounded-lg">
+                                <button class="w-full text-right px-6 py-4 flex justify-between items-center hover:bg-gray-50" onclick="toggleFAQ(4)">
+                                    <span class="font-semibold text-gray-800">ماذا لو تأخرت الشحنة؟</span>
+                                    <span class="text-gray-500 transform transition-transform" id="faq-icon-4">+</span>
+                                </button>
+                                <div class="faq-content px-6 pb-4" id="faq-content-4">
+                                    <p class="text-gray-600 leading-relaxed">
+                                        نحن نراقب جميع الشحنات بشكل مستمر. في حال التأخير، سنقوم بإبلاغك فوراً ونعمل على حل المشكلة. كما نقدم تعويضات في حالات التأخير غير المبرر. يمكنك التواصل معنا على مدار الساعة للحصول على المساعدة.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 5 -->
+                            <div class="faq-item border border-gray-200 rounded-lg">
+                                <button class="w-full text-right px-6 py-4 flex justify-between items-center hover:bg-gray-50" onclick="toggleFAQ(5)">
+                                    <span class="font-semibold text-gray-800">كيف يمكنني كسب المال كموصل؟</span>
+                                    <span class="text-gray-500 transform transition-transform" id="faq-icon-5">+</span>
+                                </button>
+                                <div class="faq-content px-6 pb-4" id="faq-content-5">
+                                    <p class="text-gray-600 leading-relaxed">
+                                        سجل كموصل في المنصة، أضف معلومات رحلتك القادمة، واختر الشحنات المناسبة لمركبتك. ستحصل على 90% من سعر الشحنة، بينما نحصل على 10% كعمولة. يمكنك كسب دخل إضافي من المساحة الفارغة في رحلاتك العادية.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 6 -->
+                            <div class="faq-item border border-gray-200 rounded-lg">
+                                <button class="w-full text-right px-6 py-4 flex justify-between items-center hover:bg-gray-50" onclick="toggleFAQ(6)">
+                                    <span class="font-semibold text-gray-800">كيف أتتبع شحنتي؟</span>
+                                    <span class="text-gray-500 transform transition-transform" id="faq-icon-6">+</span>
+                                </button>
+                                <div class="faq-content px-6 pb-4" id="faq-content-6">
+                                    <p class="text-gray-600 leading-relaxed">
+                                        يمكنك تتبع شحنتك من خلال لوحة التحكم أو باستخدام رقم التتبع. ستحصل على تحديثات فورية عن حالة الشحنة: تم الاستلام، في الطريق، وصلت للوجهة، تم التوصيل. كما يمكنك التواصل مباشرة مع الموصل.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">رقم الجوال</label>
-                        <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="أدخل رقم جوالك">
+                    <!-- Contact Form -->
+                    <div id="contact" class="bg-white rounded-2xl p-6 shadow-lg mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">اتصل بنا</h3>
+                        
+                        <form id="contactForm" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">الاسم</label>
+                                    <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                                    <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">نوع الاستفسار</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">اختر نوع الاستفسار</option>
+                                    <option value="technical">مشكلة تقنية</option>
+                                    <option value="billing">مشكلة في الدفع</option>
+                                    <option value="shipment">مشكلة في الشحنة</option>
+                                    <option value="account">مشكلة في الحساب</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">الرسالة</label>
+                                <textarea rows="5" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="اكتب رسالتك هنا..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
+                                إرسال الرسالة
+                            </button>
+                        </form>
                     </div>
                     
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع الرسالة</label>
-                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="question">سؤال عام</option>
-                            <option value="problem">مشكلة تقنية</option>
-                            <option value="complaint">شكوى</option>
-                            <option value="suggestion">اقتراح</option>
-                            <option value="other">أخرى</option>
-                        </select>
+                    <!-- Safety Guidelines -->
+                    <div id="safety" class="bg-white rounded-2xl p-6 shadow-lg">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">إرشادات الأمان والسلامة</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <h4 class="text-lg font-semibold text-gray-800">لأصحاب الشحنات</h4>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li>• تأكد من تعبئة الشحنة بشكل آمن</li>
+                                    <li>• استخدم مواد تغليف مناسبة</li>
+                                    <li>• اكتب وصفاً دقيقاً للمحتويات</li>
+                                    <li>• احتفظ بصورة من الشحنة</li>
+                                    <li>• تأكد من صحة العنوان</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <h4 class="text-lg font-semibold text-gray-800">للموصلين</h4>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li>• تحقق من هوية المرسل والمستلم</li>
+                                    <li>• احتفظ بإيصال الاستلام</li>
+                                    <li>• تأكد من سلامة الشحنة</li>
+                                    <li>• تواصل مع المرسل عند الحاجة</li>
+                                    <li>• اتبع قوانين المرور</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">موضوع الرسالة</label>
-                        <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="اكتب موضوع رسالتك">
-                    </div>
-                    
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">نص الرسالة</label>
-                        <textarea rows="6" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="اكتب تفاصيل رسالتك هنا..."></textarea>
-                    </div>
-                    
-                    <div class="md:col-span-2">
-                        <label class="flex items-center">
-                            <input type="checkbox" required class="ml-2">
-                            <span class="text-sm text-gray-600">أوافق على <a href="terms.html" class="text-blue-600 hover:text-blue-800">الشروط والأحكام</a> و<a href="privacy.html" class="text-blue-600 hover:text-blue-800">سياسة الخصوصية</a></span>
-                        </label>
-                    </div>
-                    
-                    <div class="md:col-span-2">
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
-                            إرسال الرسالة
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Legal Links -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">معلومات قانونية</h2>
-                <p class="text-lg text-gray-600">اطلع على سياساتنا القانونية وشروط الاستخدام</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center card-hover bg-white rounded-2xl p-8">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-3xl">📋</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">الشروط والأحكام</h3>
-                    <p class="text-gray-600 mb-4">اقرأ الشروط الكاملة لاستخدام منصة الشحنة السريعة</p>
-                    <a href="terms.html" class="text-blue-600 hover:text-blue-800 font-semibold">قراءة الشروط</a>
-                </div>
-                
-                <div class="text-center card-hover bg-white rounded-2xl p-8">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-3xl">🔒</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">سياسة الخصوصية</h3>
-                    <p class="text-gray-600 mb-4">تعرف على كيفية حماية خصوصيتك وبياناتك</p>
-                    <a href="privacy.html" class="text-green-600 hover:text-green-800 font-semibold">قراءة السياسة</a>
-                </div>
-                
-                <div class="text-center card-hover bg-white rounded-2xl p-8">
-                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-3xl">🛡️</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">إرشادات السلامة</h3>
-                    <p class="text-gray-600 mb-4">تعرف على إرشادات السلامة لضمان تجربة آمنة</p>
-                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold">قراءة الإرشادات</a>
                 </div>
             </div>
         </div>
@@ -452,55 +351,109 @@
     </footer>
 
     <!-- JavaScript -->
-<script src="auth.js"></script>
-<script src="main.js"></script>
+    <script src="main.js"></script>
     
     <script>
-        // FAQ Toggle Functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        // FAQ Toggle Function
+        function toggleFAQ(id) {
+            const content = document.getElementById(`faq-content-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-content').forEach(item => {
+                if (item.id !== `faq-content-${id}`) {
+                    item.classList.remove('active');
+                }
+            });
+            
+            document.querySelectorAll('[id^="faq-icon-"]').forEach(item => {
+                if (item.id !== `faq-icon-${id}`) {
+                    item.textContent = '+';
+                    item.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Toggle current FAQ
+            content.classList.toggle('active');
+            
+            if (content.classList.contains('active')) {
+                icon.textContent = '−';
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.textContent = '+';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Search FAQ Function
+        function searchFAQ() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const faqItems = document.querySelectorAll('.faq-item');
             
             faqItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const answer = this.querySelector('.faq-answer');
-                    const icon = this.querySelector('.faq-icon');
-                    
-                    // Close all other FAQ items
-                    faqItems.forEach(otherItem => {
-                        if (otherItem !== this) {
-                            const otherAnswer = otherItem.querySelector('.faq-answer');
-                            const otherIcon = otherItem.querySelector('.faq-icon');
-                            otherAnswer.classList.remove('open');
-                            otherIcon.textContent = '+';
-                        }
-                    });
-                    
-                    // Toggle current FAQ item
-                    if (answer.classList.contains('open')) {
-                        answer.classList.remove('open');
-                        icon.textContent = '+';
-                    } else {
-                        answer.classList.add('open');
-                        icon.textContent = '−';
-                    }
-                });
-            });
-            
-            // Search FAQ functionality
-            const searchInput = document.getElementById('faq-search');
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
+                const question = item.querySelector('button span').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-content p').textContent.toLowerCase();
                 
-                faqItems.forEach(item => {
-                    const question = item.querySelector('h3').textContent.toLowerCase();
-                    const answer = item.querySelector('.faq-answer p').textContent.toLowerCase();
-                    
-                    if (question.includes(searchTerm) || answer.includes(searchTerm)) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    item.style.backgroundColor = searchTerm ? '#f0f9ff' : 'white';
+                } else {
+                    item.style.display = searchTerm ? 'none' : 'block';
+                    item.style.backgroundColor = 'white';
+                }
+            });
+        }
+
+        // Contact Form Handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الإرسال...';
+            
+            // Simulate form submission
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                
+                showNotification('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.', 'success');
+                e.target.reset();
+            }, 2000);
+        });
+
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                'bg-blue-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
         });
     </script>

@@ -16,6 +16,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
         const firebaseConfig = {
             apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
             authDomain: "fastship-2026.firebaseapp.com",
@@ -24,11 +26,17 @@
             messagingSenderId: "646769615933",
             appId: "1:646769615933:web:5fd3c82c31969192f9f654"
         };
+        
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
+        
         window.firebaseAuth = auth;
         window.firebaseOnAuthStateChanged = onAuthStateChanged;
         window.firebaseSignOut = signOut;
+        window.firebaseDB = db;
+        window.firebaseDoc = doc;
+        window.firebaseGetDoc = getDoc;
     </script>
     
     <!-- Animation Libraries -->
@@ -243,8 +251,10 @@
                                                 </td>
                                                 <td class="py-3 px-4 text-sm font-semibold text-green-600">280 ريال</td>
                                                 <td class="py-3 px-4 text-sm">
-                                                    <button class="text-blue-600 hover:text-blue-800 ml-2">تفاصيل</button>
-                                                    <button class="text-orange-600 hover:text-orange-800">تقييم</button>
+                                                    <button onclick="showTrackingModal('SH-2024-001')" class="text-blue-600 hover:text-blue-800 ml-2">تتبع</button>
+                                                    <button onclick="showPaymentModal('INV-001')" class="text-green-600 hover:text-green-800 ml-2">دفع</button>
+                                                    <button onclick="showChatModal('CONV-001')" class="text-purple-600 hover:text-purple-800 ml-2">رسائل</button>
+                                                    <button onclick="showRecommendations('SH-2024-001')" class="text-orange-600 hover:text-orange-800">توصيات</button>
                                                 </td>
                                             </tr>
                                             <tr class="border-b border-gray-100 hover:bg-gray-50">
@@ -256,8 +266,9 @@
                                                 </td>
                                                 <td class="py-3 px-4 text-sm font-semibold text-blue-600">150 ريال</td>
                                                 <td class="py-3 px-4 text-sm">
-                                                    <button class="text-blue-600 hover:text-blue-800 ml-2">تفاصيل</button>
-                                                    <button class="text-green-600 hover:text-green-800">تتبع</button>
+                                                    <button onclick="showTrackingModal('SH-2024-002')" class="text-blue-600 hover:text-blue-800 ml-2">تتبع</button>
+                                                    <button onclick="showChatModal('CONV-002')" class="text-purple-600 hover:text-purple-800 ml-2">رسائل</button>
+                                                    <button onclick="showRecommendations('SH-2024-002')" class="text-orange-600 hover:text-orange-800">توصيات</button>
                                                 </td>
                                             </tr>
                                             <tr class="border-b border-gray-100 hover:bg-gray-50">
@@ -269,8 +280,10 @@
                                                 </td>
                                                 <td class="py-3 px-4 text-sm font-semibold text-orange-600">95 ريال</td>
                                                 <td class="py-3 px-4 text-sm">
-                                                    <button class="text-blue-600 hover:text-blue-800 ml-2">تفاصيل</button>
-                                                    <button class="text-red-600 hover:text-red-800">إلغاء</button>
+                                                    <button onclick="showTrackingModal('SH-2024-003')" class="text-blue-600 hover:text-blue-800 ml-2">تتبع</button>
+                                                    <button onclick="showPaymentModal('INV-003')" class="text-green-600 hover:text-green-800 ml-2">دفع</button>
+                                                    <button onclick="showChatModal('CONV-003')" class="text-purple-600 hover:text-purple-800 ml-2">رسائل</button>
+                                                    <button onclick="showRecommendations('SH-2024-003')" class="text-orange-600 hover:text-orange-800">توصيات</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -659,6 +672,23 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+    <script src="payment.js"></script>
+    <script src="tracking.js"></script>
+    <script src="messaging.js"></script>
+    <script src="shipment.js"></script>
+    
+    <script>
+        // Wait for Firebase to load
+        window.addEventListener('load', function() {
+            // Initialize auth manager after Firebase is loaded
+            if (window.authManager) {
+                window.authManager.updateUI();
+            }
+        });
+    </script>
+    
     <script>
         // نظام إدارة الشحنات (محاكاة)
         window.shipmentManager = {
@@ -767,6 +797,12 @@
                         <button onclick="acceptShipment('${shipment.id}')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
                             قبول الشحنة
                         </button>
+                        <button onclick="showChatModal('CONV-${shipment.id}')" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                            رسائل
+                        </button>
+                        <button onclick="showRecommendations('${shipment.id}')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                            توصيات
+                        </button>
                     </div>
                 </div>
             `).join('');
@@ -786,7 +822,8 @@
                     <td class="py-3 px-4 text-sm font-semibold text-green-600">${shipment.price} ريال</td>
                     <td class="py-3 px-4 text-sm">
                         <button onclick="acceptShipment('${shipment.id}')" class="text-blue-600 hover:text-blue-800 ml-2">قبول</button>
-                        <button onclick="viewShipmentDetails('${shipment.id}')" class="text-gray-600 hover:text-gray-800">تفاصيل</button>
+                        <button onclick="showChatModal('CONV-${shipment.id}')" class="text-purple-600 hover:text-purple-800 ml-2">رسائل</button>
+                        <button onclick="showRecommendations('${shipment.id}')" class="text-orange-600 hover:text-orange-800 ml-2">توصيات</button>
                     </td>
                 </tr>
             `).join('');
@@ -829,53 +866,83 @@
         // تسجيل الخروج
         async function logout() {
             try {
-                await window.firebaseSignOut(window.firebaseAuth);
-                localStorage.removeItem('currentUser');
-                window.location.href = 'index.html';
+                if (window.authManager) {
+                    await window.authManager.logout();
+                } else {
+                    // Fallback if auth manager is not available
+                    if (window.firebaseSignOut && window.firebaseAuth) {
+                        await window.firebaseSignOut(window.firebaseAuth);
+                    }
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'index.html';
+                }
             } catch (error) {
                 console.error('خطأ في تسجيل الخروج:', error);
+                // Force logout even if there's an error
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
             }
         }
 
         // Dashboard functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // التحقق من حالة المصادقة
-            window.firebaseOnAuthStateChanged(window.firebaseAuth, (user) => {
-                if (user) {
-                    // حفظ بيانات المستخدم
-                    const userData = {
-                        uid: user.uid,
-                        email: user.email,
-                        emailVerified: user.emailVerified,
-                        displayName: user.displayName,
-                        photoURL: user.photoURL,
-                        accountType: user.accountType || 'client' // افتراضي عميل
-                    };
-                    localStorage.setItem('currentUser', JSON.stringify(userData));
-                    updateAuthUI(userData);
-                    
-                    // User is logged in
-                    document.getElementById('login-required').style.display = 'none';
-                    
-                    // إظهار القسم المناسب
-                    showUserSection();
-                    
-                    // Update user info
-                    updateUserInfo(userData);
-                    setupTabs();
-                    initializeChart();
-                    setupProfileForm();
-                } else {
-                    localStorage.removeItem('currentUser');
-                    updateAuthUI(null);
-                    
-                    // User is not logged in
-                    document.getElementById('login-required').style.display = 'block';
-                    document.querySelectorAll('.tab-content').forEach(tab => {
-                        tab.classList.add('hidden');
+            // Wait for Firebase to load
+            setTimeout(() => {
+                // التحقق من حالة المصادقة
+                if (window.firebaseOnAuthStateChanged && window.firebaseAuth) {
+                    window.firebaseOnAuthStateChanged(window.firebaseAuth, (user) => {
+                        if (user) {
+                            // حفظ بيانات المستخدم
+                            const userData = {
+                                uid: user.uid,
+                                email: user.email,
+                                emailVerified: user.emailVerified,
+                                displayName: user.displayName,
+                                photoURL: user.photoURL,
+                                accountType: user.accountType || 'client' // افتراضي عميل
+                            };
+                            localStorage.setItem('currentUser', JSON.stringify(userData));
+                            updateAuthUI(userData);
+                            
+                            // User is logged in
+                            document.getElementById('login-required').style.display = 'none';
+                            
+                            // إظهار القسم المناسب
+                            showUserSection();
+                            
+                            // Update user info
+                            updateUserInfo(userData);
+                            setupTabs();
+                            initializeChart();
+                            setupProfileForm();
+                        } else {
+                            localStorage.removeItem('currentUser');
+                            updateAuthUI(null);
+                            
+                            // User is not logged in
+                            document.getElementById('login-required').style.display = 'block';
+                            document.querySelectorAll('.tab-content').forEach(tab => {
+                                tab.classList.add('hidden');
+                            });
+                        }
                     });
+                } else {
+                    // Fallback: check localStorage
+                    const savedUser = localStorage.getItem('currentUser');
+                    if (savedUser) {
+                        const userData = JSON.parse(savedUser);
+                        updateAuthUI(userData);
+                        document.getElementById('login-required').style.display = 'none';
+                        showUserSection();
+                        updateUserInfo(userData);
+                        setupTabs();
+                        initializeChart();
+                        setupProfileForm();
+                    } else {
+                        document.getElementById('login-required').style.display = 'block';
+                    }
                 }
-            });
+            }, 1000);
 
             // تحميل بيانات المستخدم من localStorage إذا كانت موجودة
             const savedUser = localStorage.getItem('currentUser');

@@ -21,10 +21,7 @@ class ShipmentManager {
             'truck': 'large', 'van': 'large', 'trailer': 'large',
             'fleet': 'x-large', 'airline': 'x-large', 'shipping': 'x-large'
         };
-        return types[vehicleType] || 'medium';
-    }
-
-    // خوارزمية المطابقة الذكية بين الشحنات والموصلين
+        return types[vehicleTyp    // خوارزمية المطابقة الذكية المحسنة بين الشحنات والموصلين
     findMatchingTravelers(shipment) {
         const shipmentType = this.classifyShipment(shipment.weight, shipment.dimensions);
         
@@ -38,23 +35,111 @@ class ShipmentManager {
                 (shipmentType === 'large' && travelerType === 'large') ||
                 (shipmentType === 'x-large' && travelerType === 'x-large');
 
-            // المطابقة حسب المسار
-            const routeMatch = 
-                traveler.fromCity === shipment.fromCity &&
-                traveler.toCity === shipment.toCity;
+            // المطابقة حسب المسار (مرونة أكبر)
+            const routeMatch = this.checkRouteMatch(traveler, shipment);
 
-            // المطابقة حسب التوقيت
-            const timeMatch = 
-                new Date(traveler.departureTime) >= new Date(shipment.preferredDate);
+            // المطابقة حسب التوقيت (مرونة أكبر)
+            const timeMatch = this.checkTimeMatch(traveler, shipment);
 
-            return typeMatch && routeMatch && timeMatch;
+            // المطابقة حسب السعة المتاحة
+            const capacityMatch = this.checkCapacityMatch(traveler, shipment);
+
+            // المطابقة حسب التقييم
+            const ratingMatch = traveler.rating >= 3.0;
+
+            return typeMatch && routeMatch && timeMatch && capacityMatch && ratingMatch;
+        }).map(traveler => {
+            // حساب نقاط المطابقة
+            const matchScore = this.calculateMatchScore(traveler, shipment);
+            return { ...traveler, matchScore };
         }).sort((a, b) => {
-            // ترتيب حسب السعر ثم التقييم
-            return a.price - b.price || b.rating - a.rating;
+            // ترتيب حسب نقاط المطابقة ثم السعر
+            return b.matchScore - a.matchScore || a.price - b.price;
         });
     }
 
-    // البحث عن شحنات متطابقة للموصل
+    // فحص مطابقة المسار مع مرونة
+    checkRouteMatch(traveler, shipment) {
+        // مطابقة مباشرة
+        if (traveler.fromCity === shipment.fromCity && traveler.toCity === shipment.toCity) {
+            return true;
+        }
+
+        // مطابقة جزئية (نفس المدينة أو قريبة)
+        const fromMatch = this.isCityNearby(traveler.fromCity, shipment.fromCity);
+        const toMatch = this.isCityNearby(traveler.toCity, shipment.toCity);
+        
+        return fromMatch && toMatch;
+    }
+
+    // فحص مطابقة التوقيت مع مرونة
+    checkTimeMatch(traveler, shipment) {
+        const travelerTime = new Date(traveler.departureTime);
+        const shipmentTime = new Date(shipment.preferredDate);
+        
+        // مطابقة مباشرة
+        if (travelerTime >= shipmentTime) {
+            return true;
+        }
+
+        // مرونة زمنية (ساعتان قبل أو بعد)
+        const timeDiff = Math.abs(travelerTime - shipmentTime);
+        const twoHours = 2 * 60 * 60 * 1000;
+        
+        return timeDiff <= twoHours;
+    }
+
+    // فحص مطابقة السعة
+    checkCapacityMatch(traveler, shipment) {
+        const availableCapacity = traveler.maxCapacity - (traveler.usedCapacity || 0);
+        return availableCapacity >= shipment.weight;
+    }
+
+    // حساب نقاط المطابقة
+    calculateMatchScore(traveler, shipment) {
+        let score = 0;
+
+        // نقاط المسار (40 نقطة)
+        if (traveler.fromCity === shipment.fromCity && traveler.toCity === shipment.toCity) {
+            score += 40;
+        } else if (this.isCityNearby(traveler.fromCity, shipment.fromCity) && 
+                   this.isCityNearby(traveler.toCity, shipment.toCity)) {
+            score += 30;
+        }
+
+        // نقاط التوقيت (25 نقطة)
+        const timeDiff = Math.abs(new Date(traveler.departureTime) - new Date(shipment.preferredDate));
+        const oneHour = 60 * 60 * 1000;
+        if (timeDiff <= oneHour) {
+            score += 25;
+        } else if (timeDiff <= 2 * oneHour) {
+            score += 20;
+        } else if (timeDiff <= 4 * oneHour) {
+            score += 15;
+        }
+
+        // نقاط التقييم (20 نقطة)
+        score += Math.min(traveler.rating * 4, 20);
+
+        // نقاط السعر (15 نقطة)
+        const priceScore = Math.max(0, 15 - (traveler.price - shipment.budget) / 10);
+        score += priceScore;
+
+        return Math.round(score);
+    }
+
+    // فحص قرب المدن
+    isCityNearby(city1, city2) {
+        const nearbyCities = {
+            'الرياض': ['الرياض', 'الخرج', 'الدرعية'],
+            'جدة': ['جدة', 'مكة', 'الطائف'],
+            'الدمام': ['الدمام', 'الخبر', 'القطيف'],
+            'مكة': ['مكة', 'جدة', 'الطائف'],
+            'المدينة': ['المدينة', 'ينبع', 'العلا']
+        };
+
+        return nearbyCities[city1]?.includes(city2) || city1 === city2;
+    } - b.price || b.rating - a.rati    // البحث عن شحنات متطابقة للموصل (محسن)
     findMatchingShipments(traveler) {
         const travelerType = this.classifyTraveler(traveler.capacity, traveler.vehicleType);
         
@@ -68,23 +153,28 @@ class ShipmentManager {
                 (travelerType === 'large' && shipmentType === 'large') ||
                 (travelerType === 'x-large' && shipmentType === 'x-large');
 
-            // المطابقة حسب المسار
-            const routeMatch = 
-                traveler.fromCity === shipment.fromCity &&
-                traveler.toCity === shipment.toCity;
+            // المطابقة حسب المسار (مرونة أكبر)
+            const routeMatch = this.checkRouteMatch(traveler, shipment);
 
-            // المطابقة حسب التوقيت
-            const timeMatch = 
-                new Date(traveler.departureTime) >= new Date(shipment.preferredDate);
+            // المطابقة حسب التوقيت (مرونة أكبر)
+            const timeMatch = this.checkTimeMatch(traveler, shipment);
 
-            return typeMatch && routeMatch && timeMatch && shipment.status === 'pending';
+            // المطابقة حسب السعة المتاحة
+            const capacityMatch = this.checkCapacityMatch(traveler, shipment);
+
+            // المطابقة حسب الميزانية
+            const budgetMatch = shipment.budget >= traveler.price;
+
+            return typeMatch && routeMatch && timeMatch && capacityMatch && budgetMatch && shipment.status === 'pending';
+        }).map(shipment => {
+            // حساب نقاط المطابقة
+            const matchScore = this.calculateMatchScore(traveler, shipment);
+            return { ...shipment, matchScore };
         }).sort((a, b) => {
-            // ترتيب حسب السعر ثم الوزن
-            return b.offerPrice - a.offerPrice || a.weight - b.weight;
+            // ترتيب حسب نقاط المطابقة ثم السعر
+            return b.matchScore - a.matchScore || b.offerPrice - a.offerPrice;
         });
-    }
-
-    // إنشاء شحنة جديدة مع الربط التلقائي
+    }.offerPrice || a.weight - b.weig    // إنشاء شحنة جديدة مع الربط التلقائي
     createShipment(shipmentData) {
         const shipment = {
             id: Date.now().toString(),
@@ -93,15 +183,22 @@ class ShipmentManager {
             status: 'pending',
             createdAt: new Date().toISOString(),
             trackingNumber: 'SH' + Date.now().toString().slice(-6),
-            matchingTravelers: []
+            matchingTravelers: [],
+            recommendations: []
         };
 
         // البحث عن موصلين متطابقين
         const matchingTravelers = this.findMatchingTravelers(shipment);
         shipment.matchingTravelers = matchingTravelers.map(t => t.id);
 
+        // إنشاء توصيات ذكية
+        shipment.recommendations = this.generateRecommendations(shipment, matchingTravelers);
+
         this.shipments.push(shipment);
         this.saveShipments();
+
+        // إشعار الموصلين المناسبين
+        this.notifyMatchingTravelers(shipment, matchingTravelers);
         
         return {
             shipment,
@@ -110,7 +207,160 @@ class ShipmentManager {
         };
     }
 
-    // إنشاء رحلة موصل جديدة
+    // إنشاء توصيات ذكية
+    generateRecommendations(shipment, matchingTravelers) {
+        const recommendations = [];
+
+        // توصية أفضل موصل
+        if (matchingTravelers.length > 0) {
+            const bestMatch = matchingTravelers[0];
+            recommendations.push({
+                type: 'best_match',
+                title: 'أفضل موصل',
+                description: `${bestMatch.name} - تقييم ${bestMatch.rating} نجوم`,
+                traveler: bestMatch,
+                confidence: bestMatch.matchScore / 100
+            });
+        }
+
+        // توصية توفير المال
+        const cheapestOption = matchingTravelers.reduce((cheapest, current) => 
+            current.price < cheapest.price ? current : cheapest, matchingTravelers[0]);
+        
+        if (cheapestOption && cheapestOption !== matchingTravelers[0]) {
+            recommendations.push({
+                type: 'cost_saving',
+                title: 'توفير المال',
+                description: `وفر ${matchingTravelers[0].price - cheapestOption.price} ريال مع ${cheapestOption.name}`,
+                traveler: cheapestOption,
+                savings: matchingTravelers[0].price - cheapestOption.price
+            });
+        }
+
+        // توصية السرعة
+        const fastestOption = matchingTravelers.reduce((fastest, current) => 
+            current.estimatedTime < fastest.estimatedTime ? current : fastest, matchingTravelers[0]);
+        
+        if (fastestOption && fastestOption !== matchingTravelers[0]) {
+            recommendations.push({
+                type: 'speed',
+                title: 'أسرع توصيل',
+                description: `${fastestOption.name} - ${fastestOption.estimatedTime} ساعة`,
+                traveler: fastestOption,
+                timeSaved: matchingTravelers[0].estimatedTime - fastestOption.estimatedTime
+            });
+        }
+
+        return recommendations;
+    }
+
+    // إشعار الموصلين المناسبين
+    notifyMatchingTravelers(shipment, matchingTravelers) {
+        matchingTravelers.forEach(traveler => {
+            // إضافة إشعار للموصل
+            this.addNotification({
+                type: 'new_shipment_match',
+                title: 'شحنة جديدة مناسبة لك',
+                message: `شحنة ${shipment.type} من ${shipment.fromCity} إلى ${shipment.toCity}`,
+                shipmentId: shipment.id,
+                travelerId: traveler.id,
+                timestamp: new Date().toISOString()
+            });
+        });
+    }
+
+    // إضافة إشعار
+    addNotification(notification) {
+        const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+        notifications.unshift(notification);
+        localStorage.setItem('notifications', JSON.stringify(notifications));
+    }
+
+    // الحصول على إحصائيات المنصة
+    getPlatformStats() {
+        const totalShipments = this.shipments.length;
+        const completedShipments = this.shipments.filter(s => s.status === 'delivered').length;
+        const activeTravelers = this.travelers.filter(t => t.status === 'available').length;
+        const totalRevenue = this.shipments
+            .filter(s => s.status === 'delivered')
+            .reduce((sum, s) => sum + (s.offerPrice * 0.1), 0); // 10% عمولة
+
+        return {
+            totalShipments,
+            completedShipments,
+            activeTravelers,
+            totalRevenue,
+            completionRate: totalShipments > 0 ? (completedShipments / totalShipments) * 100 : 0
+        };
+    }
+
+    // البحث المتقدم
+    advancedSearch(filters) {
+        let results = [...this.shipments];
+
+        // فلترة حسب المدينة
+        if (filters.fromCity) {
+            results = results.filter(s => s.fromCity === filters.fromCity);
+        }
+        if (filters.toCity) {
+            results = results.filter(s => s.toCity === filters.toCity);
+        }
+
+        // فلترة حسب النوع
+        if (filters.type) {
+            results = results.filter(s => s.type === filters.type);
+        }
+
+        // فلترة حسب الوزن
+        if (filters.minWeight) {
+            results = results.filter(s => s.weight >= filters.minWeight);
+        }
+        if (filters.maxWeight) {
+            results = results.filter(s => s.weight <= filters.maxWeight);
+        }
+
+        // فلترة حسب السعر
+        if (filters.minPrice) {
+            results = results.filter(s => s.offerPrice >= filters.minPrice);
+        }
+        if (filters.maxPrice) {
+            results = results.filter(s => s.offerPrice <= filters.maxPrice);
+        }
+
+        // فلترة حسب التاريخ
+        if (filters.dateFrom) {
+            results = results.filter(s => new Date(s.preferredDate) >= new Date(filters.dateFrom));
+        }
+        if (filters.dateTo) {
+            results = results.filter(s => new Date(s.preferredDate) <= new Date(filters.dateTo));
+        }
+
+        // ترتيب النتائج
+        if (filters.sortBy) {
+            switch (filters.sortBy) {
+                case 'price_asc':
+                    results.sort((a, b) => a.offerPrice - b.offerPrice);
+                    break;
+                case 'price_desc':
+                    results.sort((a, b) => b.offerPrice - a.offerPrice);
+                    break;
+                case 'date_asc':
+                    results.sort((a, b) => new Date(a.preferredDate) - new Date(b.preferredDate));
+                    break;
+                case 'date_desc':
+                    results.sort((a, b) => new Date(b.preferredDate) - new Date(a.preferredDate));
+                    break;
+                case 'weight_asc':
+                    results.sort((a, b) => a.weight - b.weight);
+                    break;
+                case 'weight_desc':
+                    results.sort((a, b) => b.weight - a.weight);
+                    break;
+            }
+        }
+
+        return results;
+    }ngTravelers.length} موصل متط    // إنشاء رحلة موصل جديدة
     createTraveler(travelerData) {
         const traveler = {
             id: Date.now().toString(),
@@ -120,15 +370,22 @@ class ShipmentManager {
             createdAt: new Date().toISOString(),
             rating: 5.0,
             completedTrips: 0,
-            matchingShipments: []
+            matchingShipments: [],
+            recommendations: []
         };
 
         // البحث عن شحنات متطابقة
         const matchingShipments = this.findMatchingShipments(traveler);
         traveler.matchingShipments = matchingShipments.map(s => s.id);
 
+        // إنشاء توصيات ذكية
+        traveler.recommendations = this.generateTravelerRecommendations(traveler, matchingShipments);
+
         this.travelers.push(traveler);
         this.saveTravelers();
+
+        // إشعار العملاء المناسبين
+        this.notifyMatchingClients(traveler, matchingShipments);
         
         return {
             traveler,
@@ -137,7 +394,67 @@ class ShipmentManager {
         };
     }
 
-    // قبول شحنة من قبل موصل
+    // إنشاء توصيات ذكية للموصل
+    generateTravelerRecommendations(traveler, matchingShipments) {
+        const recommendations = [];
+
+        // توصية أفضل شحنة
+        if (matchingShipments.length > 0) {
+            const bestMatch = matchingShipments[0];
+            recommendations.push({
+                type: 'best_shipment',
+                title: 'أفضل شحنة',
+                description: `شحنة ${bestMatch.type} من ${bestMatch.fromCity} إلى ${bestMatch.toCity}`,
+                shipment: bestMatch,
+                confidence: bestMatch.matchScore / 100
+            });
+        }
+
+        // توصية أعلى ربح
+        const highestProfit = matchingShipments.reduce((highest, current) => 
+            current.offerPrice > highest.offerPrice ? current : highest, matchingShipments[0]);
+        
+        if (highestProfit && highestProfit !== matchingShipments[0]) {
+            recommendations.push({
+                type: 'highest_profit',
+                title: 'أعلى ربح',
+                description: `اكسب ${highestProfit.offerPrice} ريال مع ${highestProfit.type}`,
+                shipment: highestProfit,
+                profit: highestProfit.offerPrice
+            });
+        }
+
+        // توصية أقرب مسافة
+        const shortestDistance = matchingShipments.reduce((shortest, current) => 
+            current.distance < shortest.distance ? current : shortest, matchingShipments[0]);
+        
+        if (shortestDistance && shortestDistance !== matchingShipments[0]) {
+            recommendations.push({
+                type: 'shortest_distance',
+                title: 'أقرب مسافة',
+                description: `${shortestDistance.distance} كم - ${shortestDistance.type}`,
+                shipment: shortestDistance,
+                distance: shortestDistance.distance
+            });
+        }
+
+        return recommendations;
+    }
+
+    // إشعار العملاء المناسبين
+    notifyMatchingClients(traveler, matchingShipments) {
+        matchingShipments.forEach(shipment => {
+            // إضافة إشعار للعميل
+            this.addNotification({
+                type: 'new_traveler_match',
+                title: 'موصل جديد متاح',
+                message: `${traveler.name} متاح لنقل شحنتك`,
+                shipmentId: shipment.id,
+                travelerId: traveler.id,
+                timestamp: new Date().toISOString()
+            });
+        });
+    }ngShipments.length} شحنة متطا    // قبول شحنة من قبل موصل
     acceptShipment(travelerId, shipmentId) {
         const shipment = this.shipments.find(s => s.id === shipmentId);
         const traveler = this.travelers.find(t => t.id === travelerId);
@@ -150,10 +467,38 @@ class ShipmentManager {
             traveler.matchingShipments = traveler.matchingShipments.filter(id => id !== shipmentId);
             traveler.completedTrips += 1;
             
+            // بدء التتبع
+            if (window.trackingManager) {
+                window.trackingManager.startTracking(shipmentId, travelerId, {
+                    from: shipment.fromCity,
+                    to: shipment.toCity
+                });
+            }
+
+            // إنشاء فاتورة
+            if (window.paymentManager) {
+                const pricing = window.paymentManager.calculatePrice(shipment.offerPrice);
+                window.paymentManager.createInvoice(shipment, traveler, pricing);
+            }
+
+            // بدء محادثة
+            if (window.messagingManager) {
+                const conversationId = window.messagingManager.startConversation(shipmentId, [
+                    shipment.userId, travelerId
+                ]);
+                
+                // إرسال رسالة ترحيب
+                window.messagingManager.sendTextMessage(conversationId, travelerId, 
+                    `مرحباً! تم قبول شحنتك. سأتواصل معك قريباً.`);
+            }
+            
             this.saveShipments();
             this.saveTravelers();
             
             return true;
+        }
+        return false;
+    }true;
         }
         return false;
     }
@@ -262,11 +607,88 @@ class ShipmentManager {
     }
 
     saveTravelers() {
-        localStorage.setItem('fastship_travelers', JSON.stringify(this.travelers));
+        localStorage.setItem('fastship_travelers', JSON.stringify(thi    // جعل النظام متاحاً globally
+    window.shipmentManager = new ShipmentManager();
+
+    // دوال مساعدة للواجهة
+    function showRecommendations(shipmentId) {
+        const shipment = window.shipmentManager.shipments.find(s => s.id === shipmentId);
+        if (!shipment || !shipment.recommendations) return;
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+        modal.innerHTML = `
+            <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">توصيات ذكية</h3>
+                    <button onclick="closeRecommendationsModal()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+                </div>
+                
+                <div class="space-y-4">
+                    ${shipment.recommendations.map(rec => `
+                        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-lg font-semibold text-gray-800">${rec.title}</h4>
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                                    ${Math.round(rec.confidence * 100)}% تطابق
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-3">${rec.description}</p>
+                            <div class="flex gap-2">
+                                <button onclick="selectRecommendation('${rec.traveler.id}')" 
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                                    اختيار
+                                </button>
+                                <button onclick="viewTravelerDetails('${rec.traveler.id}')" 
+                                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold">
+                                    تفاصيل
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
     }
 
-    loadTravelers() {
-        return JSON.parse(localStorage.getItem('fastship_travelers') || '[]');
+    function closeRecommendationsModal() {
+        const modal = document.querySelector('.fixed.inset-0.bg-black.bg-opacity-50');
+        if (modal) {
+            modal.remove();
+        }
+    }
+
+    function selectRecommendation(travelerId) {
+        // في التطبيق الحقيقي، هنا سنقوم بقبول الشحنة
+        showNotification('تم اختيار الموصل بنجاح!', 'success');
+        closeRecommendationsModal();
+    }
+
+    function viewTravelerDetails(travelerId) {
+        // في التطبيق الحقيقي، هنا سنعرض تفاصيل الموصل
+        showNotification('عرض تفاصيل الموصل', 'info');
+    }
+
+    // دالة عرض الإشعارات
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white ${
+            type === 'success' ? 'bg-green-500' : 
+            type === 'error' ? 'bg-red-500' : 
+            'bg-blue-500'
+        }`;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
+    }alStorage.getItem('fastship_travelers') || '[]');
     }
 }
 

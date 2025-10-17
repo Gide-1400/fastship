@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إنشاء حساب - الشحنة السريعة</title>
-    <meta name="description" content="أنشئ حسابك الجديد في منصة الشحنة السريعة">
+    <meta name="description" content="أنشئ حسابك في منصة الشحنة السريعة وابدأ رحلتك معنا">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,13 +12,12 @@
     <!-- Custom Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <script>
-        // Firebase configuration
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
         const firebaseConfig = {
             apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
             authDomain: "fastship-2026.firebaseapp.com",
@@ -28,8 +27,16 @@
             appId: "1:646769615933:web:5fd3c82c31969192f9f654"
         };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        window.firebaseAuth = auth;
+        window.firebaseCreateUser = createUserWithEmailAndPassword;
+        window.firebaseUpdateProfile = updateProfile;
+        window.firebaseDB = db;
+        window.firebaseDoc = doc;
+        window.firebaseSetDoc = setDoc;
     </script>
     
     <style>
@@ -46,30 +53,34 @@
             background-clip: text;
         }
         
-        .card-hover {
-            transition: all 0.3s ease;
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
         }
         
-        .card-hover:hover {
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .account-type-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .account-type-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 24px rgba(0,0,0,0.15);
         }
         
-        .rtl {
-            direction: rtl;
-        }
-        
-        .ltr {
-            direction: ltr;
-        }
-        
-        .step-indicator {
-            transition: all 0.3s ease;
-        }
-        
-        .step-indicator.active {
-            background-color: #3b82f6;
-            color: white;
+        .account-type-card.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
         }
     </style>
 </head>
@@ -84,270 +95,192 @@
                     </div>
                 </div>
                 
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
-                        <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
-                        <a href="travelers.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">المسافرون</a>
-                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لوحة التحكم</a>
-                        <a href="support.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الدعم الفني</a>
-                    </div>
-                </div>
-                
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <a href="login.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
-                        تسجيل الدخول
-                    </a>
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
+                    <a href="login.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">تسجيل الدخول</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Registration Section -->
-    <section class="min-h-screen flex items-center justify-center pt-16 pb-12">
-        <div class="max-w-2xl w-full mx-4">
-            <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl card-hover">
-                <div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold gradient-text mb-2">إنشاء حساب جديد</h1>
-                    <p class="text-gray-600">انضم إلى منصة الشحنة السريعة وابدأ رحلتك</p>
-                </div>
-
-                <!-- Step Indicator -->
-                <div class="flex justify-between mb-8">
-                    <div class="step-indicator flex-1 text-center py-2 rounded-lg bg-blue-500 text-white font-medium">
-                        1. المعلومات الأساسية
+    <!-- Main Content -->
+    <section class="pt-24 pb-12 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mx-auto">
+                <!-- Registration Form -->
+                <div class="form-container rounded-3xl p-8 shadow-2xl">
+                    <div class="text-center mb-8">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">انضم إلينا اليوم!</h1>
+                        <p class="text-gray-600">أنشئ حسابك وابدأ رحلتك مع منصة الشحنة السريعة</p>
                     </div>
-                    <div class="step-indicator flex-1 text-center py-2 rounded-lg bg-gray-200 text-gray-700 font-medium mx-2">
-                        2. نوع الحساب
-                    </div>
-                    <div class="step-indicator flex-1 text-center py-2 rounded-lg bg-gray-200 text-gray-700 font-medium">
-                        3. التأكيد
-                    </div>
-                </div>
-
-                <form id="registerForm" class="space-y-6">
-                    <!-- Step 1: Basic Information -->
-                    <div id="step-1" class="step-content">
+                    
+                    <!-- Account Type Selection -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">اختر نوع حسابك</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="account-type-card border-2 border-gray-200 rounded-xl p-6 text-center" data-type="client">
+                                <div class="text-4xl mb-3">📦</div>
+                                <h4 class="font-semibold text-gray-800 mb-2">عميل</h4>
+                                <p class="text-sm text-gray-600">أرسل شحناتك مع أفضل المسافرين</p>
+                            </div>
+                            <div class="account-type-card border-2 border-gray-200 rounded-xl p-6 text-center" data-type="traveler">
+                                <div class="text-4xl mb-3">🚗</div>
+                                <h4 class="font-semibold text-gray-800 mb-2">موصل</h4>
+                                <p class="text-sm text-gray-600">اكسب دخل إضافي من رحلاتك</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form id="registerForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">الاسم الأول</label>
-                                <input type="text" id="firstName" name="firstName" required 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الأول</label>
+                                <input type="text" id="firstName" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-300"
                                        placeholder="الاسم الأول">
-                                <div id="firstName-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
                             
                             <div>
-                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">اسم العائلة</label>
-                                <input type="text" id="lastName" name="lastName" required 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                <label class="block text-sm font-medium text-gray-700 mb-2">اسم العائلة</label>
+                                <input type="text" id="lastName" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-300"
                                        placeholder="اسم العائلة">
-                                <div id="lastName-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
                         </div>
-
+                        
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
-                            <input type="email" id="email" name="email" required 
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                            <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                            <input type="email" id="email" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-300"
                                    placeholder="أدخل بريدك الإلكتروني">
-                            <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
-
+                        
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">رقم الجوال</label>
-                            <input type="tel" id="phone" name="phone" required 
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                                   placeholder="05XXXXXXXX">
-                            <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">رقم الجوال</label>
+                            <input type="tel" id="phone" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-300"
+                                   placeholder="+966 50 123 4567">
                         </div>
-
+                        
                         <div>
-                            <label for="city" class="block text-sm font-medium text-gray-700 mb-2">المدينة</label>
-                            <select id="city" name="city" required 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">المدينة</label>
+                            <select id="city" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-300">
                                 <option value="">اختر المدينة</option>
                                 <option value="الرياض">الرياض</option>
                                 <option value="جدة">جدة</option>
-                                <option value="مكة">مكة</option>
+                                <option value="مكة">مكة المكرمة</option>
                                 <option value="المدينة">المدينة المنورة</option>
                                 <option value="الدمام">الدمام</option>
-                                <option value="أبها">أبها</option>
+                                <option value="الخبر">الخبر</option>
                                 <option value="الطائف">الطائف</option>
+                                <option value="بريدة">بريدة</option>
                                 <option value="تبوك">تبوك</option>
+                                <option value="خميس مشيط">خميس مشيط</option>
                             </select>
-                            <div id="city-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
-
-                        <div class="flex justify-end">
-                            <button type="button" onclick="nextStep(2)" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                التالي
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Account Type -->
-                    <div id="step-2" class="step-content hidden">
-                        <div class="text-center mb-6">
-                            <h3 class="text-xl font-semibold text-gray-800">اختر نوع حسابك</h3>
-                            <p class="text-gray-600">اختر الدور المناسب لك على المنصة</p>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div class="account-type border-2 border-gray-200 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500 transition-colors" data-type="client">
-                                <div class="text-4xl mb-4">📦</div>
-                                <h4 class="text-lg font-semibold text-gray-800 mb-2">عميل</h4>
-                                <p class="text-sm text-gray-600 mb-4">أريد إرسال شحنات</p>
-                                <ul class="text-xs text-gray-500 text-right space-y-1">
-                                    <li>• إرسال شحنات بسهولة</li>
-                                    <li>• متابعة الشحنات لحظياً</li>
-                                    <li>• التواصل مع المسافرين</li>
-                                    <li>• دفع آمن عبر المنصة</li>
-                                </ul>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
+                            <div class="relative">
+                                <input type="password" id="password" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-300"
+                                       placeholder="أدخل كلمة المرور">
+                                <button type="button" onclick="togglePassword('password')" 
+                                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                    <span id="passwordToggle">👁️</span>
+                                </button>
                             </div>
-                            
-                            <div class="account-type border-2 border-gray-200 rounded-lg p-6 text-center cursor-pointer hover:border-orange-500 transition-colors" data-type="traveler">
-                                <div class="text-4xl mb-4">🚗</div>
-                                <h4 class="text-lg font-semibold text-gray-800 mb-2">مسافر</h4>
-                                <p class="text-sm text-gray-600 mb-4">أريد نقل شحنات</p>
-                                <ul class="text-xs text-gray-500 text-right space-y-1">
-                                    <li>• كسب دخل إضافي</li>
-                                    <li>• استغلال الرحلات الفارغة</li>
-                                    <li>• مرونة في العمل</li>
-                                    <li>• تأمين على الشحنات</li>
-                                </ul>
+                            <div class="mt-2 text-xs text-gray-500">
+                                يجب أن تحتوي على 8 أحرف على الأقل
                             </div>
                         </div>
-
-                        <!-- Traveler Additional Info -->
-                        <div id="traveler-info" class="hidden space-y-4">
-                            <!-- Vehicle Fields -->
-                            <div id="vehicle-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="vehicleType" class="block text-sm font-medium text-gray-700 mb-2">نوع المركبة</label>
-                                    <select id="vehicleType" name="vehicleType" 
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
-                                        <option value="">اختر نوع المركبة</option>
-                                        <option value="سيارة">سيارة</option>
-                                        <option value="شاحنة صغيرة">شاحنة صغيرة</option>
-                                        <option value="فان">فان</option>
-                                        <option value="باص">باص</option>
-                                        <option value="شاحنة">شاحنة</option>
-                                        <option value="تريلة">تريلة</option>
-                                    </select>
-                                </div>
-                                
-                                <div>
-                                    <label for="vehicleModel" class="block text-sm font-medium text-gray-700 mb-2">موديل المركبة</label>
-                                    <input type="text" id="vehicleModel" name="vehicleModel" 
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                                           placeholder="موديل المركبة">
-                                </div>
-                            </div>
-
-                            <!-- Capacity Fields -->
-                            <div id="capacity-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="maxWeight" class="block text-sm font-medium text-gray-700 mb-2">الوزن الأقصى (كجم)</label>
-                                    <input type="number" id="maxWeight" name="maxWeight" 
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                                           placeholder="الوزن الأقصى بالكيلو">
-                                </div>
-                                
-                                <div>
-                                    <label for="maxVolume" class="block text-sm font-medium text-gray-700 mb-2">الحجم الأقصى (م³)</label>
-                                    <input type="number" id="maxVolume" name="maxVolume" 
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                                           placeholder="الحجم الأقصى بالمتر المكعب">
-                                </div>
-                            </div>
-
-                            <!-- Routes Fields -->
-                            <div id="routes-fields">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">المسارات المفضلة</label>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                    <div class="flex items-center">
-                                        <input type="checkbox" id="route-riyadh-jeddah" name="routes" value="الرياض-جدة" class="ml-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                                        <label for="route-riyadh-jeddah" class="text-sm text-gray-700">الرياض ↔ جدة</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input type="checkbox" id="route-dammam-riyadh" name="routes" value="الدمام-الرياض" class="ml-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                                        <label for="route-dammam-riyadh" class="text-sm text-gray-700">الدمام ↔ الرياض</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input type="checkbox" id="route-jeddah-madinah" name="routes" value="جدة-المدينة" class="ml-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                                        <label for="route-jeddah-madinah" class="text-sm text-gray-700">جدة ↔ المدينة</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input type="checkbox" id="route-makkah-jeddah" name="routes" value="مكة-جدة" class="ml-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                                        <label for="route-makkah-jeddah" class="text-sm text-gray-700">مكة ↔ جدة</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label for="licenseNumber" class="block text-sm font-medium text-gray-700 mb-2">رقم رخصة القيادة</label>
-                                <input type="text" id="licenseNumber" name="licenseNumber" 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                                       placeholder="رقم رخصة القيادة">
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between">
-                            <button type="button" onclick="prevStep(1)" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                السابق
-                            </button>
-                            <button type="button" onclick="nextStep(3)" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                التالي
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Password & Confirmation -->
-                    <div id="step-3" class="step-content hidden">
-                        <div class="space-y-4">
-                            <div>
-                                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
-                                <input type="password" id="password" name="password" required 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                                       placeholder="كلمة المرور (8 أحرف على الأقل)">
-                                <div id="password-error" class="text-red-500 text-sm mt-1 hidden"></div>
-                            </div>
-
-                            <div>
-                                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">تأكيد كلمة المرور</label>
-                                <input type="password" id="confirmPassword" name="confirmPassword" required 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">تأكيد كلمة المرور</label>
+                            <div class="relative">
+                                <input type="password" id="confirmPassword" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-300"
                                        placeholder="أعد إدخال كلمة المرور">
-                                <div id="confirmPassword-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                <button type="button" onclick="togglePassword('confirmPassword')" 
+                                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                    <span id="confirmPasswordToggle">👁️</span>
+                                </button>
                             </div>
-
-                            <div class="flex items-center">
-                                <input type="checkbox" id="terms" name="terms" required class="ml-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                                <label for="terms" class="text-sm text-gray-600">
-                                    أوافق على 
-                                    <a href="terms.html" class="text-blue-600 hover:text-blue-800">الشروط والأحكام</a>
-                                    و
-                                    <a href="privacy.html" class="text-blue-600 hover:text-blue-800">سياسة الخصوصية</a>
-                                </label>
+                        </div>
+                        
+                        <!-- Traveler-specific fields -->
+                        <div id="travelerFields" class="hidden space-y-6">
+                            <div class="border-t border-gray-200 pt-6">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-4">معلومات المركبة</h4>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع المركبة</label>
+                                        <select id="vehicleType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                            <option value="">اختر نوع المركبة</option>
+                                            <option value="car">سيارة</option>
+                                            <option value="suv">جيب</option>
+                                            <option value="pickup">بيك أب</option>
+                                            <option value="van">فان</option>
+                                            <option value="truck">شاحنة</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">موديل المركبة</label>
+                                        <input type="text" id="vehicleModel" 
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="مثال: تويوتا كامري 2020">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">السعة القصوى (كجم)</label>
+                                    <input type="number" id="maxCapacity" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           placeholder="مثال: 500">
+                                </div>
                             </div>
-                            <div id="terms-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
-
-                        <div class="flex justify-between mt-6">
-                            <button type="button" onclick="prevStep(2)" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                السابق
-                            </button>
-                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center">
-                                <span id="register-text">إنشاء الحساب</span>
-                                <div id="register-spinner" class="hidden animate-spin ml-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
-                            </button>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="terms" required class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <label for="terms" class="mr-2 text-sm text-gray-600">
+                                أوافق على 
+                                <a href="terms.html" class="text-blue-600 hover:text-blue-800">الشروط والأحكام</a>
+                                و
+                                <a href="privacy.html" class="text-blue-600 hover:text-blue-800">سياسة الخصوصية</a>
+                            </label>
                         </div>
+                        
+                        <button type="submit" 
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-300 btn-hover">
+                            إنشاء الحساب
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center">
+                        <p class="text-gray-600">لديك حساب بالفعل؟ 
+                            <a href="login.html" class="text-blue-600 hover:text-blue-800 font-semibold">تسجيل الدخول</a>
+                        </p>
                     </div>
-                </form>
-
-                <div class="text-center mt-6">
-                    <span class="text-sm text-gray-600">لديك حساب بالفعل؟</span>
-                    <a href="login.html" class="text-sm text-blue-600 hover:text-blue-800 font-semibold mr-2">سجل الدخول هنا</a>
+                </div>
+                
+                <!-- Benefits -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center text-white">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                        <div class="text-2xl mb-2">💰</div>
+                        <div class="text-sm font-semibold">توفير في التكاليف</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <div class="text-sm font-semibold">توصيل سريع</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                        <div class="text-2xl mb-2">🔒</div>
+                        <div class="text-sm font-semibold">آمن وموثوق</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -355,293 +288,156 @@
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-gray-400">
-                    © 2024 الشحنة السريعة. جميع الحقوق محفوظة | قايد صالح المصعبي
-                </p>
-            </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">© 2024 الشحنة السريعة. جميع الحقوق محفوظة | قايد صالح المصعبي</p>
         </div>
     </footer>
 
     <!-- JavaScript -->
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+    
     <script>
-        let currentStep = 1;
-        let selectedAccountType = '';
-
-        // في register.html - تحسين نوع الحساب
-        function updateRegistrationForm(accountType) {
-            if (accountType === 'traveler') {
-                // إظهار حقول إضافية للموصلين
-                document.getElementById('vehicle-fields').classList.remove('hidden');
-                document.getElementById('capacity-fields').classList.remove('hidden');
-                document.getElementById('routes-fields').classList.remove('hidden');
-            } else {
-                document.getElementById('vehicle-fields').classList.add('hidden');
-                document.getElementById('capacity-fields').classList.add('hidden');
-                document.getElementById('routes-fields').classList.add('hidden');
+        // Wait for Firebase to load
+        window.addEventListener('load', function() {
+            // Initialize auth manager after Firebase is loaded
+            if (window.authManager) {
+                window.authManager.updateUI();
             }
-        }
-
-        function nextStep(step) {
-            if (validateStep(currentStep)) {
-                document.getElementById(`step-${currentStep}`).classList.add('hidden');
-                document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('bg-blue-500', 'text-white');
-                document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('bg-gray-200', 'text-gray-700');
-                
-                currentStep = step;
-                
-                document.getElementById(`step-${currentStep}`).classList.remove('hidden');
-                document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('bg-gray-200', 'text-gray-700');
-                document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('bg-blue-500', 'text-white');
-            }
-        }
-
-        function prevStep(step) {
-            document.getElementById(`step-${currentStep}`).classList.add('hidden');
-            document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('bg-blue-500', 'text-white');
-            document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('bg-gray-200', 'text-gray-700');
-            
-            currentStep = step;
-            
-            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
-            document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('bg-gray-200', 'text-gray-700');
-            document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('bg-blue-500', 'text-white');
-        }
-
-        function validateStep(step) {
-            let isValid = true;
-            
-            // Clear previous errors
-            document.querySelectorAll('[id$="-error"]').forEach(error => {
-                error.classList.add('hidden');
-            });
-
-            if (step === 1) {
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const city = document.getElementById('city').value;
-
-                if (!firstName) {
-                    document.getElementById('firstName-error').textContent = 'الاسم الأول مطلوب';
-                    document.getElementById('firstName-error').classList.remove('hidden');
-                    isValid = false;
-                }
-
-                if (!lastName) {
-                    document.getElementById('lastName-error').textContent = 'اسم العائلة مطلوب';
-                    document.getElementById('lastName-error').classList.remove('hidden');
-                    isValid = false;
-                }
-
-                if (!email || !/\S+@\S+\.\S+/.test(email)) {
-                    document.getElementById('email-error').textContent = 'البريد الإلكتروني غير صحيح';
-                    document.getElementById('email-error').classList.remove('hidden');
-                    isValid = false;
-                }
-
-                if (!phone || !/^05\d{8}$/.test(phone)) {
-                    document.getElementById('phone-error').textContent = 'رقم الجوال غير صحيح';
-                    document.getElementById('phone-error').classList.remove('hidden');
-                    isValid = false;
-                }
-
-                if (!city) {
-                    document.getElementById('city-error').textContent = 'المدينة مطلوبة';
-                    document.getElementById('city-error').classList.remove('hidden');
-                    isValid = false;
-                }
-            }
-
-            return isValid;
-        }
+        });
+    </script>
+    
+    <script>
+        let selectedAccountType = 'client';
 
         // Account type selection
-        document.querySelectorAll('.account-type').forEach(type => {
-            type.addEventListener('click', function() {
-                document.querySelectorAll('.account-type').forEach(t => {
-                    t.classList.remove('border-blue-500', 'border-orange-500', 'bg-blue-50', 'bg-orange-50');
+        document.querySelectorAll('.account-type-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected class from all cards
+                document.querySelectorAll('.account-type-card').forEach(c => {
+                    c.classList.remove('selected');
                 });
                 
+                // Add selected class to clicked card
+                this.classList.add('selected');
+                
+                // Update selected type
                 selectedAccountType = this.dataset.type;
-                if (selectedAccountType === 'client') {
-                    this.classList.add('border-blue-500', 'bg-blue-50');
-                    document.getElementById('traveler-info').classList.add('hidden');
+                
+                // Show/hide traveler fields
+                const travelerFields = document.getElementById('travelerFields');
+                if (selectedAccountType === 'traveler') {
+                    travelerFields.classList.remove('hidden');
                 } else {
-                    this.classList.add('border-orange-500', 'bg-orange-50');
-                    document.getElementById('traveler-info').classList.remove('hidden');
+                    travelerFields.classList.add('hidden');
                 }
-
-                // تحديث الحقول بناءً على نوع الحساب
-                updateRegistrationForm(selectedAccountType);
             });
         });
 
-        // Form submission
+        // Set default selection
+        document.querySelector('[data-type="client"]').classList.add('selected');
+
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.getElementById(inputId + 'Toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+
+        // Handle registration form submission
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // التحقق من أن Firebase محمل
-            if (typeof firebase === 'undefined' || !firebase.apps.length) {
-                alert('خطأ في تحميل النظام. يرجى تحديث الصفحة.');
-                return;
-            }
-            
-            if (!selectedAccountType) {
-                alert('يرجى اختيار نوع الحساب');
-                return;
-            }
-
-            if (!validateStep(3)) {
-                return;
-            }
-
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const terms = document.getElementById('terms').checked;
-
-            if (password.length < 8) {
-                document.getElementById('password-error').textContent = 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
-                document.getElementById('password-error').classList.remove('hidden');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                document.getElementById('confirmPassword-error').textContent = 'كلمات المرور غير متطابقة';
-                document.getElementById('confirmPassword-error').classList.remove('hidden');
-                return;
-            }
-
-            if (!terms) {
-                document.getElementById('terms-error').textContent = 'يجب الموافقة على الشروط والأحكام';
-                document.getElementById('terms-error').classList.remove('hidden');
-                return;
-            }
-
-            // Show loading state
-            document.getElementById('register-text').classList.add('hidden');
-            document.getElementById('register-spinner').classList.remove('hidden');
-
-            // Collect form data
             const formData = {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
                 city: document.getElementById('city').value,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value,
                 accountType: selectedAccountType,
-                password: password,
                 vehicleType: document.getElementById('vehicleType').value,
                 vehicleModel: document.getElementById('vehicleModel').value,
-                licenseNumber: document.getElementById('licenseNumber').value,
-                maxWeight: document.getElementById('maxWeight').value,
-                maxVolume: document.getElementById('maxVolume').value,
-                preferredRoutes: getSelectedRoutes(),
-                createdAt: new Date().toISOString(),
-                profileImage: 'https://kimi-web-img.moonshot.cn/img/www.dropoff.com/55cca0b187c44c02ad7d55fdd54a23b1061a7806.jpeg'
+                maxCapacity: document.getElementById('maxCapacity').value
             };
-
+            
+            // Validate passwords match
+            if (formData.password !== formData.confirmPassword) {
+                showNotification('كلمات المرور غير متطابقة', 'error');
+                return;
+            }
+            
+            // Validate password length
+            if (formData.password.length < 8) {
+                showNotification('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري إنشاء الحساب...';
+            
             try {
-                // إنشاء المستخدم في Firebase Authentication
-                const userCredential = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password);
-                const user = userCredential.user;
-
-                // تحديث ملف المستخدم
-                await user.updateProfile({
-                    displayName: `${formData.firstName} ${formData.lastName}`,
-                    photoURL: formData.profileImage
-                });
-
-                // حفظ البيانات الإضافية في Firestore
-                const userData = {
-                    uid: user.uid,
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
-                    email: formData.email,
-                    phone: formData.phone,
-                    city: formData.city,
-                    accountType: formData.accountType,
-                    vehicleType: formData.vehicleType,
-                    vehicleModel: formData.vehicleModel,
-                    licenseNumber: formData.licenseNumber,
-                    maxWeight: formData.maxWeight,
-                    maxVolume: formData.maxVolume,
-                    preferredRoutes: formData.preferredRoutes,
-                    createdAt: formData.createdAt,
-                    profileImage: formData.profileImage,
-                    isActive: true,
-                    rating: formData.accountType === 'traveler' ? 5.0 : null,
-                    completedTrips: formData.accountType === 'traveler' ? 0 : null
-                };
-
-                // حفظ البيانات في Firestore
-                await firebase.firestore().collection("users").doc(user.uid).set(userData);
-
-                // حفظ بيانات المستخدم في localStorage
-                localStorage.setItem('currentUser', JSON.stringify({
-                    uid: user.uid,
-                    email: user.email,
-                    emailVerified: user.emailVerified,
-                    displayName: user.displayName,
-                    photoURL: user.photoURL,
-                    accountType: formData.accountType
-                }));
-
-                // عرض رسالة نجاح
-                alert('تم إنشاء الحساب بنجاح! سيتم تحويلك إلى لوحة التحكم.');
+                // Use the registerUser helper function
+                await registerUser(formData.email, formData.password, formData);
+                
+                showNotification('تم إنشاء الحساب بنجاح!', 'success');
                 
                 // Redirect to dashboard
-                window.location.href = 'dashboard.html';
-
-            } catch (error) {
-                console.error('خطأ في إنشاء الحساب:', error);
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
                 
-                // عرض رسالة الخطأ المناسبة
-                let errorMessage = 'حدث خطأ أثناء إنشاء الحساب';
+            } catch (error) {
+                console.error('Registration error:', error);
+                let errorMessage = 'حدث خطأ في إنشاء الحساب. حاول مرة أخرى.';
                 
                 if (error.code === 'auth/email-already-in-use') {
-                    errorMessage = 'البريد الإلكتروني مسجل مسبقاً';
-                    document.getElementById('email-error').textContent = errorMessage;
-                    document.getElementById('email-error').classList.remove('hidden');
+                    errorMessage = 'البريد الإلكتروني مستخدم بالفعل';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'كلمة المرور ضعيفة جداً';
                 } else if (error.code === 'auth/invalid-email') {
                     errorMessage = 'البريد الإلكتروني غير صحيح';
-                    document.getElementById('email-error').textContent = errorMessage;
-                    document.getElementById('email-error').classList.remove('hidden');
-                } else if (error.code === 'auth/weak-password') {
-                    errorMessage = 'كلمة المرور ضعيفة، يجب أن تكون 8 أحرف على الأقل';
-                    document.getElementById('password-error').textContent = errorMessage;
-                    document.getElementById('password-error').classList.remove('hidden');
-                } else {
-                    document.getElementById('email-error').textContent = errorMessage;
-                    document.getElementById('email-error').classList.remove('hidden');
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    errorMessage = 'إنشاء الحسابات غير مسموح حالياً';
                 }
                 
-                // Reset loading state
-                document.getElementById('register-text').classList.remove('hidden');
-                document.getElementById('register-spinner').classList.add('hidden');
+                showNotification(errorMessage, 'error');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         });
 
-        // دالة للحصول على المسارات المختارة
-        function getSelectedRoutes() {
-            const selectedRoutes = [];
-            document.querySelectorAll('input[name="routes"]:checked').forEach(checkbox => {
-                selectedRoutes.push(checkbox.value);
-            });
-            return selectedRoutes;
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                'bg-blue-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
         }
-
-        // التأكد من تحميل Firebase بشكل صحيح
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof firebase === 'undefined') {
-                console.error('Firebase لم يتم تحميله بشكل صحيح');
-                alert('حدث خطأ في تحميل النظام. يرجى تحديث الصفحة.');
-            } else {
-                console.log('Firebase محمل بنجاح:', firebase);
-            }
-        });
     </script>
 </body>
 </html>
