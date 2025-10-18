@@ -169,6 +169,9 @@
                 </div>
                 
                 <div class="flex items-center space-x-4 space-x-reverse">
+                    <a href="matching-demo.html" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+                        جرب النظام
+                    </a>
                     <a href="login.html" id="login-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
                         تسجيل الدخول
                     </a>
@@ -199,11 +202,11 @@
                 <!-- Hero Content -->
                 <div class="text-white text-center">
                     <h1 class="hero-title text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                        أرسل شحنتك مع أقرب ناقل
+                        منصة FastShip الذكية
                         <span class="typed-text gradient-text"></span>
                     </h1>
-                    <p class="text-xl mb-12 text-gray-200 leading-relaxed max-w-3xl mx-auto">
-                        منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات حول العالم بطريقة آمنة وفعالة.
+                    <p class="text-xl mb-12 text-gray-200 leading-relaxed max-w-4xl mx-auto">
+                        <strong>منصة ذكية تربط بين أي شخص عنده شحنة وأي شخص عنده مساحة فارغة</strong> - بغض النظر عن حجم الشحنة أو وسيلة النقل! من المسافر العادي إلى أساطيل الشحن، نوفر حلول شحن متكاملة تناسب جميع الاحتياجات.
                     </p>
                     
                     <!-- Action Cards - Bigger and Centered -->
@@ -292,36 +295,86 @@
     </section>
                 
     <!-- How It Works Section -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">كيف تعمل المنصة؟</h2>
-                <p class="text-xl text-gray-600">ثلاث خطوات بسيطة لإرسال شحنتك بأمان وسرعة</p>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">🔄 كيف تعمل المنصة بشكل مبسط؟</h2>
+                <p class="text-xl text-gray-600">منصة ذكية تربط بين أصحاب الشحنات وأصحاب المساحات الفارغة</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">📝</span>
+            <!-- For Users (Shipment Owners) -->
+            <div class="bg-white rounded-2xl p-8 mb-8 shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">👤 للمستخدم (صاحب الشحنة)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">📝</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">1. أدخل مواصفات شحنتك</h4>
+                        <p class="text-sm text-gray-600">الحجم، الوزن، النوع</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">1. أنشئ طلب الشحنة</h3>
-                    <p class="text-gray-600 leading-relaxed">حدد نوع الشحنة، الوزن، والمواقع وسنجد لك المسافر المناسب خلال دقائق</p>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">🤖</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">2. المنصة تلقائياً</h4>
+                        <p class="text-sm text-gray-600">تظهر لك أفضل الموصّلين المناسبين</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">✅</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">3. اختر العرض</h4>
+                        <p class="text-sm text-gray-600">الذي يناسب ميزانيتك ووقتك</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">📱</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">4. تابع الشحنة</h4>
+                        <p class="text-sm text-gray-600">حتى الوصول</p>
+                    </div>
                 </div>
-                
-                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
-                    <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">🚗</span>
+            </div>
+
+            <!-- For Carriers -->
+            <div class="bg-gradient-to-r from-blue-50 to-orange-50 rounded-2xl p-8 shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">🚗 للموصل (صاحب المساحة الفارغة)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">📢</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">1. أعلن عن رحلتك</h4>
+                        <p class="text-sm text-gray-600">القادمة ووسيلتك</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">2. اختر المسافر</h3>
-                    <p class="text-gray-600 leading-relaxed">تصفح المسافرين المتاحين، شاهد تقييماتهم واختر الأنسب لشحنتك</p>
-                </div>
-                
-                <div class="text-center card-hover bg-gray-50 rounded-2xl p-8">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">📦</span>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">📏</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">2. حدد المساحة الفارغة</h4>
+                        <p class="text-sm text-gray-600">المتاحة</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">3. تتبع الشحنة</h3>
-                    <p class="text-gray-600 leading-relaxed">تابع شحنتك لحظة بلحظة حتى تصل بأمان إلى وجهتها</p>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">📦</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">3. استقبل عروض الشحن</h4>
+                        <p class="text-sm text-gray-600">المناسبة لمساحتك</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">💰</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">4. اكسب دخل إضافي</h4>
+                        <p class="text-sm text-gray-600">من المساحة الفارغة</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -331,133 +384,395 @@
     <section class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">أنواع الشحنات التي ننقلها</h2>
-                <p class="text-xl text-gray-600">نقوم بنقل جميع أنواع الشحنات بأمان وكفاءة</p>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">📦 أنواع الشحنات التي ننقلها</h2>
+                <p class="text-xl text-gray-600">نقوم بنقل جميع أنواع الشحنات بأمان وكفاءة - من الصغيرة إلى العملاقة</p>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">📄</div>
-                    <h3 class="font-semibold text-gray-800">مستندات</h3>
-                    <p class="text-sm text-gray-600 mt-2">أوراق رسمية، عقود، مستندات مهمة</p>
+            <!-- Small Shipments -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">🎒 الشحنات الصغيرة (10-20 كيلو)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-green-200">
+                        <div class="text-3xl mb-3">📄</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">مستندات</h4>
+                        <p class="text-xs text-gray-600 mt-1">أوراق رسمية، عقود</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-green-200">
+                        <div class="text-3xl mb-3">📚</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">كتب</h4>
+                        <p class="text-xs text-gray-600 mt-1">كتب، مجلات، مواد تعليمية</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-green-200">
+                        <div class="text-3xl mb-3">🎁</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">هدايا</h4>
+                        <p class="text-xs text-gray-600 mt-1">هدايا صغيرة، تذكارات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-green-200">
+                        <div class="text-3xl mb-3">💊</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">أدوية</h4>
+                        <p class="text-xs text-gray-600 mt-1">أدوية، مستلزمات طبية</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-green-200">
+                        <div class="text-3xl mb-3">📱</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">إلكترونيات صغيرة</h4>
+                        <p class="text-xs text-gray-600 mt-1">هواتف، سماعات، شواحن</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-green-200">
+                        <div class="text-3xl mb-3">🍫</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">حلويات</h4>
+                        <p class="text-xs text-gray-600 mt-1">حلويات، شوكولاتة</p>
+                    </div>
                 </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">📱</div>
-                    <h3 class="font-semibold text-gray-800">إلكترونيات</h3>
-                    <p class="text-sm text-gray-600 mt-2">هواتف، لابتوب، أجهزة إلكترونية</p>
+            </div>
+
+            <!-- Medium Shipments -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">📦 الشحنات المتوسطة (300-1500 كيلو)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-blue-200">
+                        <div class="text-3xl mb-3">💻</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">إلكترونيات</h4>
+                        <p class="text-xs text-gray-600 mt-1">لابتوب، تلفزيون، أجهزة</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-blue-200">
+                        <div class="text-3xl mb-3">👕</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">ملابس</h4>
+                        <p class="text-xs text-gray-600 mt-1">ملابس، أقمشة، إكسسوارات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-blue-200">
+                        <div class="text-3xl mb-3">🛍️</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">مشتريات online</h4>
+                        <p class="text-xs text-gray-600 mt-1">منتجات من المتاجر الإلكترونية</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-blue-200">
+                        <div class="text-3xl mb-3">🍕</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">أطعمة</h4>
+                        <p class="text-xs text-gray-600 mt-1">منتجات غذائية، حلويات، توابل</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-blue-200">
+                        <div class="text-3xl mb-3">🏠</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">أدوات منزلية</h4>
+                        <p class="text-xs text-gray-600 mt-1">أدوات مطبخ، ديكورات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-blue-200">
+                        <div class="text-3xl mb-3">🎮</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">ألعاب</h4>
+                        <p class="text-xs text-gray-600 mt-1">ألعاب إلكترونية، ألعاب أطفال</p>
+                    </div>
                 </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">👕</div>
-                    <h3 class="font-semibold text-gray-800">ملابس</h3>
-                    <p class="text-sm text-gray-600 mt-2">ملابس، أقمشة، إكسسوارات</p>
+            </div>
+
+            <!-- Large Shipments -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">🚚 الشحنات الكبيرة (4-50 طن)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-orange-200">
+                        <div class="text-3xl mb-3">🛋️</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">أثاث</h4>
+                        <p class="text-xs text-gray-600 mt-1">طاولات، كراسي، خزانات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-orange-200">
+                        <div class="text-3xl mb-3">🏠</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">أجهزة منزلية</h4>
+                        <p class="text-xs text-gray-600 mt-1">ثلاجات، غسالات، مكيفات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-orange-200">
+                        <div class="text-3xl mb-3">📦</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">بضائع تجارية</h4>
+                        <p class="text-xs text-gray-600 mt-1">منتجات للبيع، مخزون</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-orange-200">
+                        <div class="text-3xl mb-3">🔧</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">معدات</h4>
+                        <p class="text-xs text-gray-600 mt-1">معدات صناعية، أدوات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-orange-200">
+                        <div class="text-3xl mb-3">🚗</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">قطع غيار</h4>
+                        <p class="text-xs text-gray-600 mt-1">قطع غيار سيارات، إطارات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-orange-200">
+                        <div class="text-3xl mb-3">📚</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">كتب ومجلات</h4>
+                        <p class="text-xs text-gray-600 mt-1">كميات كبيرة من الكتب</p>
+                    </div>
                 </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">🍕</div>
-                    <h3 class="font-semibold text-gray-800">أطعمة</h3>
-                    <p class="text-sm text-gray-600 mt-2">منتجات غذائية، حلويات، توابل</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">📚</div>
-                    <h3 class="font-semibold text-gray-800">كتب</h3>
-                    <p class="text-sm text-gray-600 mt-2">كتب، مجلات، مواد تعليمية</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 text-center card-hover">
-                    <div class="text-4xl mb-4">💊</div>
-                    <h3 class="font-semibold text-gray-800">أدوية</h3>
-                    <p class="text-sm text-gray-600 mt-2">أدوية، مستلزمات طبية</p>
+            </div>
+
+            <!-- Giant Shipments -->
+            <div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">🏢 الشحنات العملاقة (50-1000+ طن)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-purple-200">
+                        <div class="text-3xl mb-3">🏗️</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">مواد بناء</h4>
+                        <p class="text-xs text-gray-600 mt-1">أسمنت، حديد، رمل</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-purple-200">
+                        <div class="text-3xl mb-3">🚛</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">حاويات</h4>
+                        <p class="text-xs text-gray-600 mt-1">حاويات شحن، بضائع ضخمة</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-purple-200">
+                        <div class="text-3xl mb-3">⚙️</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">معدات ثقيلة</h4>
+                        <p class="text-xs text-gray-600 mt-1">معدات صناعية ضخمة</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-purple-200">
+                        <div class="text-3xl mb-3">🚗</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">سيارات</h4>
+                        <p class="text-xs text-gray-600 mt-1">سيارات، شاحنات، مركبات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-purple-200">
+                        <div class="text-3xl mb-3">📦</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">بضائع تجارية ضخمة</h4>
+                        <p class="text-xs text-gray-600 mt-1">مخزون كبير، منتجات</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-4 text-center card-hover border-2 border-purple-200">
+                        <div class="text-3xl mb-3">🌾</div>
+                        <h4 class="font-semibold text-gray-800 text-sm">مواد خام</h4>
+                        <p class="text-xs text-gray-600 mt-1">حبوب، معادن، مواد خام</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Shipment Categories Section -->
+    <!-- FastShip Vision Section -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">فئات الشحن والموصلين</h2>
-                <p class="text-xl text-gray-600">نوفر حلول شحن متكاملة تناسب جميع الاحتياجات</p>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">🌟 منصة FastShip الذكية</h2>
+                <p class="text-xl text-gray-600">منصة شاملة تربط بين أي شخص عنده شحنة وأي شخص عنده مساحة فارغة</p>
             </div>
             
-            <!-- قسم أصحاب الشحنات -->
-            <div class="bg-white rounded-2xl p-8 mb-8">
-                <h3 class="text-2xl font-bold text-gray-800 mb-6">🎒 لأصحاب الشحنات</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="font-semibold mb-4">الشحنات الصغيرة (حتى 20 كجم)</h4>
-                        <p class="text-gray-600">مستندات، كتب، هدايا صغيرة</p>
-                        <p class="text-sm text-green-600 mt-2">↳ مع: مسافرين عاديين (تاكسي، باص)</p>
+            <!-- Vision Statement -->
+            <div class="bg-gradient-to-r from-blue-50 to-orange-50 rounded-3xl p-8 mb-12 text-center">
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">🎯 رؤيتنا</h3>
+                <p class="text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto">
+                    <strong>منصة واحدة تخدم الجميع:</strong> أي حجم شحنة، أي وسيلة نقل، أي مسافة، أي ميزانية
+                </p>
+            </div>
+            
+            <!-- Shipment Types Section -->
+            <div class="bg-white rounded-2xl p-8 mb-8 shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">📦 أنواع الشحنات المتوافقة</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- شحنات صغيرة -->
+                    <div class="bg-green-50 rounded-xl p-6 text-center border-2 border-green-200 hover:border-green-400 transition-all duration-300">
+                        <div class="text-4xl mb-4">🎒</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">شحنات صغيرة</h4>
+                        <p class="text-sm text-gray-600 mb-3">10-20 كيلو</p>
+                        <p class="text-xs text-gray-500">مستندات، كتب، هدايا صغيرة</p>
+                        <div class="mt-4 bg-green-100 rounded-lg p-2">
+                            <p class="text-xs text-green-700 font-semibold">↳ مع: المسافرين العاديين</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">الشحنات المتوسطة (حتى 1.5 طن)</h4>
-                        <p class="text-gray-600">أجهزة إلكترونية، ملابس، أطعمة</p>
-                        <p class="text-sm text-green-600 mt-2">↳ مع: أصحاب سيارات خاصة</p>
+                    
+                    <!-- شحنات متوسطة -->
+                    <div class="bg-blue-50 rounded-xl p-6 text-center border-2 border-blue-200 hover:border-blue-400 transition-all duration-300">
+                        <div class="text-4xl mb-4">📦</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">شحنات متوسطة</h4>
+                        <p class="text-sm text-gray-600 mb-3">300-1500 كيلو</p>
+                        <p class="text-xs text-gray-500">أجهزة إلكترونية، مشتريات online</p>
+                        <div class="mt-4 bg-blue-100 rounded-lg p-2">
+                            <p class="text-xs text-blue-700 font-semibold">↳ مع: أصحاب السيارات</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">الشحنات الكبيرة (حتى 50 طن)</h4>
-                        <p class="text-gray-600">أثاث، أجهزة، بضائع متوسطة</p>
-                        <p class="text-sm text-green-600 mt-2">↳ مع: أصحاب الشاحنات</p>
+                    
+                    <!-- شحنات كبيرة -->
+                    <div class="bg-orange-50 rounded-xl p-6 text-center border-2 border-orange-200 hover:border-orange-400 transition-all duration-300">
+                        <div class="text-4xl mb-4">🚚</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">شحنات كبيرة</h4>
+                        <p class="text-sm text-gray-600 mb-3">4-50 طن</p>
+                        <p class="text-xs text-gray-500">أثاث، أجهزة، بضائع تجارية</p>
+                        <div class="mt-4 bg-orange-100 rounded-lg p-2">
+                            <p class="text-xs text-orange-700 font-semibold">↳ مع: أصحاب الشاحنات</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">الشحنات العملاقة (فوق 50 طن)</h4>
-                        <p class="text-gray-600">معدات، بضائع كبيرة، حاويات</p>
-                        <p class="text-sm text-green-600 mt-2">↳ مع: أساطيل الشحن</p>
+                    
+                    <!-- شحنات عملاقة -->
+                    <div class="bg-purple-50 rounded-xl p-6 text-center border-2 border-purple-200 hover:border-purple-400 transition-all duration-300">
+                        <div class="text-4xl mb-4">🏢</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">شحنات عملاقة</h4>
+                        <p class="text-sm text-gray-600 mb-3">50-1000+ طن</p>
+                        <p class="text-xs text-gray-500">بضائع تجارية ضخمة، مواد بناء</p>
+                        <div class="mt-4 bg-purple-100 rounded-lg p-2">
+                            <p class="text-xs text-purple-700 font-semibold">↳ مع: الشركات والأساطيل</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- قسم الموصلين -->
-            <div class="bg-gray-50 rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-gray-800 mb-6">🚗 للموصلين</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="font-semibold mb-4">مسافر عادي (حتى 20 كجم)</h4>
-                        <p class="text-gray-600">تاكسي، حافلة، طائرة، قطار</p>
-                        <p class="text-sm text-blue-600 mt-2">↳ ينقل: شحنات صغيرة</p>
+            <!-- Carrier Types Section -->
+            <div class="bg-gray-50 rounded-2xl p-8 shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">🚗 أنواع موصلي الشحنات</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- مسافر عادي -->
+                    <div class="bg-white rounded-xl p-6 text-center border-2 border-gray-200 hover:border-green-400 transition-all duration-300">
+                        <div class="text-4xl mb-4">🚶‍♂️</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">المسافر العادي</h4>
+                        <p class="text-sm text-gray-600 mb-3">10-20 كيلو</p>
+                        <p class="text-xs text-gray-500 mb-4">تاكسي، حافلة، طائرة، قطار</p>
+                        <div class="bg-green-100 rounded-lg p-2">
+                            <p class="text-xs text-green-700 font-semibold">مثال: طالب مسافر يحمل حقيبة صغيرة</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">صاحب سيارة (حتى 1.5 طن)</h4>
-                        <p class="text-gray-600">سيارات خاصة، بيك اب</p>
-                        <p class="text-sm text-blue-600 mt-2">↳ ينقل: شحنات متوسطة</p>
+                    
+                    <!-- صاحب سيارة -->
+                    <div class="bg-white rounded-xl p-6 text-center border-2 border-gray-200 hover:border-blue-400 transition-all duration-300">
+                        <div class="text-4xl mb-4">🚗</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">صاحب السيارة الخاصة</h4>
+                        <p class="text-sm text-gray-600 mb-3">300-1500 كيلو</p>
+                        <p class="text-xs text-gray-500 mb-4">كورولا، بيك أب، سيارات خاصة</p>
+                        <div class="bg-blue-100 rounded-lg p-2">
+                            <p class="text-xs text-blue-700 font-semibold">مثال: موظف مسافر بين المدن بسيارته</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">صاحب شاحنة (حتى 50 طن)</h4>
-                        <p class="text-gray-600">شاحنات، دينات، تريلات</p>
-                        <p class="text-sm text-blue-600 mt-2">↳ ينقل: شحنات كبيرة</p>
+                    
+                    <!-- صاحب شاحنة -->
+                    <div class="bg-white rounded-xl p-6 text-center border-2 border-gray-200 hover:border-orange-400 transition-all duration-300">
+                        <div class="text-4xl mb-4">🚚</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">صاحب الشاحنة</h4>
+                        <p class="text-sm text-gray-600 mb-3">4-50 طن</p>
+                        <p class="text-xs text-gray-500 mb-4">دينات، شاحنات متوسطة</p>
+                        <div class="bg-orange-100 rounded-lg p-2">
+                            <p class="text-xs text-orange-700 font-semibold">مثال: سائق شاحنة برحلات منتظمة</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">أساطيل الشحن (فوق 50 طن)</h4>
-                        <p class="text-gray-600">شركات شحن، طائرات، سفن</p>
-                        <p class="text-sm text-blue-600 mt-2">↳ تنقل: شحنات عملاقة</p>
+                    
+                    <!-- الشركات والأساطيل -->
+                    <div class="bg-white rounded-xl p-6 text-center border-2 border-gray-200 hover:border-purple-400 transition-all duration-300">
+                        <div class="text-4xl mb-4">🏢</div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2">الشركات والأساطيل</h4>
+                        <p class="text-sm text-gray-600 mb-3">50-1000+ طن</p>
+                        <p class="text-xs text-gray-500 mb-4">تريلات، قطارات، طائرات، سفن</p>
+                        <div class="bg-purple-100 rounded-lg p-2">
+                            <p class="text-xs text-purple-700 font-semibold">مثال: شركات شحن لديها مساحات غير مستغلة</p>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unique Feature Section -->
+    <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">💡 الميزة الفريدة</h2>
+                <p class="text-xl text-blue-100">منصة واحدة تخدم الجميع</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">📦</div>
+                    <h3 class="text-xl font-bold mb-2">أي حجم شحنة</h3>
+                    <p class="text-blue-100">من ظرف صغير إلى حاوية ضخمة</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">🚗</div>
+                    <h3 class="text-xl font-bold mb-2">أي وسيلة نقل</h3>
+                    <p class="text-blue-100">من تاكسي إلى طائرة شحن</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">🌍</div>
+                    <h3 class="text-xl font-bold mb-2">أي مسافة</h3>
+                    <p class="text-blue-100">من داخل المدينة إلى بين الدول</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div class="text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-bold mb-2">أي ميزانية</h3>
+                    <p class="text-blue-100">من بضعة ريالات إلى آلاف الريالات</p>
+                </div>
+            </div>
+            
+            <!-- Final Summary -->
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-8 text-center">
+                <h3 class="text-3xl font-bold mb-6">🎯 الخلاصة النهائية</h3>
+                <p class="text-xl mb-6 text-blue-100">FastShip هي الحل الشامل لكل احتياجات الشحن!</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-right">
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <div class="text-2xl mb-2">🎒</div>
+                        <p class="font-semibold">شحنة صغيرة؟</p>
+                        <p class="text-sm text-blue-100">هناك مسافر عادي يناسبك</p>
+                    </div>
+                    
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <div class="text-2xl mb-2">🚗</div>
+                        <p class="font-semibold">شحنة متوسطة؟</p>
+                        <p class="text-sm text-blue-100">هناك صاحب سيارة بمساحة فارغة</p>
+                    </div>
+                    
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <div class="text-2xl mb-2">🚚</div>
+                        <p class="font-semibold">شحنة كبيرة؟</p>
+                        <p class="text-sm text-blue-100">هناك شاحنات متجهة لنفس اتجاهك</p>
+                    </div>
+                    
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <div class="text-2xl mb-2">🏢</div>
+                        <p class="font-semibold">شحنة عملاقة؟</p>
+                        <p class="text-sm text-blue-100">هناك أساطيل شحن بمساحات شاغرة</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-white/10 rounded-xl">
+                    <p class="text-lg font-semibold mb-2">المنصة توفر الوقت والجهد والمال للطرفين</p>
+                    <p class="text-blue-100">وتحول المساحات الفارغة إلى دخل إضافي!</p>
+                </div>
+                
+                <div class="mt-6 text-2xl font-bold text-yellow-300">
+                    "مافي مساحة فارغة؟ حولها لفرصة!<br>
+                    عندك شحنة؟ أوصلها بأقل تكلفة!" 🚀
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Statistics Section -->
-    <section class="py-20 bg-blue-600 text-white">
+    <section class="py-20 bg-gray-800 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div>
                     <div class="text-5xl font-bold mb-2 counter" data-target="15000">0</div>
-                    <div class="text-blue-200">شحنة تم توصيلها</div>
+                    <div class="text-gray-300">شحنة تم توصيلها</div>
                 </div>
                 <div>
                     <div class="text-5xl font-bold mb-2 counter" data-target="2500">0</div>
-                    <div class="text-blue-200">مسافر نشط</div>
+                    <div class="text-gray-300">مسافر نشط</div>
                 </div>
                 <div>
                     <div class="text-5xl font-bold mb-2 counter" data-target="98">0</div>
-                    <div class="text-blue-200">نسبة الرضا</div>
+                    <div class="text-gray-300">نسبة الرضا</div>
                 </div>
                 <div>
                     <div class="text-5xl font-bold mb-2 counter" data-target="500">0</div>
-                    <div class="text-blue-200">مدينة مغطاة</div>
+                    <div class="text-gray-300">مدينة مغطاة</div>
                 </div>
             </div>
         </div>
@@ -641,28 +956,38 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-800 mb-4">الأسئلة الشائعة</h2>
-                <p class="text-xl text-gray-600">إجابات على أكثر الأسئلة شيوعاً</p>
+                <p class="text-xl text-gray-600">إجابات على أكثر الأسئلة شيوعاً حول منصة FastShip</p>
             </div>
             
             <div class="space-y-6">
                 <div class="bg-white rounded-xl p-6 shadow-sm">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">كيف أضمن أمان شحنتي؟</h3>
-                    <p class="text-gray-600 leading-relaxed">جميع المسافرين في منصتنا يتم التحقق من هويتهم وتقييمهم. كما نقدم تأمين على الشحنات ونظام تتبع لحظي لضمان وصول شحنتك بأمان.</p>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">كيف تعمل منصة FastShip؟</h3>
+                    <p class="text-gray-600 leading-relaxed">منصة FastShip تربط بين أصحاب الشحنات (من صغيرة إلى عملاقة) وأصحاب المساحات الفارغة في وسائل النقل المختلفة (من المسافر العادي إلى أساطيل الشحن). المنصة تلقائياً تظهر لك أفضل الموصّلين المناسبين لشحنتك.</p>
                 </div>
                 
                 <div class="bg-white rounded-xl p-6 shadow-sm">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">ما هي أنواع الشحنات التي يمكنني إرسالها؟</h3>
-                    <p class="text-gray-600 leading-relaxed">يمكنك إرسال معظم أنواع الشحنات باستثناء المواد الخطرة والمحظورة قانونياً. ننقل المستندات، الإلكترونيات، الملابس، الكتب، الهدايا، والأطعمة غير القابلة للتلف.</p>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">ما هي أنواع الشحنات والموصّلين المتاحين؟</h3>
+                    <p class="text-gray-600 leading-relaxed">نوفر 4 أنواع شحنات: صغيرة (10-20 كجم) مع المسافرين العاديين، متوسطة (300-1500 كجم) مع أصحاب السيارات، كبيرة (4-50 طن) مع أصحاب الشاحنات، وعملاقة (50-1000+ طن) مع الشركات والأساطيل.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">كيف أضمن أمان شحنتي؟</h3>
+                    <p class="text-gray-600 leading-relaxed">جميع الموصّلين في منصتنا يتم التحقق من هويتهم وتقييمهم. كما نقدم تأمين على الشحنات ونظام تتبع لحظي لضمان وصول شحنتك بأمان. كل موصل له تقييمات ومراجعات من العملاء السابقين.</p>
                 </div>
                 
                 <div class="bg-white rounded-xl p-6 shadow-sm">
                     <h3 class="text-xl font-bold text-gray-800 mb-3">كيف يتم تحديد سعر الشحنة؟</h3>
-                    <p class="text-gray-600 leading-relaxed">يعتمد السعر على المسافة، حجم الشحنة، وزنها، وسرعة التوصيل المطلوبة. يمكنك مقارنة عروض المسافرين واختيار الأنسب لميزانيتك.</p>
+                    <p class="text-gray-600 leading-relaxed">يعتمد السعر على المسافة، حجم الشحنة، وزنها، وسرعة التوصيل المطلوبة. كل نوع موصل له أسعار مختلفة - المسافرون العاديون أرخص، بينما أساطيل الشحن تناسب الشحنات الضخمة. يمكنك مقارنة العروض واختيار الأنسب.</p>
                 </div>
                 
                 <div class="bg-white rounded-xl p-6 shadow-sm">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">ماذا لو تأخرت الشحنة؟</h3>
-                    <p class="text-gray-600 leading-relaxed">نحن نراقب جميع الشحنات بشكل مستمر. في حال التأخير، سنقوم بإبلاغك فوراً ونعمل على حل المشكلة. كما نقدم تعويضات في حالات التأخير غير المبرر.</p>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">كيف يمكنني كسب دخل إضافي كموصل؟</h3>
+                    <p class="text-gray-600 leading-relaxed">سجل كموصل وحدد نوع وسيلتك ومساحتك الفارغة. المنصة ستظهر لك طلبات الشحن المناسبة لرحلتك. يمكنك كسب دخل إضافي من المساحة الفارغة في رحلاتك العادية - من المسافر العادي إلى صاحب الأسطول.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">هل يمكنني إرسال شحنة صغيرة مع صاحب شاحنة؟</h3>
+                    <p class="text-gray-600 leading-relaxed">نعم! منصة FastShip مرنة وتسمح بجميع أنواع المطابقة. يمكنك إرسال شحنة صغيرة مع صاحب شاحنة إذا كان لديه مساحة، أو شحنة كبيرة مع مسافر عادي إذا كان يناسبها. المنصة تظهر لك جميع الخيارات المتاحة.</p>
                 </div>
             </div>
         </div>
@@ -670,16 +995,46 @@
 
     <!-- CTA Section -->
     <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
-        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold mb-6">جاهز لبدء رحلة شحن ناجحة؟</h2>
-            <p class="text-xl mb-8 text-blue-100">انضم إلى آلاف العملاء الراضين عن خدماتنا</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="register.html" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                    إنشاء حساب جديد
-                </a>
-                <a href="travelers.html" class="bg-white/20 hover:bg-white/30 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors backdrop-blur-sm">
-                    استكشاف المسافرين
-                </a>
+        <div class="max-w-6xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold mb-6">جاهز لبدء رحلة شحن ناجحة مع FastShip؟</h2>
+            <p class="text-xl mb-8 text-blue-100">انضم إلى منصة الشحن الذكية التي تخدم جميع الاحتياجات</p>
+            
+            <!-- Action Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- For Shipment Owners -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                    <h3 class="text-2xl font-bold mb-4">📦 عندك شحنة؟</h3>
+                    <p class="text-blue-100 mb-6">أرسلها بأقل تكلفة مع أفضل الموصّلين</p>
+                    <div class="space-y-2 text-sm text-blue-100">
+                        <p>• شحنات صغيرة مع المسافرين العاديين</p>
+                        <p>• شحنات متوسطة مع أصحاب السيارات</p>
+                        <p>• شحنات كبيرة مع أصحاب الشاحنات</p>
+                        <p>• شحنات عملاقة مع الأساطيل</p>
+                    </div>
+                    <a href="register.html" class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors mt-4">
+                        أرسل شحنتك الآن
+                    </a>
+                </div>
+                
+                <!-- For Carriers -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                    <h3 class="text-2xl font-bold mb-4">🚗 عندك مساحة فارغة؟</h3>
+                    <p class="text-blue-100 mb-6">حولها لفرصة كسب دخل إضافي</p>
+                    <div class="space-y-2 text-sm text-blue-100">
+                        <p>• مسافر عادي - كسب من رحلاتك</p>
+                        <p>• صاحب سيارة - استغل المساحة الفارغة</p>
+                        <p>• صاحب شاحنة - رحلات منتظمة</p>
+                        <p>• أسطول شحن - مساحات شاغرة</p>
+                    </div>
+                    <a href="register.html" class="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors mt-4">
+                        ابدأ كموصل
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-2xl font-bold text-yellow-300 mb-4">
+                "مافي مساحة فارغة؟ حولها لفرصة!<br>
+                عندك شحنة؟ أوصلها بأقل تكلفة!" 🚀
             </div>
         </div>
     </section>
@@ -734,7 +1089,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             try {
                 var typed = new Typed('.typed-text', {
-                    strings: ['بسرعة', 'بأمان', 'بسهولة', 'بثقة'],
+                    strings: ['لجميع الأحجام', 'لجميع الوسائل', 'لجميع المسافات', 'لجميع الميزانيات'],
                     typeSpeed: 50,
                     backSpeed: 30,
                     backDelay: 2000,
