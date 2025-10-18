@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام المطابقة الذكي - FastShip</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Tajawal', 'Inter', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #ed8936, #1a365d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold gradient-text">FastShip - نظام المطابقة الذكي</h1>
+                </div>
+                <div>
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium">
+                        العودة للصفحة الرئيسية
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-12 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">🤖 نظام المطابقة الذكي</h2>
+            <p class="text-xl text-blue-100">جرب نظام المطابقة الذكي بين أنواع الشحنات والموصّلين</p>
+        </div>
+    </section>
+
+    <!-- Demo Form -->
+    <section class="py-12 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gray-50 rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">جرب النظام الآن</h3>
+                
+                <form id="matching-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">وزن الشحنة (كيلو)</label>
+                            <input type="number" id="shipment-weight" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="مثال: 15" min="0.1" step="0.1">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">من</label>
+                            <select id="from-city" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="الرياض">الرياض</option>
+                                <option value="جدة">جدة</option>
+                                <option value="الدمام">الدمام</option>
+                                <option value="أبها">أبها</option>
+                                <option value="المدينة المنورة">المدينة المنورة</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">إلى</label>
+                            <select id="to-city" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="جدة">جدة</option>
+                                <option value="الرياض">الرياض</option>
+                                <option value="الدمام">الدمام</option>
+                                <option value="أبها">أبها</option>
+                                <option value="المدينة المنورة">المدينة المنورة</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">نوع الشحنة</label>
+                            <select id="shipment-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="auto">تحديد تلقائي</option>
+                                <option value="small">شحنات صغيرة (10-20 كيلو)</option>
+                                <option value="medium">شحنات متوسطة (300-1500 كيلو)</option>
+                                <option value="large">شحنات كبيرة (4-50 طن)</option>
+                                <option value="giant">شحنات عملاقة (50-1000+ طن)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                            🔍 ابحث عن أفضل الموصّلين
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="results-container" class="hidden">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">نتائج البحث</h3>
+                <div id="matching-results"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shipment Types Info -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">أنواع الشحنات والموصّلين</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Shipment Types -->
+                <div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">📦 أنواع الشحنات</h4>
+                    <div class="space-y-4">
+                        <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-400">
+                            <h5 class="font-semibold text-gray-800">🎒 شحنات صغيرة (10-20 كيلو)</h5>
+                            <p class="text-sm text-gray-600">مستندات، كتب، هدايا صغيرة</p>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-400">
+                            <h5 class="font-semibold text-gray-800">📦 شحنات متوسطة (300-1500 كيلو)</h5>
+                            <p class="text-sm text-gray-600">أجهزة إلكترونية، مشتريات online</p>
+                        </div>
+                        <div class="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-400">
+                            <h5 class="font-semibold text-gray-800">🚚 شحنات كبيرة (4-50 طن)</h5>
+                            <p class="text-sm text-gray-600">أثاث، أجهزة، بضائع تجارية</p>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-400">
+                            <h5 class="font-semibold text-gray-800">🏢 شحنات عملاقة (50-1000+ طن)</h5>
+                            <p class="text-sm text-gray-600">بضائع تجارية ضخمة، مواد بناء</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carrier Types -->
+                <div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">🚗 أنواع الموصّلين</h4>
+                    <div class="space-y-4">
+                        <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-400">
+                            <h5 class="font-semibold text-gray-800">🚶‍♂️ المسافر العادي</h5>
+                            <p class="text-sm text-gray-600">تاكسي، حافلة، طائرة، قطار</p>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-400">
+                            <h5 class="font-semibold text-gray-800">🚗 صاحب السيارة الخاصة</h5>
+                            <p class="text-sm text-gray-600">كورولا، بيك أب، سيارات خاصة</p>
+                        </div>
+                        <div class="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-400">
+                            <h5 class="font-semibold text-gray-800">🚚 صاحب الشاحنة</h5>
+                            <p class="text-sm text-gray-600">دينات، شاحنات متوسطة، تريلات</p>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-400">
+                            <h5 class="font-semibold text-gray-800">🏢 الشركات والأساطيل</h5>
+                            <p class="text-sm text-gray-600">تريلات، قطارات، طائرات، سفن</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 FastShip. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- Include main.js for the matching system -->
+    <script src="main.js"></script>
+    
+    <script>
+        // Handle form submission
+        document.getElementById('matching-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const weight = parseFloat(document.getElementById('shipment-weight').value);
+            const from = document.getElementById('from-city').value;
+            const to = document.getElementById('to-city').value;
+            const shipmentType = document.getElementById('shipment-type').value;
+            
+            if (!weight || weight <= 0) {
+                alert('يرجى إدخال وزن صحيح للشحنة');
+                return;
+            }
+            
+            if (from === to) {
+                alert('يرجى اختيار مدينتين مختلفتين');
+                return;
+            }
+            
+            // Show results container
+            document.getElementById('results-container').classList.remove('hidden');
+            
+            // Display results
+            displayCarrierResults('matching-results', weight, from, to, {
+                preferredType: shipmentType !== 'auto' ? shipmentType : null
+            });
+        });
+        
+        // Auto-update shipment type based on weight
+        document.getElementById('shipment-weight').addEventListener('input', function() {
+            const weight = parseFloat(this.value);
+            if (weight > 0) {
+                const shipmentType = fastShipMatching.determineShipmentType(weight);
+                const typeNames = {
+                    'small': 'شحنات صغيرة (10-20 كيلو)',
+                    'medium': 'شحنات متوسطة (300-1500 كيلو)',
+                    'large': 'شحنات كبيرة (4-50 طن)',
+                    'giant': 'شحنات عملاقة (50-1000+ طن)'
+                };
+                
+                // Update the select to show the detected type
+                const select = document.getElementById('shipment-type');
+                const option = Array.from(select.options).find(opt => opt.value === shipmentType);
+                if (option) {
+                    select.value = shipmentType;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
