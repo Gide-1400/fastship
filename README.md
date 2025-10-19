@@ -155,74 +155,6 @@ git clone https://github.com/your-username/fastship.git
 # أو قم بتنزيل ZIP وفك الضغط
 ```
 
-#### 2️⃣ إعداد Firebase
-
-1. افتح [Firebase Console](https://console.firebase.google.com)
-2. أنشئ مشروع جديد
-3. فعّل Authentication (Email/Password)
-4. أنشئ Realtime Database
-5. انسخ إعدادات المشروع
-
-#### 3️⃣ تحديث إعدادات Firebase
-
-افتح `js/firebase-config.js` وحدّث الإعدادات:
-
-```javascript
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-```
-
-#### 4️⃣ تشغيل المشروع
-
-**باستخدام Live Server (VS Code):**
-```bash
-# في VS Code
-# انقر بزر الماوس الأيمن على index.html
-# اختر "Open with Live Server"
-```
-
-**أو استخدم Python:**
-```bash
-# Python 3
-python -m http.server 8000
-
-# ثم افتح: http://localhost:8000
-```
-
-**أو استخدم Node.js:**
-```bash
-npx http-server
-```
-
-#### 5️⃣ النشر على Firebase (اختياري)
-
-```bash
-# تثبيت Firebase CLI
-npm install -g firebase-tools
-
-# تسجيل الدخول
-firebase login
-
-# تهيئة المشروع
-firebase init
-
-# النشر
-firebase deploy
-```
-
----
-
-## 📖 الاستخدام
-
-### للمستخدمين الجدد
-
 #### تسجيل كصاحب شحنة:
 1. افتح الصفحة الرئيسية
 2. اضغط "أرسل شحنة" أو "تسجيل جديد"
@@ -339,38 +271,6 @@ initializeCities() {
   }
 }
 ```
-
-### قواعد الأمان (Security Rules)
-
-```json
-{
-  "rules": {
-    "users": {
-      "$userType": {
-        "$userId": {
-          ".read": "auth != null && (auth.uid === $userId || root.child('users/'+$userType+'/'+auth.uid+'/role').val() === 'admin')",
-          ".write": "auth != null && auth.uid === $userId"
-        }
-      }
-    },
-    "shipments": {
-      ".read": "auth != null",
-      "$shipmentId": {
-        ".write": "auth != null && (data.child('shipperId').val() === auth.uid || !data.exists())"
-      }
-    },
-    "trips": {
-      ".read": "auth != null",
-      "$tripId": {
-        ".write": "auth != null && (data.child('carrierId').val() === auth.uid || !data.exists())"
-      }
-    }
-  }
-}
-```
-
----
-
 ## 🤝 المساهمة
 
 نرحب بمساهماتكم! إليك كيفية المساهمة:
