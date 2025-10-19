@@ -1,0 +1,826 @@
+/* =====================================
+   FastShip - Responsive Design
+   الملف: css/responsive.css
+   تصميم متجاوب لجميع الأجهزة
+   ===================================== */
+
+/* ==================== Breakpoints ==================== */
+/*
+  Mobile: 0-480px
+  Tablet: 481-768px
+  Laptop: 769-1024px
+  Desktop: 1025px+
+*/
+
+/* ==================== Extra Large Screens (1440px+) ==================== */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+  }
+
+  .hero h1 {
+    font-size: 4rem;
+  }
+
+  .features-grid,
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==================== Large Screens (1025-1439px) ==================== */
+@media (min-width: 1025px) and (max-width: 1439px) {
+  .container {
+    max-width: 1200px;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==================== Laptop/Tablet Landscape (769-1024px) ==================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    max-width: 95%;
+    padding: 0 25px;
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+  }
+
+  /* Navigation */
+  .navbar-menu {
+    gap: 20px;
+  }
+
+  .navbar-brand {
+    font-size: 22px;
+  }
+
+  /* Grids */
+  .features-grid,
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+
+  .shipments-grid,
+  .trips-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Cards */
+  .card {
+    padding: 20px;
+  }
+
+  /* Forms */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Dashboard */
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ==================== Tablet Portrait (481-768px) ==================== */
+@media (min-width: 481px) and (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+  }
+
+  /* Navigation */
+  .navbar {
+    padding: 12px 15px;
+  }
+
+  .navbar-brand {
+    font-size: 20px;
+  }
+
+  .navbar-menu {
+    display: none;
+  }
+
+  /* Add Mobile Menu Toggle */
+  .mobile-menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #667eea;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 60px 20px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+  }
+
+  /* Grids */
+  .features-grid,
+  .stats-grid,
+  .steps,
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .shipment-details,
+  .trip-details {
+    grid-template-columns: 1fr;
+  }
+
+  /* Cards */
+  .card,
+  .info-card,
+  .section-card {
+    padding: 20px 15px;
+  }
+
+  .feature-card {
+    padding: 30px 20px;
+  }
+
+  /* Forms */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-tabs {
+    flex-direction: row;
+  }
+
+  .auth-tab {
+    flex: 1;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  /* Dashboard */
+  .dashboard-header {
+    padding: 25px;
+  }
+
+  .welcome-section {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Shipments & Trips */
+  .shipment-actions,
+  .trip-actions {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
+  /* Filter Tabs */
+  .filter-tabs {
+    overflow-x: auto;
+    padding: 15px;
+  }
+
+  .filter-tab {
+    white-space: nowrap;
+  }
+
+  /* Tables */
+  .table {
+    font-size: 14px;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px 8px;
+  }
+
+  /* Footer */
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  /* Page Headers */
+  .page-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  /* Vehicle Grid */
+  .vehicle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Timeline */
+  .timeline-step {
+    padding: 0 0 25px 35px;
+  }
+
+  [dir="ltr"] .timeline-step {
+    padding: 0 35px 25px 0;
+  }
+}
+
+/* ==================== Mobile (320-480px) ==================== */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 0 15px;
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 15px;
+  }
+
+  /* Navigation */
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .navbar-brand {
+    font-size: 18px;
+  }
+
+  /* Language Switcher */
+  .language-switcher {
+    top: 10px;
+    right: 10px;
+  }
+
+  [dir="rtl"] .language-switcher {
+    right: 10px;
+  }
+
+  .lang-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 50px 15px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-lg {
+    padding: 12px 25px;
+    font-size: 15px;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* Grids */
+  .features-grid,
+  .stats-grid,
+  .values-grid,
+  .team-grid,
+  .action-card-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* Feature Cards */
+  .feature-card {
+    padding: 25px 15px;
+  }
+
+  .feature-icon {
+    font-size: 48px;
+  }
+
+  /* Stats */
+  .stat-number {
+    font-size: 36px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+  }
+
+  /* Forms */
+  .form-card,
+  .auth-box {
+    border-radius: 10px;
+  }
+
+  .auth-header {
+    padding: 30px 20px;
+  }
+
+  .auth-header h1 {
+    font-size: 24px;
+  }
+
+  .auth-body {
+    padding: 30px 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-control {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* Role Selector */
+  .role-options {
+    grid-template-columns: 1fr;
+  }
+
+  .role-option label {
+    padding: 20px 15px;
+  }
+
+  /* Dashboard */
+  .dashboard-header {
+    padding: 20px 15px;
+  }
+
+  .welcome-text h1 {
+    font-size: 22px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+  }
+
+  /* Quick Actions */
+  .quick-actions {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .action-btn {
+    padding: 15px;
+  }
+
+  .action-icon {
+    font-size: 32px;
+  }
+
+  /* Cards */
+  .shipment-card,
+  .trip-card,
+  .info-card {
+    padding: 20px 15px;
+  }
+
+  .shipment-route,
+  .trip-route {
+    font-size: 16px;
+  }
+
+  .shipment-details,
+  .trip-info-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Actions */
+  .shipment-actions,
+  .trip-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* Filter Tabs */
+  .filter-tabs {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .filter-tab {
+    padding: 8px 15px;
+    font-size: 13px;
+  }
+
+  /* Page Headers */
+  .page-header {
+    padding: 20px 15px;
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+  }
+
+  /* Search Filters */
+  .search-filters {
+    padding: 20px 15px;
+  }
+
+  .filter-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Profile */
+  .profile-header {
+    padding: 30px 20px;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+
+  .profile-name {
+    font-size: 24px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Vehicle Cards */
+  .vehicle-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .vehicle-info {
+    flex-direction: column;
+  }
+
+  .vehicle-icon-large {
+    font-size: 40px;
+  }
+
+  .vehicle-specs {
+    grid-template-columns: 1fr;
+  }
+
+  /* Timeline */
+  .timeline-step {
+    padding: 0 0 20px 30px;
+  }
+
+  [dir="ltr"] .timeline-step {
+    padding: 0 30px 20px 0;
+  }
+
+  .timeline-content {
+    padding: 12px 15px;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 30px 0 15px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  /* Pages */
+  .hero-section {
+    padding: 50px 15px;
+  }
+
+  .hero-section h1 {
+    font-size: 28px;
+  }
+
+  .section {
+    padding: 25px 15px;
+  }
+
+  .section h2 {
+    font-size: 22px;
+  }
+
+  /* Contact Form */
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form-card,
+  .contact-info-card {
+    padding: 25px 15px;
+  }
+
+  /* FAQ */
+  .faq-question {
+    padding: 15px;
+    font-size: 15px;
+  }
+
+  .faq-answer {
+    padding: 0 15px 15px;
+  }
+
+  /* Tables */
+  .table {
+    font-size: 12px;
+    overflow-x: auto;
+    display: block;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 6px;
+    min-width: 100px;
+  }
+
+  /* Modals & Popups */
+  .modal-content {
+    margin: 10px;
+    width: calc(100% - 20px);
+  }
+
+  /* Earnings Display */
+  .earnings-amount {
+    font-size: 36px;
+  }
+
+  /* Price Display */
+  .price-display {
+    font-size: 20px;
+  }
+
+  .price-value {
+    font-size: 28px;
+  }
+
+  /* Back Link */
+  .back-link {
+    margin: 15px 15px 0;
+    font-size: 14px;
+  }
+}
+
+/* ==================== Extra Small Mobile (0-320px) ==================== */
+@media (max-width: 320px) {
+  html {
+    font-size: 13px;
+  }
+
+  .container {
+    padding: 0 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .btn {
+    padding: 8px 15px;
+    font-size: 13px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .feature-icon {
+    font-size: 40px;
+  }
+
+  .auth-header {
+    padding: 25px 15px;
+  }
+
+  .auth-body {
+    padding: 25px 15px;
+  }
+}
+
+/* ==================== Landscape Orientation ==================== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    padding: 40px 20px;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .stats-section,
+  .cta-section {
+    padding: 40px 20px;
+  }
+
+  .profile-header {
+    padding: 30px 20px;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 35px;
+  }
+}
+
+/* ==================== Print Styles ==================== */
+@media print {
+  .navbar,
+  .footer,
+  .back-link,
+  .language-switcher,
+  .mobile-menu-toggle,
+  button,
+  .btn,
+  .filter-tabs,
+  .quick-actions {
+    display: none !important;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .shipment-card,
+  .trip-card,
+  .card {
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  .hero {
+    background: white !important;
+    color: #333 !important;
+    border: 2px solid #667eea;
+  }
+
+  .hero h1,
+  .hero p {
+    color: #333 !important;
+  }
+}
+
+/* ==================== Accessibility ==================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==================== High Contrast Mode ==================== */
+@media (prefers-contrast: high) {
+  .btn,
+  .card,
+  .form-control {
+    border-width: 2px;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+/* ==================== Dark Mode Support ==================== */
+@media (prefers-color-scheme: dark) {
+  /* Dark mode can be implemented here in future updates */
+  /* Currently not implemented to maintain design consistency */
+}

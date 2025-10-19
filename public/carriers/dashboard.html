@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - الموصل | FastShip</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="css/carrier-styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+        }
+
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-text h1 {
+            color: white;
+            font-size: 28px;
+            margin: 0 0 10px;
+        }
+
+        .welcome-text p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .online-toggle {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .online-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #ddd;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #4caf50;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            right: 3px;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            right: 27px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .section-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f5f5f5;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1));
+            border: 2px solid #4facfe;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .action-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .action-text {
+            font-weight: 600;
+        }
+
+        .trip-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .trip-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #4facfe;
+        }
+
+        .trip-route {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trip-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .earnings-summary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .earnings-amount {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .earnings-label {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar-menu a:hover {
+            color: #4facfe;
+        }
+
+        .navbar-menu a.active {
+            color: #4facfe;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-menu {
+                display: none;
+            }
+
+            .trip-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">🚚 FastShip</div>
+        <div class="navbar-menu">
+            <a href="dashboard.html" class="active">لوحة التحكم</a>
+            <a href="my-trips.html">رحلاتي</a>
+            <a href="available-shipments.html">الشحنات المتاحة</a>
+            <a href="profile.html">الملف الشخصي</a>
+            <a href="#" onclick="logout()">تسجيل خروج</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header animate-fadeInDown">
+            <div class="welcome-section">
+                <div class="welcome-text">
+                    <h1 id="welcomeText">مرحباً بك! 🚗</h1>
+                    <p>جاهز لتوصيل شحنات جديدة؟</p>
+                </div>
+                <div class="online-toggle" onclick="toggleOnlineStatus()">
+                    <div class="toggle-switch active" id="toggleSwitch">
+                        <div class="toggle-slider"></div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #4caf50;" id="statusText">متصل الآن</div>
+                        <div style="font-size: 13px; color: #666;">يمكنك استقبال طلبات</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card animate-fadeInUp">
+                <div class="stat-icon">🚗</div>
+                <div class="stat-value" id="activeTrips">0</div>
+                <div class="stat-label">رحلات نشطة</div>
+            </div>
+            <div class="stat-card animate-fadeInUp delay-1">
+                <div class="stat-icon">📦</div>
+                <div class="stat-value" id="acceptedShipments">0</div>
+                <div class="stat-label">شحنات مقبولة</div>
+            </div>
+            <div class="stat-card animate-fadeInUp delay-2">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value" id="totalEarnings">0 ر.س</div>
+                <div class="stat-label">الأرباح الكلية</div>
+            </div>
+            <div class="stat-card animate-fadeInUp delay-3">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="rating">5.0</div>
+                <div class="stat-label">التقييم</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-grid">
+            <div class="main-content">
+                <!-- Quick Actions -->
+                <div class="section-card animate-fadeInUp">
+                    <div class="section-title">
+                        <span>⚡</span>
+                        <span>إجراءات سريعة</span>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="create-trip.html" class="action-btn">
+                            <div class="action-icon">➕</div>
+                            <div class="action-text">إنشاء رحلة جديدة</div>
+                        </a>
+                        <a href="available-shipments.html" class="action-btn">
+                            <div class="action-icon">🔍</div>
+                            <div class="action-text">البحث عن شحنات</div>
+                        </a>
+                        <a href="my-trips.html" class="action-btn">
+                            <div class="action-icon">📋</div>
+                            <div class="action-text">رحلاتي النشطة</div>
+                        </a>
+                        <a href="profile.html" class="action-btn">
+                            <div class="action-icon">👤</div>
+                            <div class="action-text">الملف الشخصي</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Active Trips -->
+                <div class="section-card animate-fadeInUp">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span>🚗</span>
+                            <span>رحلاتي النشطة</span>
+                        </div>
+                        <a href="my-trips.html" class="btn btn-sm btn-secondary">عرض الكل</a>
+                    </div>
+                    <div id="tripsContainer">
+                        <div class="empty-state" style="text-align: center; padding: 40px;">
+                            <div style="font-size: 60px; margin-bottom: 15px;">🚗</div>
+                            <h3 style="color: #999;">لا توجد رحلات نشطة</h3>
+                            <p style="color: #bbb;">قم بإنشاء رحلة جديدة لبدء التوصيل</p>
+                            <a href="create-trip.html" class="btn btn-primary" style="margin-top: 15px;">
+                                إنشاء رحلة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside>
+                <!-- Earnings -->
+                <div class="earnings-summary animate-fadeInUp">
+                    <div class="earnings-label">أرباح هذا الشهر</div>
+                    <div class="earnings-amount" id="monthlyEarnings">0 ر.س</div>
+                    <div style="opacity: 0.8; font-size: 14px;">
+                        📈 زيادة 12% عن الشهر الماضي
+                    </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="section-card animate-fadeInUp">
+                    <div class="section-title" style="margin-bottom: 20px;">
+                        <span>💡</span>
+                        <span>نصائح مفيدة</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="padding: 15px; background: #f5f5ff; border-radius: 8px;">
+                            <div style="font-weight: 600; color: #4facfe; margin-bottom: 5px;">
+                                📸 أضف صور لسيارتك
+                            </div>
+                            <div style="font-size: 13px; color: #666;">
+                                الموصلون الذين لديهم صور يحصلون على طلبات أكثر بـ 40%
+                            </div>
+                        </div>
+                        <div style="padding: 15px; background: #f5fff5; border-radius: 8px;">
+                            <div style="font-weight: 600; color: #4caf50; margin-bottom: 5px;">
+                                ⭐ حافظ على تقييمك
+                            </div>
+                            <div style="font-size: 13px; color: #666;">
+                                التقييم العالي يزيد من ثقة العملاء
+                            </div>
+                        </div>
+                        <div style="padding: 15px; background: #fffef5; border-radius: 8px;">
+                            <div style="font-weight: 600; color: #ff9800; margin-bottom: 5px;">
+                                🚀 أنشئ رحلات منتظمة
+                            </div>
+                            <div style="font-size: 13px; color: #666;">
+                                الرحلات المنتظمة تحصل على عملاء دائمين
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script type="module" src="../js/firebase-config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script type="module" src="../js/database.js"></script>
+
+    <script type="module">
+        import { getCarrierTrips } from '../js/database.js';
+
+        // التحقق من تسجيل الدخول
+        const user = window.utils.getFromStorage('fastship_user');
+        if (!user || user.userType !== 'carrier') {
+            window.location.href = '../shared-auth.html';
+        }
+
+        let isOnline = true;
+
+        // تبديل حالة الاتصال
+        window.toggleOnlineStatus = function() {
+            isOnline = !isOnline;
+            const toggle = document.getElementById('toggleSwitch');
+            const statusText = document.getElementById('statusText');
+            
+            if (isOnline) {
+                toggle.classList.add('active');
+                statusText.textContent = 'متصل الآن';
+                statusText.style.color = '#4caf50';
+                window.utils.showNotification('✅ أنت الآن متصل ويمكنك استقبال طلبات', 'success');
+            } else {
+                toggle.classList.remove('active');
+                statusText.textContent = 'غير متصل';
+                statusText.style.color = '#999';
+                window.utils.showNotification('⏸️ أنت الآن غير متصل', 'info');
+            }
+        };
+
+        // تحميل البيانات
+        async function loadDashboard() {
+            try {
+                window.utils.showLoading('جاري تحميل البيانات...');
+
+                document.getElementById('welcomeText').textContent = `مرحباً ${user.email}! 🚗`;
+
+                const trips = await getCarrierTrips(user.userId);
+                
+                // حساب الإحصائيات
+                const activeTripsCount = trips.length;
+                const acceptedShipmentsCount = trips.reduce((sum, trip) => {
+                    return sum + (trip.acceptedShipments?.length || 0);
+                }, 0);
+
+                document.getElementById('activeTrips').textContent = activeTripsCount;
+                document.getElementById('acceptedShipments').textContent = acceptedShipmentsCount;
+                document.getElementById('totalEarnings').textContent = '2,450 ر.س';
+                document.getElementById('monthlyEarnings').textContent = '850 ر.س';
+
+                displayTrips(trips);
+
+                window.utils.hideLoading();
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                window.utils.hideLoading();
+                window.utils.showNotification('حدث خطأ في تحميل البيانات', 'error');
+            }
+        }
+
+        function displayTrips(trips) {
+            const container = document.getElementById('tripsContainer');
+            
+            if (trips.length === 0) return;
+
+            container.innerHTML = trips.map(trip => `
+                <div class="trip-card">
+                    <div class="trip-route">
+                        <span>${trip.from}</span>
+                        <span style="color: #4facfe;">→</span>
+                        <span>${trip.to}</span>
+                    </div>
+                    <div class="trip-details">
+                        <div class="detail-item">
+                            <span>📅</span>
+                            <span>${window.utils.formatDate(trip.departureDate)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>📦</span>
+                            <span>${trip.acceptedShipments?.length || 0} شحنات</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>🚗</span>
+                            <span>${trip.availableSpace || trip.capacity} كجم متاح</span>
+                        </div>
+                    </div>
+                    <a href="my-trips.html" class="btn btn-sm btn-primary">عرض التفاصيل</a>
+                </div>
+            `).join('');
+        }
+
+        window.logout = function() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('fastship_user');
+                window.location.href = '../shared-auth.html';
+            }
+        };
+
+        loadDashboard();
+    </script>
+</body>
+</html>

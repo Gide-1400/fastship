@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأسئلة الشائعة | FastShip</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            color: white;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero-section p {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .faq-categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .category-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+
+        .faq-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #333;
+            font-size: 18px;
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            color: #667eea;
+        }
+
+        .faq-icon {
+            font-size: 24px;
+            transition: transform 0.3s;
+            color: #667eea;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 20px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 20px 20px;
+        }
+
+        .faq-answer p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .faq-answer ul {
+            color: #666;
+            line-height: 1.8;
+            margin: 15px 0;
+            padding-right: 20px;
+        }
+
+        .faq-answer li {
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            margin: 20px 0 0 20px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .cta-box h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 32px;
+            }
+
+            .faq-question {
+                font-size: 16px;
+                padding: 15px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">
+        <span>←</span>
+        <span>العودة للرئيسية</span>
+    </a>
+
+    <!-- Hero Section -->
+    <section class="hero-section animate-fadeIn">
+        <h1>الأسئلة الشائعة</h1>
+        <p>إجابات على الأسئلة الأكثر شيوعاً حول FastShip</p>
+    </section>
+
+    <!-- FAQ Container -->
+    <div class="faq-container">
+        <!-- Search Box -->
+        <div class="search-box animate-fadeInUp">
+            <input type="text" class="search-input" placeholder="🔍 ابحث عن سؤالك هنا..." id="searchInput">
+        </div>
+
+        <!-- Categories -->
+        <div class="faq-categories">
+            <button class="category-btn active" onclick="filterCategory('all')">الكل</button>
+            <button class="category-btn" onclick="filterCategory('general')">عام</button>
+            <button class="category-btn" onclick="filterCategory('shippers')">لأصحاب الشحنات</button>
+            <button class="category-btn" onclick="filterCategory('carriers')">للموصلين</button>
+            <button class="category-btn" onclick="filterCategory('payment')">الدفع</button>
+            <button class="category-btn" onclick="filterCategory('safety')">الأمان</button>
+        </div>
+
+        <!-- General Questions -->
+        <div class="faq-section" data-category="general">
+            <h2 class="section-title">أسئلة عامة</h2>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>ما هو FastShip؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>FastShip هي منصة عالمية تربط بين أصحاب الشحنات والموصلين بطريقة ذكية وآمنة. نستفيد من الرحلات اليومية التي يقوم بها الناس لتوصيل الشحنات بسرعة وبأسعار معقولة.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>كيف تعمل المنصة؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>العملية بسيطة جداً:</p>
+                    <ul>
+                        <li>أصحاب الشحنات ينشرون تفاصيل شحناتهم</li>
+                        <li>الموصلون يعلنون عن رحلاتهم</li>
+                        <li>نظامنا الذكي يطابق بين الشحنات والرحلات</li>
+                        <li>يتم الاتفاق والتوصيل بأمان</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>هل الخدمة متاحة في بلدي؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>نعم! FastShip منصة عالمية تدعم 6 لغات وتغطي معظم دول العالم. نحن نوسع خدماتنا باستمرار لنصل إلى المزيد من المناطق.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shippers Questions -->
+        <div class="faq-section" data-category="shippers">
+            <h2 class="section-title">لأصحاب الشحنات</h2>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>كيف أقوم بإنشاء شحنة؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>بعد التسجيل كصاحب شحنة، اتبع الخطوات التالية:</p>
+                    <ul>
+                        <li>اضغط على "شحنة جديدة"</li>
+                        <li>أدخل تفاصيل الشحنة (من، إلى، الوزن، التاريخ)</li>
+                        <li>حدد نوع البضاعة</li>
+                        <li>اضغط "نشر الشحنة"</li>
+                        <li>انتظر العروض من الموصلين</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>كم تكلفة إرسال الشحنة؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>التكلفة تعتمد على عدة عوامل: المسافة، الوزن، نوع البضاعة، والسرعة المطلوبة. نظامنا يقدم تقديراً للسعر، ويمكنك التفاوض مع الموصل على السعر النهائي.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>ماذا لو لم تصل شحنتي بأمان؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>نحن نأخذ أمان شحناتك على محمل الجد. جميع الموصلين موثقون، ولدينا نظام تأمين وحماية للشحنات. في حالة حدوث أي مشكلة، فريق الدعم جاهز لمساعدتك.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carriers Questions -->
+        <div class="faq-section" data-category="carriers">
+            <h2 class="section-title">للموصلين</h2>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>كيف أصبح موصلاً في FastShip؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>التسجيل سهل:</p>
+                    <ul>
+                        <li>سجل كموصل في المنصة</li>
+                        <li>أكمل معلومات ملفك الشخصي</li>
+                        <li>أضف معلومات مركبتك</li>
+                        <li>وثق هويتك</li>
+                        <li>ابدأ في إنشاء رحلات وقبول شحنات!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>كم يمكنني أن أربح كموصل؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>الأرباح تعتمد على عدد الرحلات والشحنات التي تقبلها. يمكنك تحديد أسعارك الخاصة. في المتوسط، الموصلون النشطون يربحون دخلاً إضافياً جيداً شهرياً.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>هل أحتاج إلى رخصة خاصة؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>تحتاج إلى رخصة قيادة سارية المفعول وسيارة مسجلة. في بعض البلدان، قد تحتاج إلى تصريح نقل بضائع حسب القوانين المحلية.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Questions -->
+        <div class="faq-section" data-category="payment">
+            <h2 class="section-title">الدفع والتحويلات</h2>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>ما هي طرق الدفع المتاحة؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>نقبل عدة طرق للدفع:</p>
+                    <ul>
+                        <li>بطاقات الائتمان والخصم</li>
+                        <li>المحافظ الإلكترونية</li>
+                        <li>التحويل البنكي</li>
+                        <li>الدفع عند الاستلام (في بعض المناطق)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>متى يتم الدفع للموصل؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>بعد تأكيد استلام الشحنة بنجاح، يتم تحويل المبلغ للموصل خلال 24-48 ساعة إلى حسابه المسجل في المنصة.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Safety Questions -->
+        <div class="faq-section" data-category="safety">
+            <h2 class="section-title">الأمان والخصوصية</h2>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>كيف تضمنون أمان الشحنات؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>نتخذ عدة إجراءات لضمان الأمان:</p>
+                    <ul>
+                        <li>توثيق هوية جميع المستخدمين</li>
+                        <li>نظام تقييم شفاف</li>
+                        <li>تأمين على الشحنات</li>
+                        <li>تتبع GPS للرحلات</li>
+                        <li>فريق دعم متاح 24/7</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>هل معلوماتي الشخصية آمنة؟</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>نعم، نحن نأخذ خصوصيتك على محمل الجد. جميع المعلومات مشفرة ومحمية وفقاً لأعلى معايير الأمان العالمية. لا نشارك بياناتك مع أطراف ثالثة دون إذنك.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Box -->
+        <div class="cta-box animate-fadeInUp">
+            <h2>لم تجد إجابة لسؤالك؟</h2>
+            <p>فريق الدعم جاهز لمساعدتك</p>
+            <a href="contact.html" class="btn btn-primary btn-lg">تواصل معنا</a>
+        </div>
+    </div>
+
+    <script src="../js/utils.js"></script>
+    <script>
+        // Toggle FAQ
+        function toggleFaq(item) {
+            item.classList.toggle('active');
+        }
+
+        // Filter by category
+        function filterCategory(category) {
+            // Update buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter sections
+            document.querySelectorAll('.faq-section').forEach(section => {
+                if (category === 'all' || section.dataset.category === category) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    if (searchTerm.length > 0) {
+                        item.classList.add('active');
+                    }
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Show all sections when searching
+            if (searchTerm.length > 0) {
+                document.querySelectorAll('.faq-section').forEach(section => {
+                    section.style.display = 'block';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شحناتي | FastShip</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <style>
+        .page-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .page-header h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .filter-tab:hover:not(.active) {
+            background: #e8e8e8;
+        }
+
+        .shipments-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .shipment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .shipment-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-3px);
+        }
+
+        .shipment-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f5f5f5;
+        }
+
+        .shipment-route {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .route-arrow {
+            color: #667eea;
+            font-size: 24px;
+        }
+
+        .shipment-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-icon {
+            font-size: 20px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .shipment-actions {
+            display: flex;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .action-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .action-btn-secondary:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .action-btn-danger {
+            background: white;
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+
+        .action-btn-danger:hover {
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .empty-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            opacity: 0.4;
+        }
+
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #999;
+            margin-bottom: 25px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+            gap: 12px;
+        }
+
+        .shipment-id {
+            font-size: 12px;
+            color: #999;
+            font-family: monospace;
+        }
+
+        .carrier-info {
+            background: #f5f5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .carrier-name {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .carrier-details {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .filter-tabs {
+                padding: 15px;
+            }
+
+            .shipment-info {
+                grid-template-columns: 1fr;
+            }
+
+            .shipment-actions {
+                flex-direction: column;
+            }
+
+            .carrier-details {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <a href="dashboard.html" class="back-link animate-fadeIn">
+            <span>←</span>
+            <span>العودة للوحة التحكم</span>
+        </a>
+
+        <div class="page-header animate-fadeInDown">
+            <div>
+                <h1>📦 شحناتي</h1>
+                <p style="margin: 5px 0 0; opacity: 0.9;">إدارة جميع شحناتك في مكان واحد</p>
+            </div>
+            <a href="create-shipment.html" class="btn btn-lg" style="background: white; color: #667eea;">
+                ➕ شحنة جديدة
+            </a>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs animate-fadeInUp">
+            <button class="filter-tab active" onclick="filterShipments('all')">
+                الكل (<span id="countAll">0</span>)
+            </button>
+            <button class="filter-tab" onclick="filterShipments('pending')">
+                ⏳ معلقة (<span id="countPending">0</span>)
+            </button>
+            <button class="filter-tab" onclick="filterShipments('accepted')">
+                ✓ مقبولة (<span id="countAccepted">0</span>)
+            </button>
+            <button class="filter-tab" onclick="filterShipments('in-transit')">
+                🚚 قيد التوصيل (<span id="countInTransit">0</span>)
+            </button>
+            <button class="filter-tab" onclick="filterShipments('delivered')">
+                ✅ تم التوصيل (<span id="countDelivered">0</span>)
+            </button>
+            <button class="filter-tab" onclick="filterShipments('cancelled')">
+                ❌ ملغاة (<span id="countCancelled">0</span>)
+            </button>
+        </div>
+
+        <!-- Shipments Grid -->
+        <div class="shipments-grid" id="shipmentsContainer">
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <h3>جاري تحميل الشحنات...</h3>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/firebase-config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script type="module" src="../js/database.js"></script>
+
+    <script type="module">
+        import { getUserShipments, updateShipmentStatus } from '../js/database.js';
+
+        // التحقق من تسجيل الدخول
+        const user = window.utils.getFromStorage('fastship_user');
+        if (!user || user.userType !== 'shipper') {
+            window.location.href = '../shared-auth.html';
+        }
+
+        let allShipments = [];
+        let currentFilter = 'all';
+
+        // تحميل الشحنات
+        async function loadShipments() {
+            try {
+                window.utils.showLoading('جاري تحميل الشحنات...');
+                
+                allShipments = await getUserShipments(user.userId);
+                
+                // تحديث العدادات
+                updateCounters();
+                
+                // عرض الشحنات
+                displayShipments(allShipments);
+                
+                window.utils.hideLoading();
+            } catch (error) {
+                console.error('Error loading shipments:', error);
+                window.utils.hideLoading();
+                document.getElementById('shipmentsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">❌</div>
+                        <h3>حدث خطأ في تحميل الشحنات</h3>
+                        <button class="btn btn-primary" onclick="location.reload()">إعادة المحاولة</button>
+                    </div>
+                `;
+            }
+        }
+
+        // تحديث العدادات
+        function updateCounters() {
+            document.getElementById('countAll').textContent = allShipments.length;
+            document.getElementById('countPending').textContent = 
+                allShipments.filter(s => s.status === 'pending').length;
+            document.getElementById('countAccepted').textContent = 
+                allShipments.filter(s => s.status === 'accepted').length;
+            document.getElementById('countInTransit').textContent = 
+                allShipments.filter(s => s.status === 'in-transit').length;
+            document.getElementById('countDelivered').textContent = 
+                allShipments.filter(s => s.status === 'delivered').length;
+            document.getElementById('countCancelled').textContent = 
+                allShipments.filter(s => s.status === 'cancelled').length;
+        }
+
+        // تصفية الشحنات
+        window.filterShipments = function(status) {
+            currentFilter = status;
+            
+            // تحديث الأزرار
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // عرض الشحنات المفلترة
+            const filtered = status === 'all' 
+                ? allShipments 
+                : allShipments.filter(s => s.status === status);
+            
+            displayShipments(filtered);
+        };
+
+        // عرض الشحنات
+        function displayShipments(shipments) {
+            const container = document.getElementById('shipmentsContainer');
+            
+            if (shipments.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state animate-fadeIn">
+                        <div class="empty-icon">📭</div>
+                        <h3>لا توجد شحنات</h3>
+                        <p>${currentFilter === 'all' ? 'لم تقم بإنشاء أي شحنات بعد' : 'لا توجد شحنات بهذه الحالة'}</p>
+                        <a href="create-shipment.html" class="btn btn-primary">إنشاء شحنة جديدة</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = shipments.map(shipment => `
+                <div class="shipment-card animate-fadeInUp" data-id="${shipment.shipmentId}">
+                    <div class="shipment-card-header">
+                        <div class="shipment-route">
+                            <span>${shipment.from}</span>
+                            <span class="route-arrow">→</span>
+                            <span>${shipment.to}</span>
+                        </div>
+                        ${window.utils.getStatusBadge(shipment.status)}
+                    </div>
+
+                    <div class="shipment-info">
+                        <div class="info-item">
+                            <div class="info-icon">📅</div>
+                            <div class="info-content">
+                                <div class="info-label">تاريخ الاستلام</div>
+                                <div class="info-value">${window.utils.formatDate(shipment.pickupDate)}</div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">⚖️</div>
+                            <div class="info-content">
+                                <div class="info-label">الوزن</div>
+                                <div class="info-value">${shipment.weight} كجم</div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">📦</div>
+                            <div class="info-content">
+                                <div class="info-label">نوع البضاعة</div>
+                                <div class="info-value">${getItemTypeAr(shipment.itemType)}</div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">💰</div>
+                            <div class="info-content">
+                                <div class="info-label">السعر التقديري</div>
+                                <div class="info-value">${shipment.estimatedPrice || '-'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${shipment.carrierId ? `
+                        <div class="carrier-info">
+                            <div class="carrier-name">🚚 الموصل: محمد أحمد</div>
+                            <div class="carrier-details">
+                                <span>⭐ التقييم: 4.8</span>
+                                <span>📞 +966 50 123 4567</span>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div class="shipment-actions">
+                        ${getActionButtons(shipment)}
+                    </div>
+
+                    <div class="shipment-id" style="margin-top: 15px;">
+                        رقم الشحنة: ${shipment.shipmentId}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // الحصول على نوع البضاعة بالعربي
+        function getItemTypeAr(type) {
+            const types = {
+                documents: 'مستندات',
+                electronics: 'إلكترونيات',
+                clothing: 'ملابس',
+                furniture: 'أثاث',
+                food: 'مواد غذائية',
+                other: 'أخرى'
+            };
+            return types[type] || type;
+        }
+
+        // الحصول على أزرار الإجراءات
+        function getActionButtons(shipment) {
+            if (shipment.status === 'pending') {
+                return `
+                    <button class="action-btn action-btn-primary" onclick="viewDetails('${shipment.shipmentId}')">
+                        عرض التفاصيل
+                    </button>
+                    <button class="action-btn action-btn-danger" onclick="cancelShipment('${shipment.shipmentId}')">
+                        إلغاء الشحنة
+                    </button>
+                `;
+            } else if (shipment.status === 'delivered') {
+                return `
+                    <button class="action-btn action-btn-primary" onclick="rateCarrier('${shipment.shipmentId}')">
+                        ⭐ تقييم الموصل
+                    </button>
+                    <button class="action-btn action-btn-secondary" onclick="viewDetails('${shipment.shipmentId}')">
+                        عرض التفاصيل
+                    </button>
+                `;
+            } else {
+                return `
+                    <button class="action-btn action-btn-primary" onclick="trackShipment('${shipment.shipmentId}')">
+                        🗺️ تتبع الشحنة
+                    </button>
+                    <button class="action-btn action-btn-secondary" onclick="contactCarrier('${shipment.shipmentId}')">
+                        📞 التواصل مع الموصل
+                    </button>
+                `;
+            }
+        }
+
+        // إلغاء الشحنة
+        window.cancelShipment = async function(shipmentId) {
+            if (!confirm('هل أنت متأكد من إلغاء هذه الشحنة؟')) return;
+
+            try {
+                window.utils.showLoading('جاري الإلغاء...');
+                const result = await updateShipmentStatus(shipmentId, 'cancelled');
+                
+                if (result.success) {
+                    window.utils.showNotification('✅ تم إلغاء الشحنة بنجاح', 'success');
+                    loadShipments();
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error('Error cancelling shipment:', error);
+                window.utils.showNotification('❌ حدث خطأ في إلغاء الشحنة', 'error');
+            } finally {
+                window.utils.hideLoading();
+            }
+        };
+
+        // دوال أخرى
+        window.viewDetails = (id) => {
+            window.utils.showNotification('ℹ️ صفحة التفاصيل قيد التطوير', 'info');
+        };
+
+        window.trackShipment = (id) => {
+            window.utils.showNotification('🗺️ خاصية التتبع قيد التطوير', 'info');
+        };
+
+        window.contactCarrier = (id) => {
+            window.utils.showNotification('📞 نظام المراسلة قيد التطوير', 'info');
+        };
+
+        window.rateCarrier = (id) => {
+            window.utils.showNotification('⭐ نظام التقييم قيد التطوير', 'info');
+        };
+
+        // تحميل الشحنات عند فتح الصفحة
+        loadShipments();
+    </script>
+</body>
+</html>

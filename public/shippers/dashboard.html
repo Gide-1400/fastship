@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - صاحب الشحنة | FastShip</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="css/shipper-styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .welcome-text {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .welcome-subtitle {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #f0f0f0;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .action-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: scale(1.05);
+        }
+
+        .action-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .action-text {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .recent-shipments {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .shipment-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .shipment-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .shipment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .shipment-route {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .shipment-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .shipment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar-menu a:hover {
+            color: #667eea;
+        }
+
+        .navbar-menu a.active {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .navbar-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">🚚 FastShip</div>
+        <div class="navbar-menu">
+            <a href="dashboard.html" class="active">لوحة التحكم</a>
+            <a href="my-shipments.html">شحناتي</a>
+            <a href="create-shipment.html">شحنة جديدة</a>
+            <a href="profile.html">الملف الشخصي</a>
+            <a href="#" onclick="logout()">تسجيل خروج</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header animate-fadeInDown">
+            <div class="welcome-text" id="welcomeText">مرحباً بعودتك! 👋</div>
+            <div class="welcome-subtitle">إليك نظرة عامة على شحناتك</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card animate-fadeInUp">
+                <div class="stat-icon">📦</div>
+                <div class="stat-value" id="totalShipments">0</div>
+                <div class="stat-label">إجمالي الشحنات</div>
+            </div>
+            <div class="stat-card animate-fadeInUp delay-1">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-value" id="pendingShipments">0</div>
+                <div class="stat-label">شحنات معلقة</div>
+            </div>
+            <div class="stat-card animate-fadeInUp delay-2">
+                <div class="stat-icon">🚚</div>
+                <div class="stat-value" id="inTransitShipments">0</div>
+                <div class="stat-label">قيد التوصيل</div>
+            </div>
+            <div class="stat-card animate-fadeInUp delay-3">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value" id="completedShipments">0</div>
+                <div class="stat-label">تم التوصيل</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="create-shipment.html" class="action-btn animate-fadeInUp">
+                <div class="action-icon">➕</div>
+                <div class="action-text">إنشاء شحنة جديدة</div>
+            </a>
+            <a href="my-shipments.html" class="action-btn animate-fadeInUp delay-1">
+                <div class="action-icon">📋</div>
+                <div class="action-text">عرض جميع الشحنات</div>
+            </a>
+            <a href="profile.html" class="action-btn animate-fadeInUp delay-2">
+                <div class="action-icon">👤</div>
+                <div class="action-text">تعديل الملف الشخصي</div>
+            </a>
+            <a href="../index.html" class="action-btn animate-fadeInUp delay-3">
+                <div class="action-icon">🏠</div>
+                <div class="action-text">الصفحة الرئيسية</div>
+            </a>
+        </div>
+
+        <!-- Recent Shipments -->
+        <div class="recent-shipments animate-fadeInUp">
+            <div class="section-title">
+                <span>📦</span>
+                <span>الشحنات الأخيرة</span>
+            </div>
+            <div id="shipmentsContainer">
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>لا توجد شحنات حتى الآن</h3>
+                    <p>ابدأ بإنشاء شحنتك الأولى!</p>
+                    <a href="create-shipment.html" class="btn btn-primary" style="margin-top: 20px;">إنشاء شحنة</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="../js/firebase-config.js"></script>
+    <script src="../js/translations.js"></script>
+    <script src="../js/utils.js"></script>
+    <script type="module" src="../js/database.js"></script>
+    <script type="module" src="../js/auth.js"></script>
+
+    <script type="module">
+        import { getUserShipments } from '../js/database.js';
+
+        // التحقق من تسجيل الدخول
+        const user = window.utils.getFromStorage('fastship_user');
+        if (!user || user.userType !== 'shipper') {
+            window.location.href = '../shared-auth.html';
+        }
+
+        // تحميل البيانات
+        async function loadDashboard() {
+            try {
+                window.utils.showLoading('جاري تحميل البيانات...');
+
+                // عرض اسم المستخدم
+                document.getElementById('welcomeText').textContent = `مرحباً ${user.email}! 👋`;
+
+                // تحميل الشحنات
+                const shipments = await getUserShipments(user.userId);
+                
+                // حساب الإحصائيات
+                const stats = {
+                    total: shipments.length,
+                    pending: shipments.filter(s => s.status === 'pending').length,
+                    inTransit: shipments.filter(s => s.status === 'in-transit').length,
+                    completed: shipments.filter(s => s.status === 'delivered').length
+                };
+
+                // تحديث الإحصائيات
+                document.getElementById('totalShipments').textContent = stats.total;
+                document.getElementById('pendingShipments').textContent = stats.pending;
+                document.getElementById('inTransitShipments').textContent = stats.inTransit;
+                document.getElementById('completedShipments').textContent = stats.completed;
+
+                // عرض الشحنات الأخيرة
+                displayShipments(shipments.slice(0, 5));
+
+                window.utils.hideLoading();
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                window.utils.hideLoading();
+                window.utils.showNotification('حدث خطأ في تحميل البيانات', 'error');
+            }
+        }
+
+        function displayShipments(shipments) {
+            const container = document.getElementById('shipmentsContainer');
+            
+            if (shipments.length === 0) {
+                return; // Keep empty state
+            }
+
+            container.innerHTML = shipments.map(shipment => `
+                <div class="shipment-card">
+                    <div class="shipment-header">
+                        <div class="shipment-route">
+                            ${shipment.from} → ${shipment.to}
+                        </div>
+                        ${window.utils.getStatusBadge(shipment.status)}
+                    </div>
+                    <div class="shipment-details">
+                        <div class="detail-item">
+                            <span>📅</span>
+                            <span>${window.utils.formatDate(shipment.createdAt)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>⚖️</span>
+                            <span>${shipment.weight} كجم</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>💰</span>
+                            <span>${window.utils.formatCurrency(shipment.price || 0)}</span>
+                        </div>
+                    </div>
+                    <div class="shipment-footer">
+                        <div style="color: #999; font-size: 13px;">
+                            رقم الشحنة: ${shipment.shipmentId.substring(0, 8)}...
+                        </div>
+                        <a href="my-shipments.html" class="btn btn-sm btn-primary">عرض التفاصيل</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function logout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('fastship_user');
+                window.location.href = '../shared-auth.html';
+            }
+        }
+
+        window.logout = logout;
+
+        // تحميل البيانات عند فتح الصفحة
+        loadDashboard();
+    </script>
+</body>
+</html>

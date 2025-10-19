@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي | FastShip</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <style>
+        .page-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .profile-content {
+            display: grid;
+            gap: 25px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f5f5f5;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .edit-btn {
+            background: none;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .edit-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .form-edit {
+            display: none;
+        }
+
+        .form-edit.active {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .form-actions button {
+            flex: 1;
+        }
+
+        .danger-zone {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #ffebee;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.1);
+        }
+
+        .danger-zone-header {
+            color: #f44336;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .danger-zone-content {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn-danger-outline {
+            background: white;
+            border: 2px solid #f44336;
+            color: #f44336;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-danger-outline:hover {
+            background: #f44336;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <a href="dashboard.html" class="back-link animate-fadeIn">
+            <span>←</span>
+            <span>العودة للوحة التحكم</span>
+        </a>
+
+        <!-- Profile Header -->
+        <div class="profile-header animate-fadeInDown">
+            <div class="profile-avatar">👤</div>
+            <div class="profile-name" id="userName">مستخدم</div>
+            <div class="profile-email" id="userEmail">user@example.com</div>
+        </div>
+
+        <div class="profile-content">
+            <!-- Personal Info -->
+            <div class="info-card animate-fadeInUp">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>👤</span>
+                        <span>المعلومات الشخصية</span>
+                    </div>
+                    <button class="edit-btn" onclick="toggleEdit('personal')">تعديل</button>
+                </div>
+
+                <div id="personalInfo" class="info-view">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">الاسم الكامل</div>
+                            <div class="info-value" id="displayName">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">البريد الإلكتروني</div>
+                            <div class="info-value" id="displayEmail">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">رقم الجوال</div>
+                            <div class="info-value" id="displayPhone">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">المدينة</div>
+                            <div class="info-value" id="displayCity">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="personalForm" class="form-edit">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الاسم الكامل</label>
+                            <input type="text" class="form-control" id="editName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الجوال</label>
+                            <input type="tel" class="form-control" id="editPhone" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>المدينة</label>
+                        <input type="text" class="form-control" id="editCity">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit('personal')">إلغاء</button>
+                        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Statistics -->
+            <div class="info-card animate-fadeInUp delay-1">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>📊</span>
+                        <span>الإحصائيات</span>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">إجمالي الشحنات</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statCompleted">0</div>
+                        <div class="stat-label">تم التوصيل</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statPending">0</div>
+                        <div class="stat-label">معلقة</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statCancelled">0</div>
+                        <div class="stat-label">ملغاة</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security -->
+            <div class="info-card animate-fadeInUp delay-2">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>🔒</span>
+                        <span>الأمان</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">آخر تسجيل دخول</div>
+                    <div class="info-value" id="lastLogin">-</div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 20px; width: 100%;" onclick="changePassword()">
+                    🔑 تغيير كلمة المرور
+                </button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone animate-fadeInUp delay-3">
+                <div class="danger-zone-header">
+                    <span>⚠️</span>
+                    <span>منطقة الخطر</span>
+                </div>
+                <div class="danger-zone-content">
+                    حذف الحساب هو إجراء نهائي ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك وشحناتك بشكل دائم.
+                </div>
+                <button class="btn-danger-outline" onclick="deleteAccount()">
+                    🗑️ حذف الحساب نهائياً
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/firebase-config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script type="module" src="../js/database.js"></script>
+
+    <script type="module">
+        import { getUser, updateUser, getUserShipments } from '../js/database.js';
+
+        // التحقق من تسجيل الدخول
+        const user = window.utils.getFromStorage('fastship_user');
+        if (!user || user.userType !== 'shipper') {
+            window.location.href = '../shared-auth.html';
+        }
+
+        // تحميل بيانات المستخدم
+        async function loadProfile() {
+            try {
+                window.utils.showLoading('جاري تحميل البيانات...');
+
+                // تحميل بيانات المستخدم
+                const userData = await getUser(user.userId, 'shipper');
+                
+                if (userData) {
+                    // عرض البيانات في الهيدر
+                    document.getElementById('userName').textContent = userData.name || 'مستخدم';
+                    document.getElementById('userEmail').textContent = userData.email || user.email;
+
+                    // عرض المعلومات الشخصية
+                    document.getElementById('displayName').textContent = userData.name || '-';
+                    document.getElementById('displayEmail').textContent = userData.email || '-';
+                    document.getElementById('displayPhone').textContent = userData.phone || '-';
+                    document.getElementById('displayCity').textContent = userData.city || '-';
+
+                    // ملء نموذج التعديل
+                    document.getElementById('editName').value = userData.name || '';
+                    document.getElementById('editPhone').value = userData.phone || '';
+                    document.getElementById('editCity').value = userData.city || '';
+
+                    // عرض آخر تسجيل دخول
+                    document.getElementById('lastLogin').textContent = 
+                        window.utils.formatDateTime(new Date().toISOString());
+                }
+
+                // تحميل الإحصائيات
+                const shipments = await getUserShipments(user.userId);
+                document.getElementById('statTotal').textContent = shipments.length;
+                document.getElementById('statCompleted').textContent = 
+                    shipments.filter(s => s.status === 'delivered').length;
+                document.getElementById('statPending').textContent = 
+                    shipments.filter(s => s.status === 'pending').length;
+                document.getElementById('statCancelled').textContent = 
+                    shipments.filter(s => s.status === 'cancelled').length;
+
+                window.utils.hideLoading();
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                window.utils.hideLoading();
+                window.utils.showNotification('حدث خطأ في تحميل البيانات', 'error');
+            }
+        }
+
+        // تبديل وضع التعديل
+        window.toggleEdit = function(section) {
+            if (section === 'personal') {
+                const view = document.getElementById('personalInfo');
+                const form = document.getElementById('personalForm');
+                
+                view.style.display = 'none';
+                form.classList.add('active');
+            }
+        };
+
+        // إلغاء التعديل
+        window.cancelEdit = function(section) {
+            if (section === 'personal') {
+                const view = document.getElementById('personalInfo');
+                const form = document.getElementById('personalForm');
+                
+                view.style.display = 'block';
+                form.classList.remove('active');
+            }
+        };
+
+        // حفظ التعديلات
+        document.getElementById('personalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                window.utils.showLoading('جاري حفظ التغييرات...');
+
+                const updates = {
+                    name: document.getElementById('editName').value,
+                    phone: document.getElementById('editPhone').value,
+                    city: document.getElementById('editCity').value
+                };
+
+                const result = await updateUser(user.userId, 'shipper', updates);
+
+                if (result.success) {
+                    window.utils.showNotification('✅ تم حفظ التغييرات بنجاح', 'success');
+                    loadProfile();
+                    cancelEdit('personal');
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                window.utils.showNotification('❌ حدث خطأ في حفظ التغييرات', 'error');
+            } finally {
+                window.utils.hideLoading();
+            }
+        });
+
+        // تغيير كلمة المرور
+        window.changePassword = function() {
+            window.utils.showNotification('ℹ️ خاصية تغيير كلمة المرور قيد التطوير', 'info');
+        };
+
+        // حذف الحساب
+        window.deleteAccount = function() {
+            const confirmation = prompt('لحذف حسابك نهائياً، اكتب "حذف" للتأكيد:');
+            
+            if (confirmation === 'حذف') {
+                if (confirm('هل أنت متأكد تماماً؟ لا يمكن التراجع عن هذا الإجراء!')) {
+                    window.utils.showNotification('⚠️ خاصية حذف الحساب قيد التطوير', 'warning');
+                }
+            }
+        };
+
+        // تحميل البيانات عند فتح الصفحة
+        loadProfile();
+    </script>
+</body>
+</html>

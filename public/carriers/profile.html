@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - الموصل | FastShip</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <style>
+        .page-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #4facfe;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #00f2fe;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .profile-content {
+            display: grid;
+            gap: 25px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f5f5f5;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .edit-btn {
+            background: none;
+            border: 2px solid #4facfe;
+            color: #4facfe;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .edit-btn:hover {
+            background: #4facfe;
+            color: white;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1));
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .vehicle-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .vehicle-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vehicle-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .vehicle-icon-large {
+            font-size: 48px;
+        }
+
+        .vehicle-details h4 {
+            margin: 0 0 5px;
+            color: #333;
+        }
+
+        .vehicle-details p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-edit {
+            display: none;
+        }
+
+        .form-edit.active {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .form-actions button {
+            flex: 1;
+        }
+
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+            font-size: 24px;
+        }
+
+        .rating-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .reviews-list {
+            margin-top: 20px;
+        }
+
+        .review-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .review-date {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .review-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .vehicle-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .vehicle-info {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <a href="dashboard.html" class="back-link animate-fadeIn">
+            <span>←</span>
+            <span>العودة للوحة التحكم</span>
+        </a>
+
+        <!-- Profile Header -->
+        <div class="profile-header animate-fadeInDown">
+            <div class="profile-avatar">🚗</div>
+            <div class="profile-name" id="userName">موصل محترف</div>
+            <div class="profile-email" id="userEmail">carrier@example.com</div>
+            <div class="verification-badge">
+                <span>✓</span>
+                <span>موثق</span>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <!-- Personal Info -->
+            <div class="info-card animate-fadeInUp">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>👤</span>
+                        <span>المعلومات الشخصية</span>
+                    </div>
+                    <button class="edit-btn" onclick="toggleEdit('personal')">تعديل</button>
+                </div>
+
+                <div id="personalInfo" class="info-view">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">الاسم الكامل</div>
+                            <div class="info-value" id="displayName">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">البريد الإلكتروني</div>
+                            <div class="info-value" id="displayEmail">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">رقم الجوال</div>
+                            <div class="info-value" id="displayPhone">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">المدينة</div>
+                            <div class="info-value" id="displayCity">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="personalForm" class="form-edit">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الاسم الكامل</label>
+                            <input type="text" class="form-control" id="editName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الجوال</label>
+                            <input type="tel" class="form-control" id="editPhone" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>المدينة</label>
+                        <input type="text" class="form-control" id="editCity">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit('personal')">إلغاء</button>
+                        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Vehicles -->
+            <div class="info-card animate-fadeInUp delay-1">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>🚗</span>
+                        <span>مركباتي</span>
+                    </div>
+                    <button class="btn btn-sm btn-primary" onclick="addVehicle()">+ إضافة مركبة</button>
+                </div>
+                <div class="vehicle-list">
+                    <div class="vehicle-card">
+                        <div class="vehicle-info">
+                            <div class="vehicle-icon-large">🚙</div>
+                            <div class="vehicle-details">
+                                <h4>تويوتا لاند كروزر 2022</h4>
+                                <p>رقم اللوحة: أ ب ج 1234 | السعة: 500 كجم</p>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-secondary">✏️ تعديل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="info-card animate-fadeInUp delay-2">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>📊</span>
+                        <span>الإحصائيات</span>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="statTrips">0</div>
+                        <div class="stat-label">إجمالي الرحلات</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statShipments">0</div>
+                        <div class="stat-label">الشحنات المكتملة</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statEarnings">0 ر.س</div>
+                        <div class="stat-label">الأرباح الكلية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statRating">5.0</div>
+                        <div class="stat-label">التقييم</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rating & Reviews -->
+            <div class="info-card animate-fadeInUp delay-3">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>⭐</span>
+                        <span>التقييمات والآراء</span>
+                    </div>
+                </div>
+                <div class="rating-display">
+                    <div class="rating-number">5.0</div>
+                    <div>
+                        <div class="rating-stars">★★★★★</div>
+                        <div style="color: #666; font-size: 14px;">من 48 تقييم</div>
+                    </div>
+                </div>
+                <div class="reviews-list">
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-name">⭐⭐⭐⭐⭐ أحمد محمد</div>
+                            <div class="review-date">منذ 3 أيام</div>
+                        </div>
+                        <div class="review-text">
+                            خدمة ممتازة وتوصيل سريع. الموصل محترف جداً ويتعامل بلطف.
+                        </div>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-name">⭐⭐⭐⭐⭐ فاطمة علي</div>
+                            <div class="review-date">منذ أسبوع</div>
+                        </div>
+                        <div class="review-text">
+                            تعامل راقي وأمانة في التعامل. أنصح بالتعامل معه.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/firebase-config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script type="module" src="../js/database.js"></script>
+
+    <script type="module">
+        import { getUser, updateUser, getCarrierTrips } from '../js/database.js';
+
+        // التحقق من تسجيل الدخول
+        const user = window.utils.getFromStorage('fastship_user');
+        if (!user || user.userType !== 'carrier') {
+            window.location.href = '../shared-auth.html';
+        }
+
+        // تحميل بيانات المستخدم
+        async function loadProfile() {
+            try {
+                window.utils.showLoading('جاري تحميل البيانات...');
+
+                const userData = await getUser(user.userId, 'carrier');
+                
+                if (userData) {
+                    document.getElementById('userName').textContent = userData.name || 'موصل محترف';
+                    document.getElementById('userEmail').textContent = userData.email || user.email;
+                    document.getElementById('displayName').textContent = userData.name || '-';
+                    document.getElementById('displayEmail').textContent = userData.email || '-';
+                    document.getElementById('displayPhone').textContent = userData.phone || '-';
+                    document.getElementById('displayCity').textContent = userData.city || '-';
+                    
+                    document.getElementById('editName').value = userData.name || '';
+                    document.getElementById('editPhone').value = userData.phone || '';
+                    document.getElementById('editCity').value = userData.city || '';
+                }
+
+                // تحميل الإحصائيات
+                const trips = await getCarrierTrips(user.userId);
+                const completedTrips = trips.filter(t => t.status === 'completed').length;
+                const totalShipments = trips.reduce((sum, t) => sum + (t.acceptedShipments?.length || 0), 0);
+
+                document.getElementById('statTrips').textContent = trips.length;
+                document.getElementById('statShipments').textContent = totalShipments;
+                document.getElementById('statEarnings').textContent = '12,500 ر.س';
+
+                window.utils.hideLoading();
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                window.utils.hideLoading();
+                window.utils.showNotification('حدث خطأ في تحميل البيانات', 'error');
+            }
+        }
+
+        // تبديل وضع التعديل
+        window.toggleEdit = function(section) {
+            if (section === 'personal') {
+                document.getElementById('personalInfo').style.display = 'none';
+                document.getElementById('personalForm').classList.add('active');
+            }
+        };
+
+        // إلغاء التعديل
+        window.cancelEdit = function(section) {
+            if (section === 'personal') {
+                document.getElementById('personalInfo').style.display = 'block';
+                document.getElementById('personalForm').classList.remove('active');
+            }
+        };
+
+        // حفظ التعديلات
+        document.getElementById('personalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                window.utils.showLoading('جاري حفظ التغييرات...');
+
+                const updates = {
+                    name: document.getElementById('editName').value,
+                    phone: document.getElementById('editPhone').value,
+                    city: document.getElementById('editCity').value
+                };
+
+                const result = await updateUser(user.userId, 'carrier', updates);
+
+                if (result.success) {
+                    window.utils.showNotification('✅ تم حفظ التغييرات بنجاح', 'success');
+                    loadProfile();
+                    cancelEdit('personal');
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                window.utils.showNotification('❌ حدث خطأ في حفظ التغييرات', 'error');
+            } finally {
+                window.utils.hideLoading();
+            }
+        });
+
+        // إضافة مركبة
+        window.addVehicle = function() {
+            window.utils.showNotification('ℹ️ خاصية إضافة مركبة قيد التطوير', 'info');
+        };
+
+        // تحميل البيانات عند فتح الصفحة
+        loadProfile();
+    </script>
+</body>
+</html>
