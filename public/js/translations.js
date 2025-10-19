@@ -1,6 +1,7 @@
 // =====================================
 // FastShip - نظام اللغات الست العالمية
 // الملف: js/translations.js
+// ✅ نسخة مُصلحة
 // =====================================
 
 const translations = {
@@ -431,10 +432,22 @@ class LanguageManager {
   }
 }
 
+// =====================================
+// ✅ التصدير للـ window والاستخدام العام
+// =====================================
+
 // إنشاء مثيل عام
 const i18n = new LanguageManager();
 
-// تصدير للاستخدام
+// ✅ تصدير للـ window (مهم جداً!)
+window.translations = translations;
+window.LanguageManager = LanguageManager;
+window.i18n = i18n;
+
+// تصدير للـ ES modules (اختياري)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { translations, LanguageManager, i18n };
 }
+
+console.log("✅ Language System loaded successfully");
+console.log("📚 Available languages:", Object.keys(translations).join(', '));
