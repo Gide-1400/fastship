@@ -117,510 +117,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-
-        .navbar-menu {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .navbar-menu a {
-            color: #666;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .navbar-menu a:hover {
-            color: #667eea;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-        }
-
-        .hero h1 {
-            color: white;
-            font-size: 3rem;
-            margin-bottom: 20px;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .hero p {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            animation: fadeInUp 1.2s ease;
-        }
-
-        /* Features */
-        .features {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .features h2 {
-            text-align: center;
-            margin-bottom: 60px;
-            font-size: 2.5rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            text-align: center;
-            padding: 40px 30px;
-            background: #f5f5ff;
-            border-radius: 15px;
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
-            background: white;
-        }
-
-        .feature-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 80px 0;
-            background: #f5f5f5;
-        }
-
-        .how-it-works h2 {
-            text-align: center;
-            margin-bottom: 60px;
-            font-size: 2.5rem;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .step {
-            text-align: center;
-            padding: 30px;
-            background: white;
-            border-radius: 15px;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: bold;
-            margin: 0 auto 20px;
-        }
-
-        /* CTA */
-        .cta {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-
-        .cta h2 {
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .cta p {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-        }
-
-        /* Footer */
-        .footer {
-            background: #333;
-            color: white;
-            padding: 40px 0 20px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-
-        .footer h4 {
-            color: white;
-            margin-bottom: 15px;
-        }
-
-        .footer a {
-            color: rgba(255,255,255,0.7);
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .footer a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            color: rgba(255,255,255,0.6);
-        }
-
-        @media (max-width: 768px) {
-            .navbar-menu {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Language Switcher -->
-    <div class="language-switcher" id="languageSwitcher">
-        <button class="lang-btn" onclick="toggleLanguageMenu()">
-            <span id="currentFlag">🇸🇦</span>
-            <span id="currentLangName">العربية</span>
-            <span>▼</span>
-        </button>
-        <div class="lang-dropdown" id="langDropdown"></div>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-brand">🚚 FastShip</div>
-            <ul class="navbar-menu">
-                <li><a href="#features" data-i18n="nav_features">المميزات</a></li>
-                <li><a href="#how-it-works" data-i18n="nav_how_it_works">كيف تعمل</a></li>
-                <li><a href="shared-auth.html" class="btn btn-primary" data-i18n="nav_start_now">ابدأ الآن</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1 data-i18n="hero_title">ربط ذكي بين أصحاب الشحنات والموصلين</h1>
-            <p data-i18n="hero_subtitle">منصة تسهل نقل الشحنات بسرعة وأمان مع أفضل الأسعار</p>
-            <div class="hero-buttons">
-                <a href="shared-auth.html?type=shipper" class="btn btn-primary btn-lg" data-i18n="hero_send_shipment">أرسل شحنات</a>
-                <a href="shared-auth.html?type=carrier" class="btn btn-secondary btn-lg" data-i18n="hero_become_carrier">توصيل شحناتً</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <h2 data-i18n="nav_features">المميزات الرئيسية</h2>
-            <div class="features-grid">
-                <div class="feature-card animate-fadeInUp">
-                    <div class="feature-icon">🔍</div>
-                    <h3>مطابقة ذكية</h3>
-                    <p>خوارزمية متقدمة تربط بين الشحنات والموصلين بناءً على المسار والوقت</p>
-                </div>
-                <div class="feature-card animate-fadeInUp delay-1">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>أمان كامل</h3>
-                    <p>توثيق كامل للعملية مع التحقق من هوية كل طرف</p>
-                </div>
-                <div class="feature-card animate-fadeInUp delay-2">
-                    <div class="feature-icon">💰</div>
-                    <h3>أسعار معقولة</h3>
-                    <p>تخفيض كبير في تكاليف الشحن مقارنة بالشركات التقليدية</p>
-                </div>
-                <div class="feature-card animate-fadeInUp delay-3">
-                    <div class="feature-icon">⚡</div>
-                    <h3>سرعة عالية</h3>
-                    <p>توصيل سريع لأن الموصل يمر بالفعل على طريقك</p>
-                </div>
-                <div class="feature-card animate-fadeInUp delay-4">
-                    <div class="feature-icon">🌍</div>
-                    <h3>منصة عالمية</h3>
-                    <p>ندعم 6 لغات ونغطي أكثر من 4 مليار شخص حول العالم</p>
-                </div>
-                <div class="feature-card animate-fadeInUp delay-5">
-                    <div class="feature-icon">⭐</div>
-                    <h3>تقييم موثوق</h3>
-                    <p>نظام تقييم شفاف يساعدك على اختيار الأفضل</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="container">
-            <h2 data-i18n="nav_how_it_works">كيف تعمل المنصة</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>سجل حسابك</h3>
-                    <p>اختر نوع حسابك (شحنة أو موصل) وأكمل التسجيل</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>أنشئ عرضك</h3>
-                    <p>أضف تفاصيل شحنتك أو رحلتك بكل سهولة</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>اعثر على المطابقة</h3>
-                    <p>نظامنا الذكي يجد لك أفضل الخيارات تلقائياً</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>أتمم العملية</h3>
-                    <p>تواصل مع الطرف الآخر وأكمل عملية الشحن بأمان</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <h2>ابدأ مع FastShip اليوم</h2>
-            <p>انضم إلى آلاف المستخدمين الذين يثقون بنا</p>
-            <a href="shared-auth.html" class="btn btn-lg" style="background: white; color: #667eea;">تسجيل مجاني</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <h4>عن FastShip</h4>
-                    <p>منصة شحن عالمية تربط بين أصحاب الشحنات والموصلين بطريقة ذكية وآمنة</p>
-                </div>
-                <div>
-                    <h4>روابط سريعة</h4>
-                    <a href="pages/about.html">من نحن</a>
-                    <a href="pages/contact.html">اتصل بنا</a>
-                    <a href="pages/faq.html">الأسئلة الشائعة</a>
-                </div>
-                <div>
-                    <h4>قانوني</h4>
-                    <a href="pages/terms.html">الشروط والأحكام</a>
-                    <a href="pages/privacy.html">سياسة الخصوصية</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2025 FastShip. جميع الحقوق محفوظة.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script type="module" src="js/firebase-config.js"></script>
-    <script src="js/translations.js"></script>
-    <script src="js/utils.js"></script>
-
-    <script>
-        // Language Switcher Functions
-        function toggleLanguageMenu() {
-            const switcher = document.getElementById('languageSwitcher');
-            switcher.classList.toggle('active');
-        }
-
-        document.addEventListener('click', (e) => {
-            const switcher = document.getElementById('languageSwitcher');
-            if (!switcher.contains(e.target)) {
-                switcher.classList.remove('active');
-            }
-        });
-
-        function initLanguageDropdown() {
-            const dropdown = document.getElementById('langDropdown');
-            const languages = i18n.getLanguages();
-            
-            dropdown.innerHTML = languages.map(lang => `
-                <div class="lang-option ${lang.code === i18n.currentLang ? 'active' : ''}" 
-                     onclick="changeLanguage('${lang.code}')">
-                    <span style="font-size: 24px;">${lang.flag}</span>
-                    <span>${lang.name}</span>
-                </div>
-            `).join('');
-        }
-
-        function changeLanguage(lang) {
-            i18n.setLanguage(lang);
-            updateCurrentLanguageDisplay();
-            toggleLanguageMenu();
-        }
-
-        function updateCurrentLanguageDisplay() {
-            const currentLang = translations[i18n.currentLang];
-            document.getElementById('currentFlag').textContent = currentLang.flag;
-            document.getElementById('currentLangName').textContent = currentLang.name;
-            initLanguageDropdown();
-        }
-
-        // Initialize on load
-        window.addEventListener('load', () => {
-            initLanguageDropdown();
-            updateCurrentLanguageDisplay();
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FastShip - منصة شحن عالمية تربط بين أصحاب الشحنات والموصلين بسهولة">
-    <meta name="keywords" content="شحن, توصيل, نقل البضائع, موصل شحنات, شحن دولي">
-    <title>FastShip - منصة الشحن السريعة العالمية</title>
-    
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/animations.css">
-    
-    <style>
-        /* Language Switcher */
-        .language-switcher {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
-
-        [dir="rtl"] .language-switcher {
-            left: auto;
-            right: 20px;
-        }
-
-        .lang-btn {
-            background: white;
-            border: 2px solid #667eea;
-            padding: 10px 15px;
-            border-radius: 25px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            color: #667eea;
-            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
-            transition: all 0.3s;
-        }
-
-        .lang-btn:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 10px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
-        }
-
-        [dir="rtl"] .lang-dropdown {
-            left: auto;
-            right: 0;
-        }
-
-        .language-switcher.active .lang-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .lang-option {
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        .lang-option:hover {
-            background: #f5f5ff;
-        }
-
-        .lang-option.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar-brand {
-            font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .navbar-menu {
@@ -882,10 +379,8 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
-            <div class="navbar-brand">🚚 FastShip</div>
+            <div class="navbar-brand" onclick="window.location.href='index.html'">🚚 FastShip</div>
             <ul class="navbar-menu" id="navbarMenu">
-                <li><a href="#features" data-i18n="nav_features">المميزات</a></li>
-                <li><a href="#how-it-works" data-i18n="nav_how_it_works">كيف تعمل</a></li>
                 <!-- Will be filled by JavaScript -->
             </ul>
         </div>
@@ -1014,19 +509,21 @@
         import { auth } from './js/firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // التحقق من حالة تسجيل الدخول
+        // ✅ التحقق من حالة تسجيل الدخول
         function checkAuthState() {
             const storedUser = localStorage.getItem('fastship_user');
             
             if (storedUser) {
                 try {
                     const userData = JSON.parse(storedUser);
+                    console.log('✅ User logged in:', userData);
                     updateUIForLoggedInUser(userData);
                 } catch (error) {
                     console.error('Error parsing user data:', error);
                     updateUIForGuest();
                 }
             } else {
+                console.log('ℹ️ No user logged in');
                 updateUIForGuest();
             }
 
@@ -1041,25 +538,26 @@
             });
         }
 
-        // تحديث الواجهة للمستخدم المسجل
+        // ✅ تحديث الواجهة للمستخدم المسجل
         function updateUIForLoggedInUser(userData) {
             const navbarMenu = document.getElementById('navbarMenu');
             const heroButtons = document.getElementById('heroButtons');
             const ctaButton = document.getElementById('ctaButton');
 
-            // تحديث القائمة
             const userInitial = userData.email ? userData.email.charAt(0).toUpperCase() : '👤';
+            const userName = userData.name || userData.email.split('@')[0];
             const dashboardLink = userData.userType === 'shipper' 
                 ? 'shippers/dashboard.html' 
                 : 'carriers/dashboard.html';
 
+            // تحديث القائمة
             navbarMenu.innerHTML = `
                 <li><a href="#features">المميزات</a></li>
                 <li><a href="#how-it-works">كيف تعمل</a></li>
                 <li class="user-dropdown">
                     <div class="user-info" style="cursor: pointer;">
                         <div class="user-avatar">${userInitial}</div>
-                        <span style="color: #333; font-weight: 600;">${userData.name || userData.email.split('@')[0]}</span>
+                        <span style="color: #333; font-weight: 600;">${userName}</span>
                     </div>
                     <div class="user-menu">
                         <a href="${dashboardLink}">📊 لوحة التحكم</a>
@@ -1090,7 +588,7 @@
             ctaButton.href = dashboardLink;
         }
 
-        // تحديث الواجهة للزائر
+        // ✅ تحديث الواجهة للزائر
         function updateUIForGuest() {
             const navbarMenu = document.getElementById('navbarMenu');
             const heroButtons = document.getElementById('heroButtons');
@@ -1114,7 +612,7 @@
             ctaButton.href = 'shared-auth.html';
         }
 
-        // تسجيل الخروج
+        // ✅ تسجيل الخروج
         window.logout = function() {
             if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
                 localStorage.removeItem('fastship_user');
@@ -1124,7 +622,7 @@
             }
         };
 
-        // Language Switcher Functions
+        // ✅ نظام اللغات
         function toggleLanguageMenu() {
             const switcher = document.getElementById('languageSwitcher');
             switcher.classList.toggle('active');
@@ -1141,6 +639,8 @@
 
         function initLanguageDropdown() {
             const dropdown = document.getElementById('langDropdown');
+            if (!window.i18n) return;
+            
             const languages = window.i18n.getLanguages();
             
             dropdown.innerHTML = languages.map(lang => `
@@ -1153,21 +653,25 @@
         }
 
         function changeLanguage(lang) {
-            window.i18n.setLanguage(lang);
-            updateCurrentLanguageDisplay();
-            toggleLanguageMenu();
+            if (window.i18n) {
+                window.i18n.setLanguage(lang);
+                updateCurrentLanguageDisplay();
+                toggleLanguageMenu();
+            }
         }
 
         window.changeLanguage = changeLanguage;
 
         function updateCurrentLanguageDisplay() {
-            const currentLang = translations[window.i18n.currentLang];
+            if (!window.translations || !window.i18n) return;
+            
+            const currentLang = window.translations[window.i18n.currentLang];
             document.getElementById('currentFlag').textContent = currentLang.flag;
             document.getElementById('currentLangName').textContent = currentLang.name;
             initLanguageDropdown();
         }
 
-        // Initialize on load
+        // ✅ تهيئة عند التحميل
         window.addEventListener('load', () => {
             checkAuthState();
             initLanguageDropdown();
