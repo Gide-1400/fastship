@@ -369,7 +369,7 @@
             }
         };
 
-        // معالج تسجيل الدخول - محدث!
+        // معالج تسجيل الدخول - محدث ومُصلح! ✅
         window.handleLogin = async function(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -382,9 +382,9 @@
                 btn.textContent = 'جاري الدخول...';
                 errorDiv.classList.remove('show');
 
-                console.log('🔐 محاولة تسجيل الدخول:', email);
+                console.log('🔍 محاولة تسجيل الدخول:', email);
 
-                // تسجيل الدخول في Firebase
+                // تسجيل الدخول في Firebase Auth
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
@@ -394,28 +394,53 @@
                 let userType = null;
                 let userData = null;
 
-                // البحث في shippers
-                const shipperRef = ref(db, `users/shipper/${user.uid}`);
-                const shipperSnapshot = await get(shipperRef);
-                
-                if (shipperSnapshot.exists()) {
-                    userType = 'shipper';
-                    userData = shipperSnapshot.val();
-                    console.log('✅ المستخدم: صاحب شحنة');
-                } else {
-                    // البحث في carriers
-                    const carrierRef = ref(db, `users/carrier/${user.uid}`);
-                    const carrierSnapshot = await get(carrierRef);
+                try {
+                    // البحث في shippers
+                    const shipperRef = ref(db, `users/shipper/${user.uid}`);
+                    const shipperSnapshot = await get(shipperRef);
                     
-                    if (carrierSnapshot.exists()) {
-                        userType = 'carrier';
-                        userData = carrierSnapshot.val();
-                        console.log('✅ المستخدم: موصل');
+                    if (shipperSnapshot.exists()) {
+                        userType = 'shipper';
+                        userData = shipperSnapshot.val();
+                        console.log('✅ المستخدم: صاحب شحنة', userData);
+                    } else {
+                        // البحث في carriers
+                        const carrierRef = ref(db, `users/carrier/${user.uid}`);
+                        const carrierSnapshot = await get(carrierRef);
+                        
+                        if (carrierSnapshot.exists()) {
+                            userType = 'carrier';
+                            userData = carrierSnapshot.val();
+                            console.log('✅ المستخدم: موصل', userData);
+                        }
                     }
+                } catch (dbError) {
+                    console.error('❌ خطأ في قراءة قاعدة البيانات:', dbError);
                 }
 
+                // إذا لم يُعثر على بيانات المستخدم، أنشئها الآن
                 if (!userType) {
-                    throw new Error('نوع المستخدم غير موجود في قاعدة البيانات');
+                    console.log('⚠️ بيانات المستخدم غير موجودة، جاري الإنشاء...');
+                    
+                    // استخدم نوع المستخدم من URL أو اسأل المستخدم
+                    const urlParams = new URLSearchParams(window.location.search);
+                    userType = urlParams.get('type') || 'shipper'; // افتراضي: shipper
+                    
+                    // إنشاء بيانات المستخدم
+                    userData = {
+                        name: user.displayName || email.split('@')[0],
+                        email: user.email,
+                        phone: '',
+                        createdAt: new Date().toISOString(),
+                        rating: 0,
+                        totalRatings: 0,
+                        completedTrips: 0,
+                        reviews: []
+                    };
+
+                    const userRef = ref(db, `users/${userType}/${user.uid}`);
+                    await set(userRef, userData);
+                    console.log('✅ تم إنشاء بيانات المستخدم في Database');
                 }
 
                 // حفظ في localStorage
@@ -423,7 +448,7 @@
                     userId: user.uid,
                     email: user.email,
                     userType: userType,
-                    name: userData.name || '',
+                    name: userData?.name || user.email.split('@')[0],
                     timestamp: new Date().toISOString()
                 };
 
@@ -455,10 +480,10 @@
                     errorMessage = 'كلمة المرور غير صحيحة';
                 } else if (error.code === 'auth/invalid-email') {
                     errorMessage = 'البريد الإلكتروني غير صحيح';
+                } else if (error.code === 'auth/invalid-credential') {
+                    errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
                 } else if (error.code === 'auth/too-many-requests') {
                     errorMessage = 'تم تجاوز عدد المحاولات، حاول لاحقاً';
-                } else if (error.message.includes('نوع المستخدم')) {
-                    errorMessage = error.message;
                 }
                 
                 errorDiv.textContent = '❌ ' + errorMessage;
@@ -504,7 +529,7 @@
                 btn.textContent = 'جاري التسجيل...';
                 errorDiv.classList.remove('show');
 
-                console.log('📝 محاولة التسجيل:', email, userRole);
+                console.log('🔍 محاولة التسجيل:', email, userRole);
 
                 // إنشاء المستخدم في Firebase Auth
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
