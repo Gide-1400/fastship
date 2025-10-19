@@ -136,6 +136,58 @@
             color: #667eea;
         }
 
+        /* User Info in Navbar */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-dropdown {
+            position: relative;
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .user-dropdown:hover .user-menu {
+            display: block;
+        }
+
+        .user-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .user-menu a:hover {
+            background: #f5f5ff;
+            color: #667eea;
+        }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -327,10 +379,10 @@
     <nav class="navbar">
         <div class="container">
             <div class="navbar-brand">🚚 FastShip</div>
-            <ul class="navbar-menu">
+            <ul class="navbar-menu" id="navbarMenu">
                 <li><a href="#features" data-i18n="nav_features">المميزات</a></li>
                 <li><a href="#how-it-works" data-i18n="nav_how_it_works">كيف تعمل</a></li>
-                <li><a href="shared-auth.html" class="btn btn-primary" data-i18n="nav_start_now">ابدأ الآن</a></li>
+                <!-- Will be filled by JavaScript -->
             </ul>
         </div>
     </nav>
@@ -340,9 +392,8 @@
         <div class="container">
             <h1 data-i18n="hero_title">ربط ذكي بين أصحاب الشحنات والموصلين</h1>
             <p data-i18n="hero_subtitle">منصة تسهل نقل الشحنات بسرعة وأمان مع أفضل الأسعار</p>
-            <div class="hero-buttons">
-                <a href="shared-auth.html?type=shipper" class="btn btn-primary btn-lg" data-i18n="hero_send_shipment">أرسل شحنة</a>
-                <a href="shared-auth.html?type=carrier" class="btn btn-secondary btn-lg" data-i18n="hero_become_carrier">اصبح موصلاً</a>
+            <div class="hero-buttons" id="heroButtons">
+                <!-- Will be filled by JavaScript -->
             </div>
         </div>
     </section>
@@ -420,7 +471,7 @@
         <div class="container">
             <h2>ابدأ مع FastShip اليوم</h2>
             <p>انضم إلى آلاف المستخدمين الذين يثقون بنا</p>
-            <a href="shared-auth.html" class="btn btn-lg" style="background: white; color: #667eea;">تسجيل مجاني</a>
+            <a href="shared-auth.html" class="btn btn-lg" style="background: white; color: #667eea;" id="ctaButton">تسجيل مجاني</a>
         </div>
     </section>
 
@@ -455,12 +506,127 @@
     <script src="js/translations.js"></script>
     <script src="js/utils.js"></script>
 
-    <script>
+    <script type="module">
+        import { auth } from './js/firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // التحقق من حالة تسجيل الدخول
+        function checkAuthState() {
+            const storedUser = localStorage.getItem('fastship_user');
+            
+            if (storedUser) {
+                try {
+                    const userData = JSON.parse(storedUser);
+                    updateUIForLoggedInUser(userData);
+                } catch (error) {
+                    console.error('Error parsing user data:', error);
+                    updateUIForGuest();
+                }
+            } else {
+                updateUIForGuest();
+            }
+
+            // الاستماع لتغييرات Firebase Auth
+            onAuthStateChanged(auth, (user) => {
+                if (user && storedUser) {
+                    const userData = JSON.parse(storedUser);
+                    updateUIForLoggedInUser(userData);
+                } else if (!user) {
+                    updateUIForGuest();
+                }
+            });
+        }
+
+        // تحديث الواجهة للمستخدم المسجل
+        function updateUIForLoggedInUser(userData) {
+            const navbarMenu = document.getElementById('navbarMenu');
+            const heroButtons = document.getElementById('heroButtons');
+            const ctaButton = document.getElementById('ctaButton');
+
+            // تحديث القائمة
+            const userInitial = userData.email ? userData.email.charAt(0).toUpperCase() : '👤';
+            const dashboardLink = userData.userType === 'shipper' 
+                ? 'shippers/dashboard.html' 
+                : 'carriers/dashboard.html';
+
+            navbarMenu.innerHTML = `
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#how-it-works">كيف تعمل</a></li>
+                <li class="user-dropdown">
+                    <div class="user-info" style="cursor: pointer;">
+                        <div class="user-avatar">${userInitial}</div>
+                        <span style="color: #333; font-weight: 600;">${userData.name || userData.email.split('@')[0]}</span>
+                    </div>
+                    <div class="user-menu">
+                        <a href="${dashboardLink}">📊 لوحة التحكم</a>
+                        <a href="${userData.userType === 'shipper' ? 'shippers/my-shipments.html' : 'carriers/my-trips.html'}">
+                            ${userData.userType === 'shipper' ? '📦 شحناتي' : '🚗 رحلاتي'}
+                        </a>
+                        <a href="${userData.userType === 'shipper' ? 'shippers/profile.html' : 'carriers/profile.html'}">👤 الملف الشخصي</a>
+                        <a href="#" onclick="logout()" style="color: #f44336;">🚪 تسجيل خروج</a>
+                    </div>
+                </li>
+            `;
+
+            // تحديث أزرار Hero
+            if (userData.userType === 'shipper') {
+                heroButtons.innerHTML = `
+                    <a href="shippers/create-shipment.html" class="btn btn-primary btn-lg">📦 إنشاء شحنة جديدة</a>
+                    <a href="shippers/my-shipments.html" class="btn btn-secondary btn-lg">📋 شحناتي</a>
+                `;
+            } else {
+                heroButtons.innerHTML = `
+                    <a href="carriers/create-trip.html" class="btn btn-primary btn-lg">🚗 إنشاء رحلة جديدة</a>
+                    <a href="carriers/available-shipments.html" class="btn btn-secondary btn-lg">🔍 الشحنات المتاحة</a>
+                `;
+            }
+
+            // تحديث زر CTA
+            ctaButton.textContent = 'انتقل للوحة التحكم';
+            ctaButton.href = dashboardLink;
+        }
+
+        // تحديث الواجهة للزائر
+        function updateUIForGuest() {
+            const navbarMenu = document.getElementById('navbarMenu');
+            const heroButtons = document.getElementById('heroButtons');
+            const ctaButton = document.getElementById('ctaButton');
+
+            // تحديث القائمة
+            navbarMenu.innerHTML = `
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#how-it-works">كيف تعمل</a></li>
+                <li><a href="shared-auth.html" class="btn btn-primary">ابدأ الآن</a></li>
+            `;
+
+            // تحديث أزرار Hero
+            heroButtons.innerHTML = `
+                <a href="shared-auth.html?type=shipper" class="btn btn-primary btn-lg">أرسل شحنة</a>
+                <a href="shared-auth.html?type=carrier" class="btn btn-secondary btn-lg">اصبح موصلاً</a>
+            `;
+
+            // تحديث زر CTA
+            ctaButton.textContent = 'تسجيل مجاني';
+            ctaButton.href = 'shared-auth.html';
+        }
+
+        // تسجيل الخروج
+        window.logout = function() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('fastship_user');
+                auth.signOut().then(() => {
+                    window.location.reload();
+                });
+            }
+        };
+
         // Language Switcher Functions
         function toggleLanguageMenu() {
             const switcher = document.getElementById('languageSwitcher');
             switcher.classList.toggle('active');
         }
+
+        window.toggleLanguageMenu = toggleLanguageMenu;
 
         document.addEventListener('click', (e) => {
             const switcher = document.getElementById('languageSwitcher');
@@ -471,10 +637,10 @@
 
         function initLanguageDropdown() {
             const dropdown = document.getElementById('langDropdown');
-            const languages = i18n.getLanguages();
+            const languages = window.i18n.getLanguages();
             
             dropdown.innerHTML = languages.map(lang => `
-                <div class="lang-option ${lang.code === i18n.currentLang ? 'active' : ''}" 
+                <div class="lang-option ${lang.code === window.i18n.currentLang ? 'active' : ''}" 
                      onclick="changeLanguage('${lang.code}')">
                     <span style="font-size: 24px;">${lang.flag}</span>
                     <span>${lang.name}</span>
@@ -483,13 +649,15 @@
         }
 
         function changeLanguage(lang) {
-            i18n.setLanguage(lang);
+            window.i18n.setLanguage(lang);
             updateCurrentLanguageDisplay();
             toggleLanguageMenu();
         }
 
+        window.changeLanguage = changeLanguage;
+
         function updateCurrentLanguageDisplay() {
-            const currentLang = translations[i18n.currentLang];
+            const currentLang = translations[window.i18n.currentLang];
             document.getElementById('currentFlag').textContent = currentLang.flag;
             document.getElementById('currentLangName').textContent = currentLang.name;
             initLanguageDropdown();
@@ -497,6 +665,7 @@
 
         // Initialize on load
         window.addEventListener('load', () => {
+            checkAuthState();
             initLanguageDropdown();
             updateCurrentLanguageDisplay();
         });
