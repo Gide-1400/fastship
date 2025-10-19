@@ -13,7 +13,8 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-s
 const firebaseConfig = {
   apiKey: "AIzaSyChPGP2JICwH_IGs7BT-DDZH2LzuK7_L58",
   authDomain: "fastship-2026.firebaseapp.com",
-  databaseURL: "https://fastship-2026-default-rtdb.firebaseio.com",
+  // ✅ تم التعديل - المنطقة الصحيحة (آسيا)
+  databaseURL: "https://fastship-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "fastship-2026",
   storageBucket: "fastship-2026.firebasestorage.app",
   messagingSenderId: "646769615933",
@@ -36,3 +37,4 @@ window.storage = storage;
 
 console.log("✅ Firebase initialized successfully");
 console.log("📍 Project:", firebaseConfig.projectId);
+console.log("🌏 Database Region: Asia Southeast 1");
